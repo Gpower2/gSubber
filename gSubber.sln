@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gSubber", "gSubber\gSubber.csproj", "{80FBF727-DB6D-40D2-9FBA-BE4AB04FE2DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gSubberGUI", "gSubberGUI\gSubberGUI.csproj", "{046BD24E-4156-4A34-BEC5-ED13419E4CEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{80FBF727-DB6D-40D2-9FBA-BE4AB04FE2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80FBF727-DB6D-40D2-9FBA-BE4AB04FE2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80FBF727-DB6D-40D2-9FBA-BE4AB04FE2DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{046BD24E-4156-4A34-BEC5-ED13419E4CEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{046BD24E-4156-4A34-BEC5-ED13419E4CEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{046BD24E-4156-4A34-BEC5-ED13419E4CEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{046BD24E-4156-4A34-BEC5-ED13419E4CEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

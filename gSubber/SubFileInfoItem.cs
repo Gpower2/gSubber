@@ -5,7 +5,10 @@ using System.Text;
 
 namespace gSubber
 {
-    public class Class1
+    public class SubFileInfoItem
     {
+        public String Name { get; set; }
+
+        public String Value { get; set; }
     }
 }
