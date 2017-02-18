@@ -10,5 +10,10 @@ namespace gSubber
         public String Name { get; set; }
 
         public String Value { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("{0}: {1}", Name ?? "", Value ?? "");
+        }
     }
 }

@@ -208,6 +208,15 @@ namespace gSubber
             }
         }
 
+        public static Time Now
+        {
+            get
+            {
+                DateTime now = DateTime.Now;
+                return new Time(now.Hour, now.Minute, now.Second, now.Millisecond);
+            }
+        }
+
         public Time() { }
 
         public Time(int argHours, int argMinutes)
@@ -231,13 +240,45 @@ namespace gSubber
             Milliseconds = argMilliseconds;
         }
 
-        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds, int argNanoseconds)
+        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds, int argMicroseconds)
         {
             Hours = argHours;
             Minutes = argMinutes;
             Seconds = argSeconds;
             Milliseconds = argMilliseconds;
+            Microseconds = argMicroseconds;
+        }
+
+        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds, int argMicroseconds, int argNanoseconds)
+        {
+            Hours = argHours;
+            Minutes = argMinutes;
+            Seconds = argSeconds;
+            Milliseconds = argMilliseconds;
+            Microseconds = argMicroseconds;
             Nanoseconds = argNanoseconds;
+        }
+
+        public static Time operator +(Time argTime1, Time argTime2)
+        {
+            return new gSubber.Time(
+                argTime1.Hours + argTime2.Hours,
+                argTime1.Minutes + argTime2.Minutes,
+                argTime1.Seconds + argTime2.Seconds,
+                argTime1.Milliseconds + argTime2.Milliseconds,
+                argTime1.Microseconds + argTime2.Microseconds,
+                argTime1.Nanoseconds + argTime2.Nanoseconds);
+        }
+
+        public static Time operator -(Time argTime1, Time argTime2)
+        {
+            return new gSubber.Time(
+                argTime1.Hours - argTime2.Hours,
+                argTime1.Minutes - argTime2.Minutes,
+                argTime1.Seconds - argTime2.Seconds,
+                argTime1.Milliseconds - argTime2.Milliseconds,
+                argTime1.Microseconds - argTime2.Microseconds,
+                argTime1.Nanoseconds - argTime2.Nanoseconds);
         }
 
         public void Clear()

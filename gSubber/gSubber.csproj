@@ -40,14 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorHelper.cs" />
+    <Compile Include="Formats\Ass\AssFileParser.cs" />
+    <Compile Include="ISubFileParser.cs" />
     <Compile Include="SubFileAttachment.cs" />
     <Compile Include="SubFileInfoItem.cs" />
     <Compile Include="SubFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SubFileParserResults.cs" />
+    <Compile Include="SubFileParserMessage.cs" />
     <Compile Include="SubFilePropertyItem.cs" />
     <Compile Include="SubFileStyleItem.cs" />
     <Compile Include="SubFileSubtitleItem.cs" />
     <Compile Include="Time.cs" />
+    <Compile Include="TimeHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Formats\Srt\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

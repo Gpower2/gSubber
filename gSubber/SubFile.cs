@@ -7,15 +7,21 @@ namespace gSubber
 {
     public class SubFile
     {
-        public List<SubFileInfoItem> Info { get; set; }
+        private List<SubFileInfoItem> _Info = new List<SubFileInfoItem>();
+        public List<SubFileInfoItem> Info { get { return _Info; } }
 
-        public List<SubFilePropertyItem> Properties { get; set; }
+        private List<SubFilePropertyItem> _Properties = new List<SubFilePropertyItem>();
+        public List<SubFilePropertyItem> Properties { get { return _Properties; } }
 
-        public List<SubFileStyleItem> Styles { get; set; }
+        private List<SubFileStyleItem> _Styles = new List<SubFileStyleItem>();
+        public List<SubFileStyleItem> Styles { get { return _Styles; } }
 
-        public List<SubFileSubtitleItem> Subtitles { get; set; }
+        private List<SubFileSubtitleItem> _Subtitles = new List<SubFileSubtitleItem>();
+        public List<SubFileSubtitleItem> Subtitles { get { return _Subtitles; } }
 
-        public List<SubFileAttachment> Attachments { get; set; }
+        private List<SubFileAttachment> _Attachments = new List<SubFileAttachment>();
+        public List<SubFileAttachment> Attachments { get { return _Attachments; } }
 
+        public SubFile() { }
     }
 }

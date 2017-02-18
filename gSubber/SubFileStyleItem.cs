@@ -8,8 +8,8 @@ namespace gSubber
 {
     public enum BorderStyle
     {
-        WithoutOpaqueBox,
-        WithOpaqueBox
+        WithoutOpaqueBox = 1,
+        WithOpaqueBox = 3
     }
 
     public enum ScreenAlignment
@@ -101,5 +101,9 @@ namespace gSubber
 
         public double MarginVertical { get; set; }
 
+        public override string ToString()
+        {
+            return Name ?? "";
+        }
     }
 }

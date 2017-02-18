@@ -7,6 +7,8 @@ namespace gSubber
 {
     public class SubFileSubtitleItem
     {
+        public bool IsComment { get; set; }
+
         public SubFileStyleItem Style { get; set; }
 
         public String ActorName { get; set; }
@@ -29,5 +31,13 @@ namespace gSubber
 
         public String Text { get; set; }
 
+        public override string ToString()
+        {
+            return String.Format("{0} - {1} [{2}] : {3}", 
+                StartTime == null ? new Time() : StartTime, 
+                EndTime == null ? new Time() : EndTime, 
+                Style == null ? "" : Style.ToString(),
+                Text ?? "");
+        }
     }
 }
