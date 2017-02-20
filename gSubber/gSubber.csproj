@@ -42,7 +42,9 @@
   <ItemGroup>
     <Compile Include="ColorHelper.cs" />
     <Compile Include="Formats\Ass\AssFileParser.cs" />
+    <Compile Include="Formats\Srt\SrtFileParser.cs" />
     <Compile Include="ISubFileParser.cs" />
+    <Compile Include="StringHelper.cs" />
     <Compile Include="SubFileAttachment.cs" />
     <Compile Include="SubFileInfoItem.cs" />
     <Compile Include="SubFile.cs" />
@@ -55,9 +57,7 @@
     <Compile Include="Time.cs" />
     <Compile Include="TimeHelper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Formats\Srt\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using gSubber;
 using gSubber.Formats.Ass;
+using System.Diagnostics;
+using gSubber.Formats.Srt;
 
 namespace gSubberGUI
 {
@@ -39,8 +41,12 @@ namespace gSubberGUI
             //textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithMicroseconds)));
             //textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithNanoseconds)));
 
-            AssFileParser p = new AssFileParser();
-            SubFileParserResults r = p.Load(@"H:\AnimeClipse\FairyTail\Karaoke\Karaoke06 [061-072]\Karaoke_op6.ass", Encoding.UTF8);
+            //AssFileParser p = new AssFileParser();
+            //SubFileParserResults r = p.Load(@"H:\AnimeClipse\FairyTail\Karaoke\Karaoke06 [061-072]\Karaoke_op6.ass", Encoding.UTF8);
+
+            SrtFileParser p = new SrtFileParser();
+            SubFileParserResults r = p.Load(@"F:\Videos_Red_3\Series_Red_3\Scream\Season 2\Scream.S02E01.720p.WEB-DL.DD5.1.H.264-VietHD_track3_eng.srt", Encoding.UTF8);
+            p.Save(r.SubFile, @"F:\Videos_Red_3\Series_Red_3\Scream\Season 2\Scream.S02E01.720p.WEB-DL.DD5.1.H.264-VietHD_track3_eng.new.srt");
         }
     }
 }
