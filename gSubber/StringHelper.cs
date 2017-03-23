@@ -10,7 +10,7 @@ namespace gSubber
         public static Int32 NumberOfOccurences(string argSource, string argSearch)
         {
             // Check for empty source or search string
-            if (String.IsNullOrWhiteSpace(argSource) || String.IsNullOrWhiteSpace(argSearch))
+            if (String.IsNullOrEmpty(argSource) || String.IsNullOrEmpty(argSearch))
             {
                 return 0;
             }
@@ -30,6 +30,7 @@ namespace gSubber
                     if (argSource[currentSourceIndex + i] != argSearch[i])
                     {
                         foundOccurence = false;
+                        i++;
                         break;
                     }
                 }
@@ -37,7 +38,7 @@ namespace gSubber
                 {
                     occurences++;
                 }
-                currentSourceIndex += (i + 1);
+                currentSourceIndex += i;
                 if (currentSourceIndex > sourceLength - 1)
                 {
                     break;
@@ -45,6 +46,5 @@ namespace gSubber
             }
             return occurences;
         }
-
     }
 }
