@@ -62,5 +62,22 @@ namespace gSubber.Helpers
 
             return Color.FromArgb(alpha, red, green, blue);
         }
+
+        public static String ToASS(Color argColor)
+        {
+            if(argColor == null)
+            {
+                throw new Exception("Color is null!");                
+            }
+            //&H00693212
+            //&H 00 69 32 12
+            return String.Format("&H{0}{1}{2}{3}",
+                argColor.R.ToString("X2")
+                ,argColor.G.ToString("X2")
+                ,argColor.B.ToString("X2")
+                ,argColor.A.ToString("X2")                
+            );
+        }
+
     }
 }

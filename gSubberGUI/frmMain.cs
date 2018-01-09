@@ -84,18 +84,21 @@ namespace gSubberGUI
 
                 SubFileParserResults results = parser.Load(TxtInputFile.Text, enc);
 
-                while (results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < results.SubFile.Subtitles.Count)
+                if (parser is SrtFileParser)
                 {
-                    for (int i = 0; i < results.SubFile.Subtitles.Count; i++)
+                    while (results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < results.SubFile.Subtitles.Count)
                     {
-                        if (i == 0) continue;
-                        if (results.SubFile.Subtitles[i - 1].StartTime.Equals(results.SubFile.Subtitles[i].StartTime))
+                        for (int i = 0; i < results.SubFile.Subtitles.Count; i++)
                         {
-                            results.SubFile.Subtitles[i - 1].Text = String.Format("{0}\r\n{1}", results.SubFile.Subtitles[i - 1].Text, results.SubFile.Subtitles[i].Text);
-                            results.SubFile.Subtitles[i].Text = "";
+                            if (i == 0) continue;
+                            if (results.SubFile.Subtitles[i - 1].StartTime.Equals(results.SubFile.Subtitles[i].StartTime))
+                            {
+                                results.SubFile.Subtitles[i - 1].Text = String.Format("{0}\r\n{1}", results.SubFile.Subtitles[i - 1].Text, results.SubFile.Subtitles[i].Text);
+                                results.SubFile.Subtitles[i].Text = "";
+                            }
                         }
+                        results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
                     }
-                    results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
                 }
 
                 //bool test = results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < results.SubFile.Subtitles.Count;

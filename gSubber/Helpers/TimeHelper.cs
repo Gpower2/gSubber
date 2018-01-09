@@ -65,6 +65,20 @@ namespace gSubber.Helpers
             return new Time(hours, minutes, seconds, milliseconds);
         }
 
+        public static String ToAssTime(Time argTime)
+        {
+            if (argTime == null)
+            {
+                throw new Exception("Time is null!");
+            }
+            //0:00:13.36
+            return String.Format("{0:0}:{1:00}:{2:00}.{3:00}",
+                argTime.Hours
+                , argTime.Minutes
+                , argTime.Seconds
+                , ((double)argTime.Milliseconds) / 10.0);
+        }
+
         public static Time FromSrtTime(String argTime)
         {
             if (String.IsNullOrWhiteSpace(argTime))

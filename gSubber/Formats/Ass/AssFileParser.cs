@@ -106,7 +106,14 @@ namespace gSubber.Formats.Ass
                         if (dataLine.StartsWith(";"))
                         {
                             inf.IsComment = true;
-                            inf.Value = dataLine.Substring(1);
+                            if (dataLine.Length > 2)
+                            {
+                                inf.Value = dataLine.Substring(2);
+                            }
+                            else
+                            {
+                                inf.Value = "";
+                            }
                             results.SubFile.Info.Add(inf);
                             continue;
                         }
@@ -217,31 +224,40 @@ namespace gSubber.Formats.Ass
                         {
                             // Parse the event line
                             SubFileSubtitleItem sub = new SubFileSubtitleItem();
-                            string dataSub = ""; 
+                            Int32 startData = 0; 
                             if (lowerCaseLine.StartsWith("dialogue:"))
                             {
-                                dataSub= dataLine.Substring(9).Trim();
                                 sub.IsComment = false;
+                                startData = 9;
                             }
                             else
                             {
-                                dataSub = dataLine.Substring(8).Trim();
                                 sub.IsComment = true;
+                                startData = 8;
                             }
-                            string[] subElements = dataSub.Split(new string[] { "," }, StringSplitOptions.None);
+
+                            List<Int32> commas = new List<int>();
+                            Int32 startComma = startData;
+                            for (int t = 0; t < 9; t++)
+                            {
+                                commas.Add(dataLine.IndexOf(",", startComma, StringComparison.InvariantCulture));
+                                startComma = commas[t] + 1;
+                            }
+
                             //Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
                             //Comment: 0,0:04:59.88,0:05:06.20,Opening,,0000,0000,0000,,{start}
                             //Dialogue: 0,0:01:30.23,0:01:31.14,Default,,0000,0000,0000,,Careful!
-                            sub.Zindex = Int32.Parse(subElements[0]);
-                            sub.StartTime = TimeHelper.FromAssTime(subElements[1]);
-                            sub.EndTime = TimeHelper.FromAssTime(subElements[2]);
-                            sub.Style = results.SubFile.Styles.Where(s => s.Name == subElements[3]).FirstOrDefault();
-                            sub.ActorName = subElements[4];
-                            sub.MarginLeft = double.Parse(subElements[5], NumberStyles.Any, CultureInfo.InvariantCulture);
-                            sub.MarginRight = double.Parse(subElements[6], NumberStyles.Any, CultureInfo.InvariantCulture);
-                            sub.MarginVertical = double.Parse(subElements[7], NumberStyles.Any, CultureInfo.InvariantCulture);
-                            sub.Effect = subElements[8];
-                            sub.Text = subElements[9];
+                            sub.Zindex = Int32.Parse(dataLine.Substring(startData + 1, commas[0] - startData - 1));
+                            sub.StartTime = TimeHelper.FromAssTime(dataLine.Substring(commas[0] + 1, commas[1] - commas[0] - 1));
+                            sub.EndTime = TimeHelper.FromAssTime(dataLine.Substring(commas[1] + 1, commas[2] - commas[1] - 1));
+                            sub.Style = results.SubFile.Styles.Where(s => s.Name == dataLine.Substring(commas[2] + 1, commas[3] - commas[2] - 1)).FirstOrDefault();
+                            sub.ActorName = dataLine.Substring(commas[3] + 1, commas[4] - commas[3] - 1);
+                            sub.MarginLeft = double.Parse(dataLine.Substring(commas[4] + 1, commas[5] - commas[4] - 1), NumberStyles.Any, CultureInfo.InvariantCulture);
+                            sub.MarginRight = double.Parse(dataLine.Substring(commas[5] + 1, commas[6] - commas[5] - 1), NumberStyles.Any, CultureInfo.InvariantCulture);
+                            sub.MarginVertical = double.Parse(dataLine.Substring(commas[6] + 1, commas[7] - commas[6] - 1), NumberStyles.Any, CultureInfo.InvariantCulture);
+                            sub.Effect = dataLine.Substring(commas[7] + 1, commas[8] - commas[7] - 1);
+
+                            sub.Text = dataLine.Substring(commas[8] + 1);
 
                             results.SubFile.Subtitles.Add(sub);
                         }
@@ -260,7 +276,125 @@ namespace gSubber.Formats.Ass
 
         public void Save(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
         {
-            throw new NotImplementedException();
+            if (String.IsNullOrWhiteSpace(argFilename))
+            {
+                throw new Exception("No filename was provided!");
+            }
+            if (argSubFile == null)
+            {
+                throw new Exception("No Sub File was provided!");
+            }
+
+            // Create a new String builder to write filecontents
+            StringBuilder contents = new StringBuilder();
+
+            // First write the [Script Info] section
+            contents.AppendLine("[Script Info]");
+            foreach (var info in argSubFile.Info)
+            {
+                if (info.IsComment)
+                {
+                    contents.AppendFormat("; {0}", info.Value).AppendLine();
+                }
+                else
+                {
+                    contents.AppendFormat("{0}: {1}", info.Name, info.Value).AppendLine();
+                }
+            }
+
+            // Leave an empty line
+            contents.AppendLine();
+
+            // Check for properties
+            if(argSubFile.Properties != null && argSubFile.Properties.Any())
+            {
+                // First write the [Aegisub Project Garbage] section
+                contents.AppendLine("[Aegisub Project Garbage]");
+
+                foreach (var prop in argSubFile.Properties)
+                {
+                    contents.AppendFormat("{0}: {1}", prop.Name, prop.Value).AppendLine();
+                }
+            }
+
+            // Leave an empty line
+            contents.AppendLine();
+
+            // Write the V4+ Styles
+            // First write the [V4+ Styles] section
+            contents.AppendLine("[V4+ Styles]");
+            // Write the format line (It's constant)
+            contents.AppendLine("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding");
+            foreach (var style in argSubFile.Styles)
+            {
+                //Style: Kanji,Calibri,40,&H00FFFFFF,&H000000FF,&H00000000,&HC0000000,-1,0,0,0,100,95,0,0,1,3,0,2,40,40,5,161
+                contents.AppendFormat("Style: {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22}",
+                    style.Name.Trim(),
+                     style.Fontname.Trim(),
+                     style.Fontsize.ToString(CultureInfo.InvariantCulture),
+                     ColorHelper.ToASS(style.PrimaryColor),
+                     ColorHelper.ToASS(style.SecondaryColor),
+                     ColorHelper.ToASS(style.OutlineColor),
+                     ColorHelper.ToASS(style.BackColor),
+                     style.Bold ? "-1" : "0",
+                     style.Italic ? "-1" : "0",
+                     style.Underline ? "-1" : "0",
+                     style.StrikeOut ? "-1" : "0",
+                     style.ScaleX.ToString(CultureInfo.InvariantCulture),
+                     style.ScaleY.ToString(CultureInfo.InvariantCulture),
+                     style.Spacing.ToString(CultureInfo.InvariantCulture),
+                     style.RotationAngle.ToString(CultureInfo.InvariantCulture),
+                     (int)style.BorderStyle,
+                     style.OutlineSize.ToString(CultureInfo.InvariantCulture),
+                     style.ShadowSize.ToString(CultureInfo.InvariantCulture),
+                     (int)style.ScreenAlignment,
+                     style.MarginLeft.ToString(CultureInfo.InvariantCulture),
+                     style.MarginRight.ToString(CultureInfo.InvariantCulture),
+                     style.MarginVertical.ToString(CultureInfo.InvariantCulture),
+                     (int)style.FontEncoding
+                    ).AppendLine();
+            }
+
+            // Leave an empty line
+            contents.AppendLine();
+
+            // Write the Events
+            // First write the [Events] section
+            contents.AppendLine("[Events]");
+            // Write the format line (It's constant)
+            contents.AppendLine("Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text");
+            foreach (var sub in argSubFile.Subtitles)
+            {
+                if (sub.IsComment)
+                {
+                    contents.AppendFormat("Comment: ");
+                }
+                else
+                {
+                    contents.AppendFormat("Dialogue: ");
+                }
+                //0,0:00:13.36,0:00:15.78,Romaji,,0,0,0,,koufun suzzo! uchuu e go!
+                contents.AppendFormat("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
+                     sub.Zindex.ToString(CultureInfo.InvariantCulture),
+                     TimeHelper.ToAssTime(sub.StartTime),
+                     TimeHelper.ToAssTime(sub.EndTime),
+                     sub.Style,
+                     sub.ActorName,
+                     sub.MarginLeft.ToString(CultureInfo.InvariantCulture),
+                     sub.MarginRight.ToString(CultureInfo.InvariantCulture),
+                     sub.MarginVertical.ToString(CultureInfo.InvariantCulture),
+                     sub.Effect,
+                     sub.Text.Replace("\r\n", "\n").Replace("\n", "\\N")
+                ).AppendLine();
+            }
+
+            // Write the file
+            using (StreamWriter sw = new StreamWriter(argFilename, false, argFileEncoding))
+            {
+                sw.Write(contents.ToString());
+            }
+
+            //throw new NotImplementedException();
         }
 
         //private Byte[] UUDecode(String argFourChars)
