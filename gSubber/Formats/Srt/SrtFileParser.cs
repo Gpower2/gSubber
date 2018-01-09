@@ -40,7 +40,7 @@ namespace gSubber.Formats.Srt
             String[] fileLines = fileContents.Split(new String[] { "\n" }, StringSplitOptions.None);
 
             // Create a new SubFile object
-            SubFileParserResults results = new gSubber.SubFileParserResults();
+            SubFileParserResults results = new SubFileParserResults();
             results.SubFile = new SubFile();
 
             // Set the parsing state

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace gSubber
 {
-    public class Time
+    public class Time : IEquatable<Time>, IComparable<Time>, IComparable
     {
         public enum TimeFormat
         {
@@ -310,6 +310,32 @@ namespace gSubber
                 default:
                     return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
             } 
+        }
+
+        public override bool Equals(object argTime)
+        {
+            if (!(argTime is Time)) return false;
+            return Equals(argTime);
+        }
+
+        public bool Equals(Time other)
+        {
+            return (other != null) && (TotalNanoseconds == other.TotalNanoseconds);
+        }
+
+        public override int GetHashCode()
+        {
+            return TotalNanoseconds.GetHashCode(); 
+        }
+
+        public int CompareTo(Time other)
+        {
+            return TotalNanoseconds.CompareTo(other.TotalNanoseconds);
+        }
+
+        public int CompareTo(object obj)
+        {
+            return TotalNanoseconds.CompareTo((obj as Time).TotalNanoseconds);
         }
     }
 }

@@ -30,6 +30,7 @@
         {
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.TxtInputFile = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -50,11 +51,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // TxtInputFile
+            // 
+            this.TxtInputFile.AllowDrop = true;
+            this.TxtInputFile.Location = new System.Drawing.Point(292, 60);
+            this.TxtInputFile.Name = "TxtInputFile";
+            this.TxtInputFile.Size = new System.Drawing.Size(460, 20);
+            this.TxtInputFile.TabIndex = 2;
+            this.TxtInputFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.TxtInputFile_DragDrop);
+            this.TxtInputFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.TxtInputFile_DragEnter);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 571);
+            this.Controls.Add(this.TxtInputFile);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Name = "frmMain";
@@ -68,6 +80,7 @@
 
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox TxtInputFile;
     }
 }
 

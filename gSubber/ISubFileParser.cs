@@ -5,7 +5,7 @@ using System.Text;
 
 namespace gSubber
 {
-    interface ISubFileParser
+    public interface ISubFileParser
     {
         SubFileParserResults Load(String argFilename, Encoding argFileEncoding);
 
