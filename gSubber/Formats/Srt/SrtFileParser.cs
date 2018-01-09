@@ -192,7 +192,7 @@ namespace gSubber.Formats.Srt
             //throw new NotImplementedException();
         }
 
-        public void Save(SubFile argSubFile, string argFilename)
+        public void Save(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
         {
             if (String.IsNullOrWhiteSpace(argFilename))
             {
@@ -236,7 +236,7 @@ namespace gSubber.Formats.Srt
                 contents.Length -= 2;
             }
             // Write the file
-            using (StreamWriter sw = new StreamWriter(argFilename, false, Encoding.UTF8))
+            using (StreamWriter sw = new StreamWriter(argFilename, false, argFileEncoding))
             {
                 sw.Write(contents.ToString());
             }

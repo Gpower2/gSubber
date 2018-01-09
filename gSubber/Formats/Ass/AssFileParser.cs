@@ -258,7 +258,7 @@ namespace gSubber.Formats.Ass
             return results;
         }
 
-        public void Save(SubFile argSubFile, string argFilename)
+        public void Save(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
         {
             throw new NotImplementedException();
         }

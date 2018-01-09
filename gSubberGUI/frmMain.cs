@@ -105,7 +105,7 @@ namespace gSubberGUI
                 //    sub.Text = String.Join("\r\n", sub.TextLines.Reverse());
                 //} 
 
-                parser.Save(results.SubFile, String.Format("{0}.{1}", TxtInputFile.Text, inputFileExtension));
+                parser.Save(results.SubFile, String.Format("{0}.{1}", TxtInputFile.Text, inputFileExtension), Encoding.UTF8);
 
                 MessageBox.Show("Success!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
