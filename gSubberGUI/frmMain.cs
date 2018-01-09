@@ -13,6 +13,7 @@ using gSubber.Formats.Srt;
 using System.IO;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
+using gSubber.Helpers;
 
 namespace gSubberGUI
 {
@@ -78,7 +79,10 @@ namespace gSubberGUI
                     throw new Exception(String.Format("Could not file parser for format {0}!", inputFileExtension));
                 }
 
-                SubFileParserResults results = parser.Load(TxtInputFile.Text, Encoding.UTF8);
+                Encoding enc = FileHelper.GetEncoding(TxtInputFile.Text);
+                if (enc == Encoding.ASCII) enc = System.Text.Encoding.Default;
+
+                SubFileParserResults results = parser.Load(TxtInputFile.Text, enc);
 
                 while (results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < results.SubFile.Subtitles.Count)
                 {

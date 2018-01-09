@@ -44,6 +44,7 @@
     <Compile Include="Formats\Ass\AssFileParser.cs" />
     <Compile Include="Formats\Srt\SrtFileParser.cs" />
     <Compile Include="Core\ISubFileParser.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Core\SubFile\SubFileAttachment.cs" />
     <Compile Include="Core\SubFile\SubFileInfoItem.cs" />
