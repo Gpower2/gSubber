@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace gSubber
+namespace gSubber.Core.SubtitleFile
 {
-    public class SubFilePropertyItem
+    public class SubFileInfoItem
     {
+        public bool IsComment { get; set; }
+
         public String Name { get; set; }
 
         public String Value { get; set; }

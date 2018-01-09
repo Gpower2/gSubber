@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Globalization;
 
-namespace gSubber
+namespace gSubber.Helpers
 {
     public static class ColorHelper
     {

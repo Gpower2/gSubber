@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace gSubber
+namespace gSubber.Core
 {
     public class Time : IEquatable<Time>, IComparable<Time>, IComparable
     {
@@ -261,7 +261,7 @@ namespace gSubber
 
         public static Time operator +(Time argTime1, Time argTime2)
         {
-            return new gSubber.Time(
+            return new Time(
                 argTime1.Hours + argTime2.Hours,
                 argTime1.Minutes + argTime2.Minutes,
                 argTime1.Seconds + argTime2.Seconds,
@@ -272,7 +272,7 @@ namespace gSubber
 
         public static Time operator -(Time argTime1, Time argTime2)
         {
-            return new gSubber.Time(
+            return new Time(
                 argTime1.Hours - argTime2.Hours,
                 argTime1.Minutes - argTime2.Minutes,
                 argTime1.Seconds - argTime2.Seconds,

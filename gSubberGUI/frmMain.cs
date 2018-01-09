@@ -11,6 +11,8 @@ using gSubber.Formats.Ass;
 using System.Diagnostics;
 using gSubber.Formats.Srt;
 using System.IO;
+using gSubber.Core;
+using gSubber.Core.SubtitleFile;
 
 namespace gSubberGUI
 {

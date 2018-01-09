@@ -1,4 +1,7 @@
-﻿using System;
+﻿using gSubber.Core;
+using gSubber.Core.SubtitleFile;
+using gSubber.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

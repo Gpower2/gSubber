@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Globalization;
+using gSubber.Helpers;
+using gSubber.Core;
+using gSubber.Core.SubtitleFile;
 
 namespace gSubber.Formats.Ass
 {
@@ -44,7 +47,7 @@ namespace gSubber.Formats.Ass
             String[] fileLines = fileContents.Split(new String[] { "\n" }, StringSplitOptions.None);
 
             // Create a new SubFile object
-            SubFileParserResults results = new gSubber.SubFileParserResults();
+            SubFileParserResults results = new SubFileParserResults();
             results.SubFile = new SubFile();
 
             // Set the parsing state
@@ -99,7 +102,7 @@ namespace gSubber.Formats.Ass
                     case ParsingState.None:
                         break;
                     case ParsingState.ScriptInfo:
-                        SubFileInfoItem inf = new gSubber.SubFileInfoItem();
+                        SubFileInfoItem inf = new SubFileInfoItem();
                         if (dataLine.StartsWith(";"))
                         {
                             inf.IsComment = true;
@@ -120,20 +123,20 @@ namespace gSubber.Formats.Ass
                                 }
                                 else
                                 {
-                                    results.AddWarning(new gSubber.SubFileParserMessage() { Line = i, LineData = line, Message = "No info value found..." });
+                                    results.AddWarning(new SubFileParserMessage() { Line = i, LineData = line, Message = "No info value found..." });
                                     inf.Value = "";
                                 }
                             }
                             else
                             {
-                                results.AddWarning(new gSubber.SubFileParserMessage() { Line = i, LineData = line, Message = "Malformed info line..." });
+                                results.AddWarning(new SubFileParserMessage() { Line = i, LineData = line, Message = "Malformed info line..." });
                                 inf.Value = dataLine.Trim();
                             }
                             results.SubFile.Info.Add(inf);
                             continue;
                         }
                     case ParsingState.AegisubProperties:
-                        SubFilePropertyItem prop = new gSubber.SubFilePropertyItem();
+                        SubFilePropertyItem prop = new SubFilePropertyItem();
                         if (dataLine.Contains(":"))
                         {
                             int idx = dataLine.IndexOf(":");
@@ -144,13 +147,13 @@ namespace gSubber.Formats.Ass
                             }
                             else
                             {
-                                results.AddWarning(new gSubber.SubFileParserMessage() { Line = i, LineData = line, Message = "No property value found..." });
+                                results.AddWarning(new SubFileParserMessage() { Line = i, LineData = line, Message = "No property value found..." });
                                 prop.Value = "";
                             }
                         }
                         else
                         {
-                            results.AddWarning(new gSubber.SubFileParserMessage() { Line = i, LineData = line, Message = "Malformed property line..." });
+                            results.AddWarning(new SubFileParserMessage() { Line = i, LineData = line, Message = "Malformed property line..." });
                             prop.Value = dataLine.Trim();
                         }
                         results.SubFile.Properties.Add(prop);

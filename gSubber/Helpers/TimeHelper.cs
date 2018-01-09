@@ -1,10 +1,11 @@
-﻿using System;
+﻿using gSubber.Core;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace gSubber
+namespace gSubber.Helpers
 {
     public static class TimeHelper
     {
