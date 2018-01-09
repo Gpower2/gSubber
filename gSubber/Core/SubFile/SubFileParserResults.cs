@@ -13,7 +13,7 @@ namespace gSubber.Core.SubtitleFile
         public List<SubFileParserMessage> Warnings { get { return _Warnings; } }
 
         private List<SubFileParserMessage> _Errors = new List<SubFileParserMessage>();
-        public List<SubFileParserMessage> Erros { get { return _Errors; } }
+        public List<SubFileParserMessage> Errors { get { return _Errors; } }
 
         public void AddWarning(SubFileParserMessage argWarning)
         {

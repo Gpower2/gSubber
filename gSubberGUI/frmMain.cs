@@ -108,9 +108,19 @@ namespace gSubberGUI
                 //    sub.Text = String.Join("\r\n", sub.TextLines.Reverse());
                 //} 
 
-                parser.Save(results.SubFile, String.Format("{0}.{1}", TxtInputFile.Text, inputFileExtension), Encoding.UTF8);
+                //parser.Save(results.SubFile, String.Format("{0}.{1}", TxtInputFile.Text, inputFileExtension), Encoding.UTF8);
 
-                MessageBox.Show("Success!", "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (results.Warnings.Any())
+                {
+                    MessageBox.Show(String.Join("\r\n", results.Warnings), "Warnings!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+                if (results.Errors.Any())
+                {
+                    MessageBox.Show(String.Join("\r\n", results.Errors), "Errors!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                MessageBox.Show(String.Format("Success!\r\nSubtitle lines:{0}", results.SubFile.Subtitles.Count), "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 //SubFileParserResults r = p.Load(@"H:\AnimeClipse\FairyTail\Karaoke\Karaoke06 [061-072]\Karaoke_op6.ass", Encoding.UTF8);
 
