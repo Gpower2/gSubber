@@ -14,10 +14,11 @@ using System.IO;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
 using gSubber.Helpers;
+using gSubberGUI.Controls;
 
 namespace gSubberGUI
 {
-    public partial class frmMain : Form
+    public partial class frmMain : BaseForm
     {
         public frmMain()
         {
