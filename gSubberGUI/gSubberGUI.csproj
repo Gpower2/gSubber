@@ -51,8 +51,31 @@
     <Compile Include="Controls\GComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GSplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GTableLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GTaskbarProgress.cs" />
     <Compile Include="Controls\GTextBox.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\OSHelper.cs" />
+    <Compile Include="Controls\PropertyGridForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\StringExtensions.cs" />
     <Compile Include="frmMain.cs">
