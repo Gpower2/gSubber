@@ -33,6 +33,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.TxtInputFile = new System.Windows.Forms.TextBox();
             this.gComboBox1 = new gSubberGUI.Controls.GComboBox();
+            this.gTextBox1 = new gSubberGUI.Controls.GTextBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -72,11 +73,30 @@
             this.gComboBox1.Size = new System.Drawing.Size(192, 23);
             this.gComboBox1.TabIndex = 3;
             // 
+            // gTextBox1
+            // 
+            this.gTextBox1.DataObject = null;
+            this.gTextBox1.Decimals = 2;
+            this.gTextBox1.DecimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.gTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.gTextBox1.Int32Value = 0;
+            this.gTextBox1.Int64Value = ((long)(0));
+            this.gTextBox1.Location = new System.Drawing.Point(566, 104);
+            this.gTextBox1.Name = "gTextBox1";
+            this.gTextBox1.Size = new System.Drawing.Size(146, 23);
+            this.gTextBox1.TabIndex = 4;
+            this.gTextBox1.TextBoxType = gSubberGUI.Controls.GTextBox.GTextBoxType.Text;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 571);
+            this.Controls.Add(this.gTextBox1);
             this.Controls.Add(this.gComboBox1);
             this.Controls.Add(this.TxtInputFile);
             this.Controls.Add(this.button1);
@@ -94,6 +114,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox TxtInputFile;
         private Controls.GComboBox gComboBox1;
+        private Controls.GTextBox gTextBox1;
     }
 }
 

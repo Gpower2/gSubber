@@ -51,6 +51,10 @@
     <Compile Include="Controls\GComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\StringExtensions.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
