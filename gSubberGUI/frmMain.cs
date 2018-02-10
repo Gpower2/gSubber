@@ -23,6 +23,10 @@ namespace gSubberGUI
         public frmMain()
         {
             InitializeComponent();
+
+            this.gComboBox1.Items.Add("sdfgggggggggggggggggggggggggggggggg");
+            this.gComboBox1.Items.Add("sfgsfg");
+            this.gComboBox1.Items.Add("asdfhgdfgsd;lsadgmf;lasdfgn;lasdfgn;asdfgn;nalgag");
         }
 
         private void button1_Click(object sender, EventArgs e)

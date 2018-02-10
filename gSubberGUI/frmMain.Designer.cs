@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.TxtInputFile = new System.Windows.Forms.TextBox();
+            this.gComboBox1 = new gSubberGUI.Controls.GComboBox();
             this.SuspendLayout();
             // 
             // textBox1
@@ -61,11 +63,21 @@
             this.TxtInputFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.TxtInputFile_DragDrop);
             this.TxtInputFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.TxtInputFile_DragEnter);
             // 
+            // gComboBox1
+            // 
+            this.gComboBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.gComboBox1.FormattingEnabled = true;
+            this.gComboBox1.Location = new System.Drawing.Point(316, 109);
+            this.gComboBox1.Name = "gComboBox1";
+            this.gComboBox1.Size = new System.Drawing.Size(192, 23);
+            this.gComboBox1.TabIndex = 3;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(967, 571);
+            this.Controls.Add(this.gComboBox1);
             this.Controls.Add(this.TxtInputFile);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
@@ -81,6 +93,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox TxtInputFile;
+        private Controls.GComboBox gComboBox1;
     }
 }
 

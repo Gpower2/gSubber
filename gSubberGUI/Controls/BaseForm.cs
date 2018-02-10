@@ -12,22 +12,40 @@ namespace gSubberGUI.Controls
 {
     public class BaseForm : Form
     {
+        /// <summary>
+        /// Gets the form's border width in pixels
+        /// </summary>
+        public Int32 BorderWidth
+        {
+            get { return Convert.ToInt32(Convert.ToDouble((this.Width - this.ClientSize.Width)) / 2.0); }
+        }
+
+        /// <summary>
+        /// Gets the form's Title Bar Height in pixels
+        /// </summary>
+        public Int32 TitlebarHeight
+        {
+            get { return this.Height - this.ClientSize.Height - 2 * BorderWidth; }
+        }
+
         public BaseForm() : base()
         {
             this.DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
+            InitializeComponent();
         }
 
         private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
-            // gForm
+            // BaseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Name = "gForm";
+            this.Name = "BaseForm";
             this.ResumeLayout(false);
         }
 
@@ -58,14 +76,24 @@ namespace gSubberGUI.Controls
             return Assembly.GetExecutingAssembly().GetName().Version;
         }
 
-        protected void ShowErrorMessage(String argMessage)
+        protected void ShowErrorMessage(String argMessage, String argTitle = "Error!")
         {
-            MessageBox.Show("An error has occured!" + Environment.NewLine + Environment.NewLine + argMessage, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, String.Format("An error has occured!{0}{0}{1}", Environment.NewLine, argMessage), argTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected void ShowSuccessMessage(String argMessage)
+        protected void ShowSuccessMessage(String argMessage, String argTitle = "Success!")
         {
-            MessageBox.Show(argMessage, "Success!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(this, argMessage, argTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        protected void ShowInformationMessage(String argMessage, String argTitle = "Information")
+        {
+            MessageBox.Show(this, argMessage, argTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        protected void ShowWarningMessage(String warningMessage, String warningTitle = "Warning!")
+        {
+            MessageBox.Show(this, String.Format("Warning!{0}{0}{1}", Environment.NewLine, warningMessage), warningTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         protected DialogResult ShowQuestion(String argQuestion, String argTitle, bool argShowCancel = true)
@@ -75,7 +103,7 @@ namespace gSubberGUI.Controls
             {
                 msgBoxBtns = MessageBoxButtons.YesNo;
             }
-            return MessageBox.Show(argQuestion, argTitle, msgBoxBtns, MessageBoxIcon.Question);
+            return MessageBox.Show(this, argQuestion, argTitle, msgBoxBtns, MessageBoxIcon.Question);
         }
 
         protected void ToggleControls(Control argRootControl, Boolean argStatus)
