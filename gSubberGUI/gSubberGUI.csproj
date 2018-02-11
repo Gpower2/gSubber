@@ -51,13 +51,25 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\ExceptionExtensions.cs" />
+    <Compile Include="Controls\GButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GComboBox.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GFilePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GFilePicker.Designer.cs">
+      <DependentUpon>GFilePicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\GFlowLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GGroupBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GLabel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GPanel.cs">
@@ -91,6 +103,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GFilePicker.resx">
+      <DependentUpon>GFilePicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

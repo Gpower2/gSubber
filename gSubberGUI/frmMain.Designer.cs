@@ -34,6 +34,7 @@
             this.TxtInputFile = new System.Windows.Forms.TextBox();
             this.gComboBox1 = new gSubberGUI.Controls.GComboBox();
             this.gTextBox1 = new gSubberGUI.Controls.GTextBox();
+            this.gFilePicker1 = new gSubberGUI.Controls.GFilePicker();
             this.SuspendLayout();
             // 
             // textBox1
@@ -91,11 +92,24 @@
             this.gTextBox1.TabIndex = 4;
             this.gTextBox1.TextBoxType = gSubberGUI.Controls.GTextBox.GTextBoxType.Text;
             // 
+            // gFilePicker1
+            // 
+            this.gFilePicker1.AllowManualInput = false;
+            this.gFilePicker1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.gFilePicker1.Location = new System.Drawing.Point(69, 463);
+            this.gFilePicker1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.gFilePicker1.Name = "gFilePicker1";
+            this.gFilePicker1.OpenFileDialogFilter = "";
+            this.gFilePicker1.OpenFileDialogTitle = "Select an input file...";
+            this.gFilePicker1.Size = new System.Drawing.Size(462, 34);
+            this.gFilePicker1.TabIndex = 5;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(967, 571);
+            this.Controls.Add(this.gFilePicker1);
             this.Controls.Add(this.gTextBox1);
             this.Controls.Add(this.gComboBox1);
             this.Controls.Add(this.TxtInputFile);
@@ -115,6 +129,7 @@
         private System.Windows.Forms.TextBox TxtInputFile;
         private Controls.GComboBox gComboBox1;
         private Controls.GTextBox gTextBox1;
+        private Controls.GFilePicker gFilePicker1;
     }
 }
 
