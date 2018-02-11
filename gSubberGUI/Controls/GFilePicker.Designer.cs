@@ -45,6 +45,7 @@
             // 
             // txtFile
             // 
+            this.txtFile.AllowDrop = true;
             this.txtFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFile.DataObject = null;
@@ -62,6 +63,8 @@
             this.txtFile.Size = new System.Drawing.Size(344, 23);
             this.txtFile.TabIndex = 0;
             this.txtFile.TextBoxType = gSubberGUI.Controls.GTextBox.GTextBoxType.Text;
+            this.txtFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtFile_DragDrop);
+            this.txtFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtFile_DragEnter);
             // 
             // GFilePicker
             // 

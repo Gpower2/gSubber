@@ -58,7 +58,7 @@
             // TxtInputFile
             // 
             this.TxtInputFile.AllowDrop = true;
-            this.TxtInputFile.Location = new System.Drawing.Point(292, 60);
+            this.TxtInputFile.Location = new System.Drawing.Point(298, 78);
             this.TxtInputFile.Name = "TxtInputFile";
             this.TxtInputFile.Size = new System.Drawing.Size(460, 20);
             this.TxtInputFile.TabIndex = 2;
@@ -96,12 +96,12 @@
             // 
             this.gFilePicker1.AllowManualInput = false;
             this.gFilePicker1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.gFilePicker1.Location = new System.Drawing.Point(69, 463);
+            this.gFilePicker1.Location = new System.Drawing.Point(398, 17);
             this.gFilePicker1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gFilePicker1.Name = "gFilePicker1";
             this.gFilePicker1.OpenFileDialogFilter = "";
             this.gFilePicker1.OpenFileDialogTitle = "Select an input file...";
-            this.gFilePicker1.Size = new System.Drawing.Size(462, 34);
+            this.gFilePicker1.Size = new System.Drawing.Size(462, 35);
             this.gFilePicker1.TabIndex = 5;
             // 
             // frmMain

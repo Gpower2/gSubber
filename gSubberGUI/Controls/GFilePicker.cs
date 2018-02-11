@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace gSubberGUI.Controls
 {
@@ -133,6 +134,51 @@ namespace gSubberGUI.Controls
             btnBrowse.Left = txtFile.Width + 3;
 
             txtFile.Top = Convert.ToInt32(Convert.ToDouble(this.Height - txtFile.Height) / 2.0);
+        }
+
+        private void txtFile_DragEnter(object sender, DragEventArgs e)
+        {
+            try
+            {
+                // check if the drop data is actually a file or folder
+                if (e != null && e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    // Get the Dropped Data
+                    String[] s = (String[])e.Data.GetData(DataFormats.FileDrop, false);
+                    // Check if we have valid Data and that the specified File Data actually exists
+                    if (s != null && s.Length > 0 && File.Exists(s[0]))
+                    {
+                        e.Effect = DragDropEffects.All;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                ex.ShowException();
+            }
+        }
+
+        private void txtFile_DragDrop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                // check if the drop data is actually a file or folder
+                if (e != null && e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
+                {
+                    String[] s = (String[])e.Data.GetData(DataFormats.FileDrop, false);
+                    // Check if we have valid Data and that the specified File Data actually exists
+                    if (s != null && s.Length > 0 && File.Exists(s[0]))
+                    {
+                        txtFile.Text = s[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                ex.ShowException();
+            }
         }
     }
 }
