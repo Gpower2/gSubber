@@ -53,12 +53,10 @@ namespace gSubber.Formats.Srt
             SubFileSubtitleItem sub = null;
 
             // Parse the file lines
-            for (int i = 0; i < fileLines.Length; i++)
+            for (Int64 i = 0; i < fileLines.LongLength; i++)
             {
-                // Get the line data
-                String line = fileLines[i];
-                // Get the trimmed data line
-                String dataLine = line.Trim();
+                // Get the trimmed line data
+                String line = fileLines[i] == null ? "" : fileLines[i].Trim();
 
                 // Check the line data
                 Int64 dummyInt64;
@@ -67,7 +65,7 @@ namespace gSubber.Formats.Srt
                     // if we have an empty line
                     pState = ParsingState.None;
                 }
-                else if (Int64.TryParse(dataLine, out dummyInt64))
+                else if (Int64.TryParse(line, out dummyInt64))
                 {
                     // If we have a number
                     if(pState == ParsingState.None)
@@ -86,12 +84,14 @@ namespace gSubber.Formats.Srt
                             results.SubFile.Subtitles.Add(sub);
                         }
                         sub = new SubFileSubtitleItem();
+                        // Save the LineNumber
+                        sub.LineNumber = dummyInt64;
                         pState = ParsingState.SubtitleNumber;
                     }
                     else if(pState == ParsingState.SubtitleTime || pState == ParsingState.SubtitleText)
                     {
                         // this means that the number is part of text, since it follows subtitle time or text
-                        sub.Text += dataLine.Trim() + "\r\n";
+                        sub.Text += line.Trim() + "\r\n";
                         pState = ParsingState.SubtitleText;
                     }
                     else if (pState == ParsingState.SubtitleNumber)
@@ -101,7 +101,7 @@ namespace gSubber.Formats.Srt
                     }
                     continue;
                 }
-                else if (HasTimeData(dataLine))
+                else if (HasTimeData(line))
                 {
                     // if we have time data
                     if(pState == ParsingState.SubtitleText || pState == ParsingState.None)
@@ -122,15 +122,15 @@ namespace gSubber.Formats.Srt
                         sub = new SubFileSubtitleItem();
                     }
                     String separator = "";
-                    if (dataLine.Contains("-->"))
+                    if (line.Contains("-->"))
                     {
                         separator = "-->";
                     }
-                    else if (dataLine.Contains("->"))
+                    else if (line.Contains("->"))
                     {
                         separator = "->";
                     }
-                    String[] timeElements = dataLine.Split(new string[] { separator }, StringSplitOptions.None);
+                    String[] timeElements = line.Split(new string[] { separator }, StringSplitOptions.None);
                     sub.StartTime = TimeHelper.FromSrtTime(timeElements[0]);
                     sub.EndTime = TimeHelper.FromSrtTime(timeElements[1]);
                     pState = ParsingState.SubtitleTime;
@@ -145,7 +145,7 @@ namespace gSubber.Formats.Srt
                         {
                             sub.Text = "";
                         }
-                        sub.Text += dataLine.Trim() + "\r\n";
+                        sub.Text += line.Trim() + "\r\n";
                         pState = ParsingState.SubtitleText;
                     }
                     else if (pState == ParsingState.None)
@@ -157,7 +157,7 @@ namespace gSubber.Formats.Srt
                             {
                                 sub.Text = "";
                             }
-                            sub.Text += dataLine.Trim() + "\r\n";
+                            sub.Text += line.Trim() + "\r\n";
                             pState = ParsingState.SubtitleText;
                         }
                         else
@@ -213,17 +213,11 @@ namespace gSubber.Formats.Srt
                 // Get the current Subtitle
                 sub = argSubFile.Subtitles[i];
                 // Write subtitle number
-                contents.AppendFormat("{0}\r\n", (i + 1));
+                contents.AppendFormat("{0}\r\n", sub.LineNumber);
                 // Write start and end time
-                contents.AppendFormat("{0}:{1}:{2},{3} --> {4}:{5}:{6},{7}\r\n",
-                    sub.StartTime.Hours.ToString("00"),
-                    sub.StartTime.Minutes.ToString("00"),
-                    sub.StartTime.Seconds.ToString("00"),
-                    sub.StartTime.Milliseconds.ToString("000"),
-                    sub.EndTime.Hours.ToString("00"),
-                    sub.EndTime.Minutes.ToString("00"),
-                    sub.EndTime.Seconds.ToString("00"),
-                    sub.EndTime.Milliseconds.ToString("000")
+                contents.AppendFormat("{0} --> {1}\r\n",
+                    TimeHelper.ToSrtTime(sub.StartTime),
+                    TimeHelper.ToSrtTime(sub.EndTime)
                 );
                 // Write subtitle text
                 contents.AppendFormat("{0}\r\n", sub.Text.Trim());

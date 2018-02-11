@@ -35,6 +35,8 @@
             this.gComboBox1 = new gSubberGUI.Controls.GComboBox();
             this.gTextBox1 = new gSubberGUI.Controls.GTextBox();
             this.gFilePicker1 = new gSubberGUI.Controls.GFilePicker();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -42,7 +44,7 @@
             this.textBox1.Location = new System.Drawing.Point(104, 159);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(683, 266);
+            this.textBox1.Size = new System.Drawing.Size(591, 118);
             this.textBox1.TabIndex = 0;
             // 
             // button1
@@ -104,11 +106,20 @@
             this.gFilePicker1.Size = new System.Drawing.Size(462, 35);
             this.gFilePicker1.TabIndex = 5;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(104, 297);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(803, 246);
+            this.dataGridView1.TabIndex = 6;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(967, 571);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.gFilePicker1);
             this.Controls.Add(this.gTextBox1);
             this.Controls.Add(this.gComboBox1);
@@ -117,6 +128,7 @@
             this.Controls.Add(this.textBox1);
             this.Name = "frmMain";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -130,6 +142,7 @@
         private Controls.GComboBox gComboBox1;
         private Controls.GTextBox gTextBox1;
         private Controls.GFilePicker gFilePicker1;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

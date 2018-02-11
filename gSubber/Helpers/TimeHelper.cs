@@ -140,5 +140,14 @@ namespace gSubber.Helpers
             return new Time(hours, minutes, seconds, milliseconds);
         }
 
+        public static String ToSrtTime(Time argTime)
+        {
+            return String.Format("{0}:{1}:{2},{3}",
+                argTime.Hours.ToString("00"),
+                argTime.Minutes.ToString("00"),
+                argTime.Seconds.ToString("00"),
+                argTime.Milliseconds.ToString("000")
+            );
+        }
     }
 }

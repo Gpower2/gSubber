@@ -53,17 +53,17 @@ namespace gSubberGUI
                 textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithMicroseconds)));
                 textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithNanoseconds)));
 
-                if (String.IsNullOrWhiteSpace(TxtInputFile.Text))
+                if (String.IsNullOrWhiteSpace(gFilePicker1.Text))
                 {
                     throw new Exception("No input file selected!");
                 }
 
-                if (!File.Exists(TxtInputFile.Text))
+                if (!File.Exists(gFilePicker1.Text))
                 {
-                    throw new Exception(String.Format("The input file '{0}' was not found!", TxtInputFile.Text));
+                    throw new Exception(String.Format("The input file '{0}' was not found!", gFilePicker1.Text));
                 }
 
-                String inputFileExtension = Path.GetExtension(TxtInputFile.Text);
+                String inputFileExtension = Path.GetExtension(gFilePicker1.Text);
                 if(inputFileExtension.Length > 1)
                 {
                     inputFileExtension = inputFileExtension.Substring(1);
@@ -84,10 +84,10 @@ namespace gSubberGUI
                     throw new Exception(String.Format("Could not file parser for format {0}!", inputFileExtension));
                 }
 
-                Encoding enc = FileHelper.GetEncoding(TxtInputFile.Text);
+                Encoding enc = FileHelper.GetEncoding(gFilePicker1.Text);
                 if (enc == Encoding.ASCII) enc = System.Text.Encoding.Default;
 
-                SubFileParserResults results = parser.Load(TxtInputFile.Text, enc);
+                SubFileParserResults results = parser.Load(gFilePicker1.Text, enc);
 
                 if (parser is SrtFileParser)
                 {
@@ -124,6 +124,8 @@ namespace gSubberGUI
                 {
                     ShowErrorMessage(String.Join(Environment.NewLine, results.Errors));
                 }
+
+                dataGridView1.DataSource = results.SubFile.Subtitles;
 
                 ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, results.SubFile.Subtitles.Count));
 

@@ -7,6 +7,8 @@ namespace gSubber.Core.SubtitleFile
 {
     public class SubFileSubtitleItem
     {
+        public Int64 LineNumber { get; set; }
+
         public bool IsComment { get; set; }
 
         public SubFileStyleItem Style { get; set; }
