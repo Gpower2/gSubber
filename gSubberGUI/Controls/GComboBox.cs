@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,23 @@ namespace gSubberGUI.Controls
         protected ToolStripMenuItem _ClearMenu = new ToolStripMenuItem("Clear");
         protected ToolStripMenuItem _CopyMenu = new ToolStripMenuItem("Copy");
 
+        protected ToolTip _ToolTip = new ToolTip();
+
+        [Browsable(true)]
+        public ToolTip ToolTip
+        {
+            get
+            {
+                return _ToolTip;
+            }
+        }
+
         public GComboBox()
         {
             this.DoubleBuffered = true;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            InitializeComponent();
+            InitializeComponent();            
 
             SetUpContextMenu();
         }
@@ -112,6 +124,13 @@ namespace gSubberGUI.Controls
 
             // Change the width of the items list, byt never make it smaller than the width of the control
             DropDownWidth = Convert.ToInt32(Math.Max(Math.Ceiling(longestItem), Width));
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+
+            _ToolTip.SetToolTip(this, this.Text ?? "");
         }
     }
 }
