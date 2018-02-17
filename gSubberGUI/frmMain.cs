@@ -113,7 +113,7 @@ namespace gSubberGUI
                 //    sub.Text = String.Join("\r\n", sub.TextLines.Reverse());
                 //} 
 
-                //parser.Save(results.SubFile, String.Format("{0}.{1}", TxtInputFile.Text, inputFileExtension), Encoding.UTF8);
+                parser.Save(results.SubFile, String.Format("{0}.{1}", gFilePicker1.Text, inputFileExtension), Encoding.UTF8);
 
                 if (results.Warnings.Any())
                 {
@@ -125,7 +125,7 @@ namespace gSubberGUI
                     ShowErrorMessage(String.Join(Environment.NewLine, results.Errors));
                 }
 
-                dataGridView1.DataSource = results.SubFile.Subtitles;
+                gDataGridView1.DataSource = results.SubFile.Subtitles;
 
                 ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, results.SubFile.Subtitles.Count));
 

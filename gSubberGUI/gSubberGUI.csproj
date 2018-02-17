@@ -50,11 +50,15 @@
     <Compile Include="Controls\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\ClipboardExtension.cs" />
     <Compile Include="Controls\ExceptionExtensions.cs" />
     <Compile Include="Controls\GButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\GDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\GFilePicker.cs">
@@ -92,6 +96,7 @@
     <Compile Include="Controls\PropertyGridForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Controls\SortableBindingList.cs" />
     <Compile Include="Controls\StringExtensions.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>

@@ -54,7 +54,7 @@ namespace gSubberGUI.Controls
             this.ClientSize = new System.Drawing.Size(484, 561);
             this.Controls.Add(this.PropertyGrid);
             this.Name = "PropertyGridForm";
-            this.Text = "Ιδιότητες";
+            this.Text = "Properties";
             this.ResumeLayout(false);
 
         }
