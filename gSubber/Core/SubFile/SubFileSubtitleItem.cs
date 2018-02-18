@@ -7,6 +7,8 @@ namespace gSubber.Core.SubtitleFile
 {
     public class SubFileSubtitleItem
     {
+        public static String NEW_LINE_CHARACTER = "¶";
+
         public Int64 LineNumber { get; set; }
 
         public bool IsComment { get; set; }
@@ -33,13 +35,28 @@ namespace gSubber.Core.SubtitleFile
 
         public String Text { get; set; }
 
+        public String DisplayText
+        {
+            get
+            {
+                if (!String.IsNullOrWhiteSpace(Text))
+                {
+                    return Text.Replace("\r\n", "\n").Replace("\n", String.Format(" {0} ", NEW_LINE_CHARACTER));
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
         public string[] TextLines
         {
             get
             {
                 if (!String.IsNullOrWhiteSpace(Text))
                 {
-                    return Text.Trim().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                    return Text.Replace("\r\n", "\n").Trim().Split(new string[] { "\n" }, StringSplitOptions.None);
                 }
                 else
                 {

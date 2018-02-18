@@ -27,32 +27,73 @@ namespace gSubberGUI
             this.gComboBox1.Items.Add("sdfgggggggggggggggggggggggggggggggg");
             this.gComboBox1.Items.Add("sfgsfg");
             this.gComboBox1.Items.Add("asdfhgdfgsd;lsadgmf;lasdfgn;lasdfgn;asdfgn;nalgag");
+
+            SetUpDataGridView();
+        }
+
+        private void SetUpDataGridView()
+        {
+            gDataGridView1.SuspendLayout();
+
+            gDataGridView1.AutoGenerateColumns = false;
+            gDataGridView1.Columns.Clear();
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "LineNumber",
+                HeaderText = "#"
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].Width = 45;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "Zindex",
+                HeaderText = "Z"
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].Width = 25;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "StartTime",
+                HeaderText = "Start Time"
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].Width = 85;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "EndTime",
+                HeaderText = "End Time"
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].Width = 85;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "Duration",
+                HeaderText = "Duration",
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].Width = 55;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Format = "#,##0.000";
+            gDataGridView1.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "DisplayText",
+                HeaderText = "Text"
+            });
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            gDataGridView1.Columns[gDataGridView1.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+            gDataGridView1.ResumeLayout();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             try
             {
-
-                Time t = new Time(1, 12, 35, 135);
-                textBox1.AppendText(String.Format("Time: {0}\r\n", t));
-                textBox1.AppendText(String.Format("Hours: {0}\r\n", t.Hours));
-                textBox1.AppendText(String.Format("Minutes: {0}\r\n", t.Minutes));
-                textBox1.AppendText(String.Format("Seconds: {0}\r\n", t.Seconds));
-                textBox1.AppendText(String.Format("Milliseconds: {0}\r\n", t.Milliseconds));
-                textBox1.AppendText(String.Format("Microseconds: {0}\r\n", t.Microseconds));
-                textBox1.AppendText(String.Format("Nanoseconds: {0}\r\n", t.Nanoseconds));
-                textBox1.AppendText(String.Format("Total Hours: {0}\r\n", t.TotalHours));
-                textBox1.AppendText(String.Format("Total Minutes: {0}\r\n", t.TotalMinutes));
-                textBox1.AppendText(String.Format("Total Seconds: {0}\r\n", t.TotalSeconds));
-                textBox1.AppendText(String.Format("Total Milliseconds: {0}\r\n", t.TotalMilliseconds));
-                textBox1.AppendText(String.Format("Total Microseconds: {0}\r\n", t.TotalMicroseconds));
-                textBox1.AppendText(String.Format("Total Nanoseconds: {0}\r\n", t.TotalNanoseconds));
-                textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithSeconds)));
-                textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithMilliseconds)));
-                textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithMicroseconds)));
-                textBox1.AppendText(String.Format("Time: {0}\r\n", t.ToString(Time.TimeFormat.WithNanoseconds)));
-
                 if (String.IsNullOrWhiteSpace(gFilePicker1.Text))
                 {
                     throw new Exception("No input file selected!");
@@ -125,7 +166,9 @@ namespace gSubberGUI
                     ShowErrorMessage(String.Join(Environment.NewLine, results.Errors));
                 }
 
+                SetUpDataGridView();
                 gDataGridView1.DataSource = results.SubFile.Subtitles;
+
 
                 ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, results.SubFile.Subtitles.Count));
 
@@ -133,52 +176,6 @@ namespace gSubberGUI
 
                 //SubFileParserResults sr = s.Load(@"M:\Videos_M\Movies\Assassins.Creed.2016.1080p.WEB-DL.H264.AC3-EVO_track3_eng.srt", Encoding.UTF8);
                 //s.Save(r.SubFile, @"F:\Videos_Red_3\Series_Red_3\Scream\Season 2\Scream.S02E01.720p.WEB-DL.DD5.1.H.264-VietHD_track3_eng.new.srt");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void TxtInputFile_DragDrop(object sender, DragEventArgs e)
-        {
-            try
-            {
-                // check if the drop data is actually a file or folder
-                if (e != null && e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
-                {
-                    String[] s = (String[])e.Data.GetData(DataFormats.FileDrop, false);
-                    if (s != null && s.Length > 0)
-                    {
-                        TxtInputFile.Text = s[0];
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void TxtInputFile_DragEnter(object sender, DragEventArgs e)
-        {
-            try
-            {
-                if (e != null && e.Data != null && e.Data.GetDataPresent(DataFormats.FileDrop))
-                {
-                    // check if it is a file or not
-                    String[] s = (String[])e.Data.GetData(DataFormats.FileDrop);
-                    if (s != null && s.Length > 0 && File.Exists(s[0]))
-                    {
-                        e.Effect = DragDropEffects.All;
-                    }
-                }
-                else
-                {
-                    e.Effect = DragDropEffects.None;
-                }
             }
             catch (Exception ex)
             {
