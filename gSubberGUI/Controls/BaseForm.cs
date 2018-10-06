@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -74,6 +75,12 @@ namespace gSubberGUI.Controls
         protected Version GetCurrentVersion()
         {
             return Assembly.GetExecutingAssembly().GetName().Version;
+        }
+
+        public void ShowExceptionMessage(Exception errorException, string errorTitle = "An error has occured!")
+        {
+            Debug.WriteLine(errorException);
+            ShowErrorMessage(errorException.Message);
         }
 
         protected void ShowErrorMessage(String argMessage, String argTitle = "Error!")

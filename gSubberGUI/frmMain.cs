@@ -20,6 +20,9 @@ namespace gSubberGUI
 {
     public partial class frmMain : BaseForm
     {
+        private SubFileParserResults _results = null;
+        private ISubFileParser _parser = null;
+
         public frmMain()
         {
             InitializeComponent();
@@ -111,16 +114,16 @@ namespace gSubberGUI
                 }
                 inputFileExtension = inputFileExtension.ToLower().Trim();
 
-                ISubFileParser parser = null;
+                _parser = null;
                 if (inputFileExtension == "srt")
                 {
-                    parser = new SrtFileParser();
+                    _parser = new SrtFileParser();
                 }
                 else if (inputFileExtension == "ass")
                 {
-                    parser = new AssFileParser();
+                    _parser = new AssFileParser();
                 }
-                if(parser == null)
+                if(_parser == null)
                 {
                     throw new Exception(String.Format("Could not file parser for format {0}!", inputFileExtension));
                 }
@@ -128,22 +131,22 @@ namespace gSubberGUI
                 Encoding enc = FileHelper.GetEncoding(gFilePicker1.Text);
                 if (enc == Encoding.ASCII) enc = System.Text.Encoding.Default;
 
-                SubFileParserResults results = parser.Load(gFilePicker1.Text, enc);
+                _results = _parser.Load(gFilePicker1.Text, enc);
 
-                if (parser is SrtFileParser)
+                if (_parser is SrtFileParser)
                 {
-                    while (results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < results.SubFile.Subtitles.Count)
+                    while (_results.SubFile.Subtitles.GroupBy(x => x.StartTime, x => x.Text).Count() < _results.SubFile.Subtitles.Count)
                     {
-                        for (int i = 0; i < results.SubFile.Subtitles.Count; i++)
+                        for (int i = 0; i < _results.SubFile.Subtitles.Count; i++)
                         {
                             if (i == 0) continue;
-                            if (results.SubFile.Subtitles[i - 1].StartTime.Equals(results.SubFile.Subtitles[i].StartTime))
+                            if (_results.SubFile.Subtitles[i - 1].StartTime.Equals(_results.SubFile.Subtitles[i].StartTime))
                             {
-                                results.SubFile.Subtitles[i - 1].Text = String.Format("{0}\r\n{1}", results.SubFile.Subtitles[i - 1].Text, results.SubFile.Subtitles[i].Text);
-                                results.SubFile.Subtitles[i].Text = "";
+                                _results.SubFile.Subtitles[i - 1].Text = String.Format("{0}\r\n{1}", _results.SubFile.Subtitles[i - 1].Text, _results.SubFile.Subtitles[i].Text);
+                                _results.SubFile.Subtitles[i].Text = "";
                             }
                         }
-                        results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
+                        _results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
                     }
                 }
 
@@ -154,23 +157,22 @@ namespace gSubberGUI
                 //    sub.Text = String.Join("\r\n", sub.TextLines.Reverse());
                 //} 
 
-                parser.Save(results.SubFile, String.Format("{0}.{1}", gFilePicker1.Text, inputFileExtension), Encoding.UTF8);
 
-                if (results.Warnings.Any())
+                if (_results.Warnings.Any())
                 {
-                    ShowWarningMessage(String.Join(Environment.NewLine, results.Warnings));
+                    ShowWarningMessage(String.Join(Environment.NewLine, _results.Warnings));
                 }
 
-                if (results.Errors.Any())
+                if (_results.Errors.Any())
                 {
-                    ShowErrorMessage(String.Join(Environment.NewLine, results.Errors));
+                    ShowErrorMessage(String.Join(Environment.NewLine, _results.Errors));
                 }
 
                 SetUpDataGridView();
-                gDataGridView1.DataSource = results.SubFile.Subtitles;
+                gDataGridView1.DataSource = _results.SubFile.Subtitles;
 
 
-                ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, results.SubFile.Subtitles.Count));
+                ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, _results.SubFile.Subtitles.Count));
 
                 //SubFileParserResults r = p.Load(@"H:\AnimeClipse\FairyTail\Karaoke\Karaoke06 [061-072]\Karaoke_op6.ass", Encoding.UTF8);
 
@@ -179,8 +181,41 @@ namespace gSubberGUI
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                MessageBox.Show(ex.Message, "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Title = "Save file...";
+                if (_parser is SrtFileParser)
+                {
+                    sfd.DefaultExt = ".srt";
+                    sfd.Filter = "SRT Files (*.srt)|*.srt";
+                }
+                else if (_parser is AssFileParser)
+                {
+                    sfd.DefaultExt = ".ass";
+                    sfd.Filter = "ASS Files (*.ass)|*.ass";
+                }
+                sfd.AddExtension = true;
+
+                sfd.InitialDirectory = Path.GetDirectoryName(gFilePicker1.Text);
+                sfd.FileName = Path.GetFileName(gFilePicker1.Text);
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    _parser.Save(_results.SubFile, sfd.FileName, Encoding.UTF8);
+
+                    ShowSuccessMessage(String.Format("The file '{0}' was saved!", sfd.FileName));
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
             }
         }
     }
