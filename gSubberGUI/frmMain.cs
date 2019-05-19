@@ -31,7 +31,18 @@ namespace gSubberGUI
             this.gComboBox1.Items.Add("sfgsfg");
             this.gComboBox1.Items.Add("asdfhgdfgsd;lsadgmf;lasdfgn;lasdfgn;asdfgn;nalgag");
 
+            this.gFilePicker1.TextChanged += GFilePicker1_TextChanged;
+
             SetUpDataGridView();
+        }
+
+        private void GFilePicker1_TextChanged(object sender, EventArgs e)
+        {
+            _parser = null;
+            _results = null;
+
+            SetUpDataGridView();
+            gDataGridView1.DataSource = null;
         }
 
         private void SetUpDataGridView()

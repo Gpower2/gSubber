@@ -63,6 +63,7 @@
             this.txtFile.Size = new System.Drawing.Size(344, 23);
             this.txtFile.TabIndex = 0;
             this.txtFile.TextBoxType = gSubberGUI.Controls.GTextBox.GTextBoxType.Text;
+            this.txtFile.TextChanged += new System.EventHandler(this.txtFile_TextChanged);
             this.txtFile.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtFile_DragDrop);
             this.txtFile.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtFile_DragEnter);
             // 

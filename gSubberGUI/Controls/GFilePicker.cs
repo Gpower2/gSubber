@@ -81,6 +81,17 @@ namespace gSubberGUI.Controls
             set { txtFile.Text = Text; }
         }
 
+        public new delegate void OnTextChanged(object sender, EventArgs e);
+        public new event OnTextChanged TextChanged;
+
+        private void txtFile_TextChanged(object sender, EventArgs e)
+        {
+            // Make sure someone is listening to event
+            if (TextChanged == null) return;
+
+            TextChanged(sender, e);
+        }
+
         public GFilePicker()
         {
             this.DoubleBuffered = true;
