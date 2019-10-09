@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace gSubber.Formats.Srt
+namespace gSubber.Formats
 {
     public class SrtFileParser : ISubFileParser
     {

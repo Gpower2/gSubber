@@ -8,7 +8,7 @@ using gSubber.Helpers;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
 
-namespace gSubber.Formats.Ass
+namespace gSubber.Formats
 {
     public class AssFileParser : ISubFileParser
     {

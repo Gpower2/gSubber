@@ -7,9 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using gSubber;
-using gSubber.Formats.Ass;
+using gSubber.Formats;
 using System.Diagnostics;
-using gSubber.Formats.Srt;
 using System.IO;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
@@ -115,29 +114,10 @@ namespace gSubberGUI
 
                 if (!File.Exists(gFilePicker1.Text))
                 {
-                    throw new Exception(String.Format("The input file '{0}' was not found!", gFilePicker1.Text));
+                    throw new Exception(String.Format($"The input file '{gFilePicker1.Text}' was not found!"));
                 }
 
-                String inputFileExtension = Path.GetExtension(gFilePicker1.Text);
-                if(inputFileExtension.Length > 1)
-                {
-                    inputFileExtension = inputFileExtension.Substring(1);
-                }
-                inputFileExtension = inputFileExtension.ToLower().Trim();
-
-                _parser = null;
-                if (inputFileExtension == "srt")
-                {
-                    _parser = new SrtFileParser();
-                }
-                else if (inputFileExtension == "ass")
-                {
-                    _parser = new AssFileParser();
-                }
-                if(_parser == null)
-                {
-                    throw new Exception(String.Format("Could not file parser for format {0}!", inputFileExtension));
-                }
+                _parser = SubFileParserFactory.GetSubFileParser(gFilePicker1.Text);
 
                 Encoding enc = FileHelper.GetEncoding(gFilePicker1.Text);
                 if (enc == Encoding.ASCII) enc = System.Text.Encoding.Default;
