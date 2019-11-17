@@ -3,6 +3,7 @@ using gSubber.Core.SubtitleFile;
 using gSubber.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -131,8 +132,8 @@ namespace gSubber.Formats
                         separator = "->";
                     }
                     String[] timeElements = line.Split(new string[] { separator }, StringSplitOptions.None);
-                    sub.StartTime = TimeHelper.FromSrtTime(timeElements[0]);
-                    sub.EndTime = TimeHelper.FromSrtTime(timeElements[1]);
+                    sub.StartTime = GetTimeFromFormatString(timeElements[0]);
+                    sub.EndTime = GetTimeFromFormatString(timeElements[1]);
                     pState = ParsingState.SubtitleTime;
                 }
                 else
@@ -216,8 +217,8 @@ namespace gSubber.Formats
                 contents.AppendFormat("{0}\r\n", sub.LineNumber);
                 // Write start and end time
                 contents.AppendFormat("{0} --> {1}\r\n",
-                    TimeHelper.ToSrtTime(sub.StartTime),
-                    TimeHelper.ToSrtTime(sub.EndTime)
+                    ConvertTimeToFormatString(sub.StartTime),
+                    ConvertTimeToFormatString(sub.EndTime)
                 );
                 // Write subtitle text
                 contents.AppendFormat("{0}\r\n", sub.Text.Trim());
@@ -348,6 +349,77 @@ namespace gSubber.Formats
             }
 
             return true;
+        }
+
+        public Time GetTimeFromFormatString(string argTime)
+        {
+            if (String.IsNullOrWhiteSpace(argTime))
+            {
+                throw new Exception("Empty SRT time!");
+            }
+            argTime = argTime.Trim();
+            //00:00:01,742
+            string[] timeElements = argTime.Split(new string[] { ":" }, StringSplitOptions.None);
+            if (timeElements.Length != 3)
+            {
+                throw new Exception("Malformed SRT time!");
+            }
+            Int32 hours, minutes, seconds, milliseconds, dummyInt;
+            if (Int32.TryParse(timeElements[0], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                hours = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The SRT time is malformed! (hours)");
+            }
+            if (Int32.TryParse(timeElements[1], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                minutes = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The SRT time is malformed! (minutes)");
+            }
+            string secondsSeparator = ",";
+            if (timeElements[2].Contains("."))
+            {
+                secondsSeparator = ".";
+            }
+
+            string[] secondsElements = timeElements[2].Split(new string[] { secondsSeparator }, StringSplitOptions.None);
+            if (secondsElements.Length != 2)
+            {
+                throw new Exception("Malformed SRT time!");
+            }
+            if (Int32.TryParse(secondsElements[0], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                seconds = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The SRT time is malformed! (seconds)");
+            }
+            if (Int32.TryParse(secondsElements[1], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                milliseconds = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The SRT time is malformed! (milliseconds)");
+            }
+
+            return new Time(hours, minutes, seconds, milliseconds);
+        }
+
+        public string ConvertTimeToFormatString(Time argTime)
+        {
+            return String.Format("{0}:{1}:{2},{3}",
+                argTime.Hours.ToString("00"),
+                argTime.Minutes.ToString("00"),
+                argTime.Seconds.ToString("00"),
+                argTime.Milliseconds.ToString("000")
+            );
         }
     }
 }

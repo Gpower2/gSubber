@@ -14,6 +14,7 @@ using gSubber.Core;
 using gSubber.Core.SubtitleFile;
 using gSubber.Helpers;
 using gSubberGUI.Controls;
+using System.Reflection;
 
 namespace gSubberGUI
 {
@@ -26,9 +27,7 @@ namespace gSubberGUI
         {
             InitializeComponent();
 
-            this.gComboBox1.Items.Add("sdfgggggggggggggggggggggggggggggggg");
-            this.gComboBox1.Items.Add("sfgsfg");
-            this.gComboBox1.Items.Add("asdfhgdfgsd;lsadgmf;lasdfgn;lasdfgn;asdfgn;nalgag");
+            Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 
             this.gFilePicker1.TextChanged += GFilePicker1_TextChanged;
 

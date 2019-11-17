@@ -248,8 +248,8 @@ namespace gSubber.Formats
                             //Comment: 0,0:04:59.88,0:05:06.20,Opening,,0000,0000,0000,,{start}
                             //Dialogue: 0,0:01:30.23,0:01:31.14,Default,,0000,0000,0000,,Careful!
                             sub.Zindex = Int32.Parse(dataLine.Substring(startData + 1, commas[0] - startData - 1));
-                            sub.StartTime = TimeHelper.FromAssTime(dataLine.Substring(commas[0] + 1, commas[1] - commas[0] - 1));
-                            sub.EndTime = TimeHelper.FromAssTime(dataLine.Substring(commas[1] + 1, commas[2] - commas[1] - 1));
+                            sub.StartTime = GetTimeFromFormatString(dataLine.Substring(commas[0] + 1, commas[1] - commas[0] - 1));
+                            sub.EndTime = GetTimeFromFormatString(dataLine.Substring(commas[1] + 1, commas[2] - commas[1] - 1));
                             sub.Style = results.SubFile.Styles.Where(s => s.Name == dataLine.Substring(commas[2] + 1, commas[3] - commas[2] - 1)).FirstOrDefault();
                             sub.ActorName = dataLine.Substring(commas[3] + 1, commas[4] - commas[3] - 1);
                             sub.MarginLeft = double.Parse(dataLine.Substring(commas[4] + 1, commas[5] - commas[4] - 1), NumberStyles.Any, CultureInfo.InvariantCulture);
@@ -376,8 +376,8 @@ namespace gSubber.Formats
                 //0,0:00:13.36,0:00:15.78,Romaji,,0,0,0,,koufun suzzo! uchuu e go!
                 contents.AppendFormat("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
                      sub.Zindex.ToString(CultureInfo.InvariantCulture),
-                     TimeHelper.ToAssTime(sub.StartTime),
-                     TimeHelper.ToAssTime(sub.EndTime),
+                     ConvertTimeToFormatString(sub.StartTime),
+                     ConvertTimeToFormatString(sub.EndTime),
                      sub.Style,
                      sub.ActorName,
                      sub.MarginLeft.ToString(CultureInfo.InvariantCulture),
@@ -395,6 +395,76 @@ namespace gSubber.Formats
             }
 
             //throw new NotImplementedException();
+        }
+
+        public Time GetTimeFromFormatString(string argTime)
+        {
+            if (String.IsNullOrWhiteSpace(argTime))
+            {
+                throw new Exception("Empty ASS time!");
+            }
+            argTime = argTime.Trim();
+            //0:04:59.88
+            string[] timeElements = argTime.Split(new string[] { ":" }, StringSplitOptions.None);
+            if (timeElements.Length != 3)
+            {
+                throw new Exception("Malformed ASS time!");
+            }
+            Int32 hours, minutes, seconds, milliseconds, dummyInt;
+            if (Int32.TryParse(timeElements[0], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                hours = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The ASS time is malformed! (hours)");
+            }
+            if (Int32.TryParse(timeElements[1], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                minutes = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The ASS time is malformed! (minutes)");
+            }
+            string[] secondsElements = timeElements[2].Split(new string[] { "." }, StringSplitOptions.None);
+            if (secondsElements.Length != 2)
+            {
+                throw new Exception("Malformed ASS time!");
+            }
+            if (Int32.TryParse(secondsElements[0], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                seconds = dummyInt;
+            }
+            else
+            {
+                throw new Exception("The ASS time is malformed! (seconds)");
+            }
+            if (Int32.TryParse(secondsElements[1], NumberStyles.Any, CultureInfo.InvariantCulture, out dummyInt))
+            {
+                // Ass format specifies deciseconds instead of milliseconds
+                milliseconds = dummyInt * 10;
+            }
+            else
+            {
+                throw new Exception("The ASS time is malformed! (milliseconds)");
+            }
+
+            return new Time(hours, minutes, seconds, milliseconds);
+        }
+
+        public string ConvertTimeToFormatString(Time argTime)
+        {
+            if (argTime == null)
+            {
+                throw new Exception("Time is null!");
+            }
+            //0:00:13.36
+            return String.Format("{0:0}:{1:00}:{2:00}.{3:00}",
+                argTime.Hours
+                , argTime.Minutes
+                , argTime.Seconds
+                , ((double)argTime.Milliseconds) / 10.0);
         }
 
         //private Byte[] UUDecode(String argFourChars)
@@ -424,5 +494,7 @@ namespace gSubber.Formats
 
 
         //}
+
+
     }
 }
