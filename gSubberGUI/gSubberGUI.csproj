@@ -79,6 +79,9 @@
     <Compile Include="Controls\GLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GPanel.cs">
       <SubType>Component</SubType>
     </Compile>

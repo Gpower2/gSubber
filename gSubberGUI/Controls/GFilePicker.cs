@@ -78,7 +78,7 @@ namespace gSubberGUI.Controls
         public override String Text
         {
             get { return txtFile.Text; }
-            set { txtFile.Text = Text; }
+            set { txtFile.Text = value; }
         }
 
         public new delegate void OnTextChanged(object sender, EventArgs e);
