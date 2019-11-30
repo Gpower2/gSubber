@@ -10,7 +10,9 @@ namespace gSubber.Core
     {
         SubFileParserResults Load(String argFilename, Encoding argFileEncoding);
 
-        void Save(SubFile argSubFile, String argFilename, Encoding argFileEncoding);
+        void Save(SubFile argSubFile);
+
+        void SaveAs(SubFile argSubFile, String argFilename, Encoding argFileEncoding);
 
         Time GetTimeFromFormatString(String argTime);
 

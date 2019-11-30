@@ -48,7 +48,7 @@ namespace gSubber.Formats
 
             // Create a new SubFile object
             SubFileParserResults results = new SubFileParserResults();
-            results.SubFile = new SubFile();
+            results.SubFile = new SubFile(argFilename, argFileEncoding);
 
             // Set the parsing state
             ParsingState pState = ParsingState.None;
@@ -274,7 +274,12 @@ namespace gSubber.Formats
             return results;
         }
 
-        public void Save(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
+        public void Save(SubFile argSubFile)
+        {
+            SaveAs(argSubFile, argSubFile.Filename, argSubFile.FileEncoding);
+        }
+
+        public void SaveAs(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
         {
             if (String.IsNullOrWhiteSpace(argFilename))
             {

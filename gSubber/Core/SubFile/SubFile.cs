@@ -22,6 +22,14 @@ namespace gSubber.Core.SubtitleFile
         private List<SubFileAttachment> _Attachments = new List<SubFileAttachment>();
         public List<SubFileAttachment> Attachments { get { return _Attachments; } }
 
-        public SubFile() { }
+        public string Filename { get; private set; }
+
+        public Encoding FileEncoding { get; private set; }
+
+        public SubFile(string argFilename, Encoding argFileEncoding)
+        {
+            Filename = argFilename;
+            FileEncoding = argFileEncoding;
+        }
     }
 }

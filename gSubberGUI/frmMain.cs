@@ -174,29 +174,9 @@ namespace gSubberGUI
         {
             try
             {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Title = "Save file...";
-                if (_parser is SrtFileParser)
-                {
-                    sfd.DefaultExt = ".srt";
-                    sfd.Filter = "SRT Files (*.srt)|*.srt";
-                }
-                else if (_parser is AssFileParser)
-                {
-                    sfd.DefaultExt = ".ass";
-                    sfd.Filter = "ASS Files (*.ass)|*.ass";
-                }
-                sfd.AddExtension = true;
+                _parser.Save(_results.SubFile);
 
-                sfd.InitialDirectory = Path.GetDirectoryName(gFilePicker1.Text);
-                sfd.FileName = Path.GetFileName(gFilePicker1.Text);
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    _parser.Save(_results.SubFile, sfd.FileName, Encoding.UTF8);
-
-                    ShowSuccessMessage(String.Format("The file '{0}' was saved!", sfd.FileName));
-                }
+                ShowSuccessMessage(String.Format("The file '{0}' was saved!", _results.SubFile.Filename));
             }
             catch (Exception ex)
             {
@@ -329,6 +309,54 @@ namespace gSubberGUI
                     var sub = grdSubtitles.SelectedItem as SubFileSubtitleItem;
                     txtSubtitleItem.Text = sub.Text;
                 }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Title = "Save file...";
+                if (_parser is SrtFileParser)
+                {
+                    sfd.DefaultExt = ".srt";
+                    sfd.Filter = "SRT Files (*.srt)|*.srt";
+                }
+                else if (_parser is AssFileParser)
+                {
+                    sfd.DefaultExt = ".ass";
+                    sfd.Filter = "ASS Files (*.ass)|*.ass";
+                }
+                sfd.AddExtension = true;
+
+                sfd.InitialDirectory = Path.GetDirectoryName(gFilePicker1.Text);
+                sfd.FileName = Path.GetFileName(gFilePicker1.Text);
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    _parser.SaveAs(_results.SubFile, sfd.FileName, Encoding.UTF8);
+
+                    ShowSuccessMessage(String.Format("The file '{0}' was saved!", sfd.FileName));
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _parser.Save(_results.SubFile);
+
+                ShowSuccessMessage(String.Format("The file '{0}' was saved!", _results.SubFile.Filename));
             }
             catch (Exception ex)
             {
