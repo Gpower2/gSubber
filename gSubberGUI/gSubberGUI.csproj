@@ -58,6 +58,9 @@
     <Compile Include="Controls\GButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -85,6 +88,9 @@
     <Compile Include="Controls\GPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\GSplitContainer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -104,6 +110,12 @@
     </Compile>
     <Compile Include="Controls\SortableBindingList.cs" />
     <Compile Include="Controls\StringExtensions.cs" />
+    <Compile Include="frmFind.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFind.Designer.cs">
+      <DependentUpon>frmFind.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GFilePicker.resx">
       <DependentUpon>GFilePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFind.resx">
+      <DependentUpon>frmFind.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

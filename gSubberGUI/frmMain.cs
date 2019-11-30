@@ -24,6 +24,7 @@ namespace gSubberGUI
         private ISubFileParser _parser = null;
         private List<string> _cmdArguments = new List<string>();
 
+        private frmFind _frmFind;
 
         public frmMain()
         {
@@ -357,6 +358,22 @@ namespace gSubberGUI
                 _parser.Save(_results.SubFile);
 
                 ShowSuccessMessage(String.Format("The file '{0}' was saved!", _results.SubFile.Filename));
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_frmFind == null)
+                {
+                    _frmFind = new frmFind(this);
+                }
+                _frmFind.Show();
             }
             catch (Exception ex)
             {
