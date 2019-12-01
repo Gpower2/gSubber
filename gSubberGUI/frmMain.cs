@@ -369,7 +369,7 @@ namespace gSubberGUI
         {
             try
             {
-                if (_frmFind == null)
+                if (_frmFind == null || _frmFind.IsDisposed)
                 {
                     _frmFind = new frmFind(this);
                 }

@@ -35,7 +35,7 @@
             this.rbtnExtended = new gSubberGUI.Controls.GRadioButton();
             this.rbtnRegularExpression = new gSubberGUI.Controls.GRadioButton();
             this.grpSearchMode = new gSubberGUI.Controls.GGroupBox();
-            this.cmbWholeWord = new gSubberGUI.Controls.GCheckBox();
+            this.chkWholeWord = new gSubberGUI.Controls.GCheckBox();
             this.btnFindNext = new gSubberGUI.Controls.GButton();
             this.btnFindPrevious = new gSubberGUI.Controls.GButton();
             this.btnCount = new gSubberGUI.Controls.GButton();
@@ -85,6 +85,7 @@
             // rbtnNormal
             // 
             this.rbtnNormal.AutoSize = true;
+            this.rbtnNormal.Checked = true;
             this.rbtnNormal.Location = new System.Drawing.Point(12, 22);
             this.rbtnNormal.Name = "rbtnNormal";
             this.rbtnNormal.Size = new System.Drawing.Size(65, 19);
@@ -100,7 +101,6 @@
             this.rbtnExtended.Name = "rbtnExtended";
             this.rbtnExtended.Size = new System.Drawing.Size(142, 19);
             this.rbtnExtended.TabIndex = 3;
-            this.rbtnExtended.TabStop = true;
             this.rbtnExtended.Text = "Extended (\\n, \\r, \\t, ...)";
             this.rbtnExtended.UseVisualStyleBackColor = true;
             // 
@@ -111,7 +111,6 @@
             this.rbtnRegularExpression.Name = "rbtnRegularExpression";
             this.rbtnRegularExpression.Size = new System.Drawing.Size(124, 19);
             this.rbtnRegularExpression.TabIndex = 4;
-            this.rbtnRegularExpression.TabStop = true;
             this.rbtnRegularExpression.Text = "Regular Expression";
             this.rbtnRegularExpression.UseVisualStyleBackColor = true;
             // 
@@ -128,15 +127,15 @@
             this.grpSearchMode.TabStop = false;
             this.grpSearchMode.Text = "Search Mode";
             // 
-            // cmbWholeWord
+            // chkWholeWord
             // 
-            this.cmbWholeWord.AutoSize = true;
-            this.cmbWholeWord.Location = new System.Drawing.Point(14, 78);
-            this.cmbWholeWord.Name = "cmbWholeWord";
-            this.cmbWholeWord.Size = new System.Drawing.Size(157, 19);
-            this.cmbWholeWord.TabIndex = 6;
-            this.cmbWholeWord.Text = "Match Whole Word Only";
-            this.cmbWholeWord.UseVisualStyleBackColor = true;
+            this.chkWholeWord.AutoSize = true;
+            this.chkWholeWord.Location = new System.Drawing.Point(14, 78);
+            this.chkWholeWord.Name = "chkWholeWord";
+            this.chkWholeWord.Size = new System.Drawing.Size(157, 19);
+            this.chkWholeWord.TabIndex = 6;
+            this.chkWholeWord.Text = "Match Whole Word Only";
+            this.chkWholeWord.UseVisualStyleBackColor = true;
             // 
             // btnFindNext
             // 
@@ -212,10 +211,12 @@
             this.trkTransparency.TabIndex = 3;
             this.trkTransparency.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkTransparency.Value = 100;
+            this.trkTransparency.ValueChanged += new System.EventHandler(this.trkTransparency_ValueChanged);
             // 
             // rbtnTransaparencyAlways
             // 
             this.rbtnTransaparencyAlways.AutoSize = true;
+            this.rbtnTransaparencyAlways.Checked = true;
             this.rbtnTransaparencyAlways.Location = new System.Drawing.Point(128, 47);
             this.rbtnTransaparencyAlways.Name = "rbtnTransaparencyAlways";
             this.rbtnTransaparencyAlways.Size = new System.Drawing.Size(62, 19);
@@ -223,6 +224,7 @@
             this.rbtnTransaparencyAlways.TabStop = true;
             this.rbtnTransaparencyAlways.Text = "Always";
             this.rbtnTransaparencyAlways.UseVisualStyleBackColor = true;
+            this.rbtnTransaparencyAlways.CheckedChanged += new System.EventHandler(this.rbtnTransparency_CheckedChanged);
             // 
             // rbtnTransparencyOnLostFocus
             // 
@@ -231,9 +233,9 @@
             this.rbtnTransparencyOnLostFocus.Name = "rbtnTransparencyOnLostFocus";
             this.rbtnTransparencyOnLostFocus.Size = new System.Drawing.Size(100, 19);
             this.rbtnTransparencyOnLostFocus.TabIndex = 1;
-            this.rbtnTransparencyOnLostFocus.TabStop = true;
             this.rbtnTransparencyOnLostFocus.Text = "On Lost Focus";
             this.rbtnTransparencyOnLostFocus.UseVisualStyleBackColor = true;
+            this.rbtnTransparencyOnLostFocus.CheckedChanged += new System.EventHandler(this.rbtnTransparency_CheckedChanged);
             // 
             // chkUseTransparency
             // 
@@ -244,6 +246,7 @@
             this.chkUseTransparency.TabIndex = 0;
             this.chkUseTransparency.Text = "Use Transparency";
             this.chkUseTransparency.UseVisualStyleBackColor = true;
+            this.chkUseTransparency.CheckedChanged += new System.EventHandler(this.chkUseTransparency_CheckedChanged);
             // 
             // grpActions
             // 
@@ -261,7 +264,7 @@
             // grpFindInput
             // 
             this.grpFindInput.Controls.Add(this.chkWrapAround);
-            this.grpFindInput.Controls.Add(this.cmbWholeWord);
+            this.grpFindInput.Controls.Add(this.chkWholeWord);
             this.grpFindInput.Controls.Add(this.chkMatchCase);
             this.grpFindInput.Controls.Add(this.cmbTextToFind);
             this.grpFindInput.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -328,6 +331,8 @@
             this.MaximumSize = new System.Drawing.Size(450, 340);
             this.Name = "frmFind";
             this.Text = "Find";
+            this.Activated += new System.EventHandler(this.frmFind_Activated);
+            this.Deactivate += new System.EventHandler(this.frmFind_Deactivate);
             this.grpSearchMode.ResumeLayout(false);
             this.grpSearchMode.PerformLayout();
             this.grpTransparency.ResumeLayout(false);
@@ -351,7 +356,7 @@
         private Controls.GRadioButton rbtnExtended;
         private Controls.GRadioButton rbtnRegularExpression;
         private Controls.GGroupBox grpSearchMode;
-        private Controls.GCheckBox cmbWholeWord;
+        private Controls.GCheckBox chkWholeWord;
         private Controls.GButton btnFindNext;
         private Controls.GButton btnFindPrevious;
         private Controls.GButton btnCount;
