@@ -81,6 +81,7 @@
             this.chkMatchCase.TabIndex = 1;
             this.chkMatchCase.Text = "Match Case";
             this.chkMatchCase.UseVisualStyleBackColor = true;
+            this.chkMatchCase.CheckedChanged += new System.EventHandler(this.chkMatchCase_CheckedChanged);
             // 
             // rbtnNormal
             // 
@@ -93,6 +94,7 @@
             this.rbtnNormal.TabStop = true;
             this.rbtnNormal.Text = "Normal";
             this.rbtnNormal.UseVisualStyleBackColor = true;
+            this.rbtnNormal.CheckedChanged += new System.EventHandler(this.rbtnNormal_CheckedChanged);
             // 
             // rbtnExtended
             // 
@@ -103,6 +105,7 @@
             this.rbtnExtended.TabIndex = 3;
             this.rbtnExtended.Text = "Extended (\\n, \\r, \\t, ...)";
             this.rbtnExtended.UseVisualStyleBackColor = true;
+            this.rbtnExtended.CheckedChanged += new System.EventHandler(this.rbtnExtended_CheckedChanged);
             // 
             // rbtnRegularExpression
             // 
@@ -113,6 +116,7 @@
             this.rbtnRegularExpression.TabIndex = 4;
             this.rbtnRegularExpression.Text = "Regular Expression";
             this.rbtnRegularExpression.UseVisualStyleBackColor = true;
+            this.rbtnRegularExpression.CheckedChanged += new System.EventHandler(this.rbtnRegularExpression_CheckedChanged);
             // 
             // grpSearchMode
             // 
@@ -136,6 +140,7 @@
             this.chkWholeWord.TabIndex = 6;
             this.chkWholeWord.Text = "Match Whole Word Only";
             this.chkWholeWord.UseVisualStyleBackColor = true;
+            this.chkWholeWord.CheckedChanged += new System.EventHandler(this.chkWholeWord_CheckedChanged);
             // 
             // btnFindNext
             // 
@@ -145,6 +150,7 @@
             this.btnFindNext.TabIndex = 7;
             this.btnFindNext.Text = "Find Next";
             this.btnFindNext.UseVisualStyleBackColor = true;
+            this.btnFindNext.Click += new System.EventHandler(this.btnFindNext_Click);
             // 
             // btnFindPrevious
             // 
@@ -154,6 +160,7 @@
             this.btnFindPrevious.TabIndex = 8;
             this.btnFindPrevious.Text = "Find Previous";
             this.btnFindPrevious.UseVisualStyleBackColor = true;
+            this.btnFindPrevious.Click += new System.EventHandler(this.btnFindPrevious_Click);
             // 
             // btnCount
             // 
@@ -163,6 +170,7 @@
             this.btnCount.TabIndex = 9;
             this.btnCount.Text = "Count";
             this.btnCount.UseVisualStyleBackColor = true;
+            this.btnCount.Click += new System.EventHandler(this.btnCount_Click);
             // 
             // chkWrapAround
             // 
@@ -173,6 +181,7 @@
             this.chkWrapAround.TabIndex = 10;
             this.chkWrapAround.Text = "Wrap Around";
             this.chkWrapAround.UseVisualStyleBackColor = true;
+            this.chkWrapAround.CheckedChanged += new System.EventHandler(this.chkWrapAround_CheckedChanged);
             // 
             // btnClose
             // 
@@ -183,6 +192,7 @@
             this.btnClose.TabIndex = 11;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // grpTransparency
             // 

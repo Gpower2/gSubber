@@ -26,6 +26,9 @@ namespace gSubberGUI
 
         private frmFind _frmFind;
 
+        public GDataGridView SubtitleGridView { get { return grdSubtitles; } }
+        public GTextBox SubtitleItemTextBox { get { return txtSubtitleItem; } }
+
         public frmMain()
         {
             InitializeComponent();
