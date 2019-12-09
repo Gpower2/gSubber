@@ -242,7 +242,7 @@ namespace gSubberGUI
 
         private void btnCount_Click(object sender, EventArgs e)
         {
-
+            CountMatches();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -261,11 +261,16 @@ namespace gSubberGUI
 
         private void Find(bool argNext)
         {
+            string textToFind = cmbTextToFind.Text;
+
+            if (string.IsNullOrWhiteSpace(textToFind))
+            {
+                return;
+            }
+
             bool matchCase = chkMatchCase.Checked;
             bool matchWholeWord = chkWholeWord.Checked;
             bool wrapAround = chkWrapAround.Checked;
-
-            string textToFind = cmbTextToFind.Text;
 
             SearchMode searchmode = SearchMode.Normal;
 
@@ -475,5 +480,123 @@ namespace gSubberGUI
             }
         }
 
+        private void CountMatches()
+        {
+            string textToFind = cmbTextToFind.Text;
+
+            if (string.IsNullOrWhiteSpace(textToFind))
+            {
+                return;
+            }
+
+            bool matchCase = chkMatchCase.Checked;
+            bool matchWholeWord = chkWholeWord.Checked;
+
+            SearchMode searchmode = SearchMode.Normal;
+
+            if (rbtnNormal.Checked)
+            {
+                searchmode = SearchMode.Normal;
+                if (matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
+            }
+            else if (rbtnExtended.Checked)
+            {
+                searchmode = SearchMode.Extended;
+                textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
+                if (matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
+            }
+            else if (rbtnRegularExpression.Checked)
+            {
+                searchmode = SearchMode.RegularExpression;
+            }
+
+            // If we have RegularExpression search mode, create the Regular Expression
+            Regex regex = null;
+            if (searchmode == SearchMode.RegularExpression)
+            {
+                RegexOptions regexOptions = RegexOptions.Compiled;
+                string regexTextToFind = textToFind;
+
+                // Check if we have match case
+                if (!matchCase)
+                {
+                    regexOptions |= RegexOptions.IgnoreCase;
+                }
+
+                // Check if we have match whole word
+                if (matchWholeWord)
+                {
+                    regexTextToFind = $@"\b{textToFind}\b";
+                }
+
+                regex = new Regex(regexTextToFind, regexOptions);
+            }
+
+            // Set the current row index
+            int currentRowIndex = 0;
+
+            // Set the counter of matches
+            long totalMatchCount = 0;
+
+            // Start searching the rows
+            while (currentRowIndex < _frmMain.SubtitleGridView.Rows.Count)
+            {
+                // Get the subtitle item to search
+                SubFileSubtitleItem sub = (SubFileSubtitleItem)_frmMain.SubtitleGridView.Rows[currentRowIndex].DataBoundItem;
+
+                // Check if we have regular expression or normal/extended search mode
+                if (searchmode == SearchMode.RegularExpression)
+                {
+                    totalMatchCount += regex.Matches(sub.Text).Count;
+                }
+                else
+                {
+                    string subText = sub.Text;
+                    if (!matchCase)
+                    {
+                        subText = sub.Text.ToLower();
+                    }
+                    int startIndex = 0;
+
+                    while ((startIndex = subText.IndexOf(textToFind, startIndex)) > -1)
+                    {
+                        if (
+                            (
+                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
+                                matchWholeWord &&
+                                (
+                                    (
+                                        startIndex == 0
+                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                    )
+                                    &&
+                                    (
+                                        startIndex + textToFind.Length == sub.Text.Length
+                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                    )
+                                )
+                            )
+                            || !matchWholeWord
+                        )
+                        {
+                            totalMatchCount++;
+                        }
+
+                        // Move the start index to avoid searching the same text again
+                        startIndex += textToFind.Length;
+                    }
+                }
+
+                currentRowIndex++;
+            }
+
+            ShowInformationMessage($"Total matches found for '{textToFind}' : {totalMatchCount}");
+        }
     }
 }
