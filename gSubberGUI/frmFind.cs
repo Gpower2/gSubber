@@ -317,7 +317,7 @@ namespace gSubberGUI
             else
             {
                 // Selected row was found, check for selected text
-                if(!string.IsNullOrWhiteSpace(_frmMain.SubtitleItemTextBox.SelectedText))
+                if (!string.IsNullOrWhiteSpace(_frmMain.SubtitleItemTextBox.SelectedText))
                 {
                     // Selected Text was found, set the startTextIndex at the end of selection
                     startTextIndex = _frmMain.SubtitleItemTextBox.SelectionStart + _frmMain.SubtitleItemTextBox.SelectionLength;
@@ -341,6 +341,20 @@ namespace gSubberGUI
                 || (!argNext && currentRowIndex >= 0)
                 )
             {
+                // Check if we wrapped around and surpassed the start row
+                if (wrappedAround)
+                {
+                    if (
+                        (argNext && currentRowIndex >= startRowIndex)
+                        || (!argNext && currentRowIndex <= startRowIndex)
+                        )
+                    {
+                        // We wrapped around and surpassed tha starting row!
+                        // Break the search loop!
+                        break;
+                    }
+                }
+
                 // Get the subtitle item to search
                 SubFileSubtitleItem sub = (SubFileSubtitleItem)_frmMain.SubtitleGridView.Rows[currentRowIndex].DataBoundItem;
 
@@ -371,13 +385,17 @@ namespace gSubberGUI
                 {
                     int startIndex;
                     if (
+                        // Check if we are in the start row and then search from the startTextIndex
                         currentRowIndex == startRowIndex &&
                             (
+                                // Check if we have match case and if not convert text to lower case to search
                                 matchCase && (startIndex = sub.Text.IndexOf(textToFind, startTextIndex)) > -1
                                 || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower(), startTextIndex)) > -1
                             )
+                        // Check if we are in the start row and then search from the startTextIndex
                         || currentRowIndex != startRowIndex &&
                             (
+                                // Check if we have match case and if not convert text to lower case to search
                                 matchCase && (startIndex = sub.Text.IndexOf(textToFind)) > -1
                                 || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower())) > -1
                             )
@@ -385,6 +403,7 @@ namespace gSubberGUI
                     {
                         if (
                             (
+                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
                                 matchWholeWord &&
                                 (
                                     (
@@ -405,16 +424,7 @@ namespace gSubberGUI
                             _frmMain.SubtitleGridView.SetSelectedRowByIndex(currentRowIndex);
 
                             // Select the text
-                            _frmMain.SubtitleItemTextBox.Select(
-                                currentRowIndex == startRowIndex ?
-                                    matchCase ?
-                                        sub.Text.IndexOf(textToFind, startTextIndex)
-                                        : sub.Text.ToLower().IndexOf(textToFind.ToLower(), startTextIndex)
-                                    : matchCase ?
-                                        sub.Text.IndexOf(textToFind)
-                                        : sub.Text.ToLower().IndexOf(textToFind.ToLower())
-                                , textToFind.Length
-                            );
+                            _frmMain.SubtitleItemTextBox.Select(startIndex, textToFind.Length);
 
                             // Set the flag that the find operation was successfull
                             textWasFound = true;
@@ -464,5 +474,6 @@ namespace gSubberGUI
                 ShowErrorMessage($"The text '{textToFind}' was not found!");
             }
         }
+
     }
 }
