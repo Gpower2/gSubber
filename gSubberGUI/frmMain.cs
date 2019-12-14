@@ -25,6 +25,7 @@ namespace gSubberGUI
         private List<string> _cmdArguments = new List<string>();
 
         private frmFind _frmFind;
+        private frmFind _frmReplace;
 
         public GDataGridView SubtitleGridView { get { return grdSubtitles; } }
         public GTextBox SubtitleItemTextBox { get { return txtSubtitleItem; } }
@@ -374,9 +375,25 @@ namespace gSubberGUI
             {
                 if (_frmFind == null || _frmFind.IsDisposed)
                 {
-                    _frmFind = new frmFind(this);
+                    _frmFind = new frmFind(this, false);
                 }
                 _frmFind.Show();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_frmReplace == null || _frmReplace.IsDisposed)
+                {
+                    _frmReplace = new frmFind(this, true);
+                }
+                _frmReplace.Show();
             }
             catch (Exception ex)
             {
