@@ -47,6 +47,7 @@
             this.rbtnTransparencyOnLostFocus = new gSubberGUI.Controls.GRadioButton();
             this.chkUseTransparency = new gSubberGUI.Controls.GCheckBox();
             this.grpActions = new gSubberGUI.Controls.GGroupBox();
+            this.btnReplaceAll = new gSubberGUI.Controls.GButton();
             this.btnReplacePrevious = new gSubberGUI.Controls.GButton();
             this.btnReplaceNext = new gSubberGUI.Controls.GButton();
             this.grpFindInput = new gSubberGUI.Controls.GGroupBox();
@@ -80,7 +81,7 @@
             // chkMatchCase
             // 
             this.chkMatchCase.AutoSize = true;
-            this.chkMatchCase.Location = new System.Drawing.Point(14, 109);
+            this.chkMatchCase.Location = new System.Drawing.Point(14, 94);
             this.chkMatchCase.Name = "chkMatchCase";
             this.chkMatchCase.Size = new System.Drawing.Size(88, 19);
             this.chkMatchCase.TabIndex = 1;
@@ -139,7 +140,7 @@
             // chkWholeWord
             // 
             this.chkWholeWord.AutoSize = true;
-            this.chkWholeWord.Location = new System.Drawing.Point(14, 134);
+            this.chkWholeWord.Location = new System.Drawing.Point(14, 119);
             this.chkWholeWord.Name = "chkWholeWord";
             this.chkWholeWord.Size = new System.Drawing.Size(157, 19);
             this.chkWholeWord.TabIndex = 6;
@@ -169,7 +170,8 @@
             // 
             // btnCount
             // 
-            this.btnCount.Location = new System.Drawing.Point(11, 167);
+            this.btnCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnCount.Location = new System.Drawing.Point(11, 207);
             this.btnCount.Name = "btnCount";
             this.btnCount.Size = new System.Drawing.Size(105, 30);
             this.btnCount.TabIndex = 9;
@@ -180,7 +182,7 @@
             // chkWrapAround
             // 
             this.chkWrapAround.AutoSize = true;
-            this.chkWrapAround.Location = new System.Drawing.Point(14, 159);
+            this.chkWrapAround.Location = new System.Drawing.Point(14, 144);
             this.chkWrapAround.Name = "chkWrapAround";
             this.chkWrapAround.Size = new System.Drawing.Size(97, 19);
             this.chkWrapAround.TabIndex = 10;
@@ -191,7 +193,7 @@
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnClose.Location = new System.Drawing.Point(11, 203);
+            this.btnClose.Location = new System.Drawing.Point(11, 243);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(105, 30);
             this.btnClose.TabIndex = 11;
@@ -265,6 +267,7 @@
             // 
             // grpActions
             // 
+            this.grpActions.Controls.Add(this.btnReplaceAll);
             this.grpActions.Controls.Add(this.btnReplacePrevious);
             this.grpActions.Controls.Add(this.btnReplaceNext);
             this.grpActions.Controls.Add(this.btnClose);
@@ -274,13 +277,23 @@
             this.grpActions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpActions.Location = new System.Drawing.Point(357, 3);
             this.grpActions.Name = "grpActions";
-            this.grpActions.Size = new System.Drawing.Size(124, 245);
+            this.grpActions.Size = new System.Drawing.Size(124, 285);
             this.grpActions.TabIndex = 13;
             this.grpActions.TabStop = false;
             // 
+            // btnReplaceAll
+            // 
+            this.btnReplaceAll.Location = new System.Drawing.Point(10, 166);
+            this.btnReplaceAll.Name = "btnReplaceAll";
+            this.btnReplaceAll.Size = new System.Drawing.Size(105, 30);
+            this.btnReplaceAll.TabIndex = 14;
+            this.btnReplaceAll.Text = "Replace All";
+            this.btnReplaceAll.UseVisualStyleBackColor = true;
+            this.btnReplaceAll.Click += new System.EventHandler(this.btnReplaceAll_Click);
+            // 
             // btnReplacePrevious
             // 
-            this.btnReplacePrevious.Location = new System.Drawing.Point(10, 128);
+            this.btnReplacePrevious.Location = new System.Drawing.Point(10, 131);
             this.btnReplacePrevious.Name = "btnReplacePrevious";
             this.btnReplacePrevious.Size = new System.Drawing.Size(105, 30);
             this.btnReplacePrevious.TabIndex = 13;
@@ -290,7 +303,7 @@
             // 
             // btnReplaceNext
             // 
-            this.btnReplaceNext.Location = new System.Drawing.Point(10, 93);
+            this.btnReplaceNext.Location = new System.Drawing.Point(10, 96);
             this.btnReplaceNext.Name = "btnReplaceNext";
             this.btnReplaceNext.Size = new System.Drawing.Size(105, 30);
             this.btnReplaceNext.TabIndex = 12;
@@ -310,7 +323,7 @@
             this.grpFindInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpFindInput.Location = new System.Drawing.Point(3, 3);
             this.grpFindInput.Name = "grpFindInput";
-            this.grpFindInput.Size = new System.Drawing.Size(348, 245);
+            this.grpFindInput.Size = new System.Drawing.Size(348, 285);
             this.grpFindInput.TabIndex = 14;
             this.grpFindInput.TabStop = false;
             // 
@@ -355,7 +368,7 @@
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tlpMain.Size = new System.Drawing.Size(484, 361);
+            this.tlpMain.Size = new System.Drawing.Size(484, 401);
             this.tlpMain.TabIndex = 15;
             // 
             // tlpUp
@@ -371,7 +384,7 @@
             this.tlpUp.Name = "tlpUp";
             this.tlpUp.RowCount = 1;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUp.Size = new System.Drawing.Size(484, 251);
+            this.tlpUp.Size = new System.Drawing.Size(484, 291);
             this.tlpUp.TabIndex = 0;
             // 
             // tlpDown
@@ -382,7 +395,7 @@
             this.tlpDown.Controls.Add(this.grpSearchMode, 0, 0);
             this.tlpDown.Controls.Add(this.grpTransparency, 1, 0);
             this.tlpDown.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpDown.Location = new System.Drawing.Point(0, 251);
+            this.tlpDown.Location = new System.Drawing.Point(0, 291);
             this.tlpDown.Margin = new System.Windows.Forms.Padding(0);
             this.tlpDown.Name = "tlpDown";
             this.tlpDown.RowCount = 1;
@@ -394,10 +407,11 @@
             // frmFind
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.ClientSize = new System.Drawing.Size(484, 361);
+            this.ClientSize = new System.Drawing.Size(484, 401);
             this.Controls.Add(this.tlpMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.MaximumSize = new System.Drawing.Size(1200, 1000);
+            this.MaximumSize = new System.Drawing.Size(1200, 440);
+            this.MinimumSize = new System.Drawing.Size(500, 440);
             this.Name = "frmFind";
             this.Text = "Find text";
             this.Activated += new System.EventHandler(this.frmFind_Activated);
@@ -446,5 +460,6 @@
         private Controls.GButton btnReplaceNext;
         private Controls.GLabel lblReplace;
         private Controls.GLabel lblFind;
+        private Controls.GButton btnReplaceAll;
     }
 }

@@ -68,11 +68,17 @@ namespace gSubberGUI
 
             if (!argReplace)
             {
+                // Hide the replace buttons and text for better UX
                 btnReplaceNext.Visible = false;
                 btnReplacePrevious.Visible = false;
+                btnReplaceAll.Visible = false;
 
                 lblReplace.Visible = false;
                 cmbTextForReplace.Visible = false;
+
+                // Reduce the form's height for better UX
+                this.Height -= 110;
+                this.MaximumSize = new Size(this.MaximumSize.Width, this.MaximumSize.Height - 110);
             }
             else
             {
@@ -489,7 +495,7 @@ namespace gSubberGUI
             // Check if find operation was successfull
             if (!textWasFound)
             {
-                ShowErrorMessage($"The text '{textToFind}' was not found!");
+                ShowWarningMessage($"The text '{textToFind}' was not found!");
             }
         }
 
@@ -839,11 +845,173 @@ namespace gSubberGUI
                 }
             }
 
+            // Update the grid to reflect the text changes
+            _frmMain.SubtitleGridView.Refresh();
+
+            // Update the text box
+            if (_frmMain.SubtitleGridView.SelectedIndex == -1)
+            {
+                _frmMain.SubtitleItemTextBox.Clear();
+            }
+            else
+            {
+                var sub = _frmMain.SubtitleGridView.SelectedItem as SubFileSubtitleItem;
+                _frmMain.SubtitleItemTextBox.Text = sub.Text;
+            }
+
             // Check if find operation was successfull
             if (!textWasFound)
             {
-                ShowErrorMessage($"The text '{textToFind}' was not found!");
+                ShowWarningMessage($"The text '{textToFind}' was not found!");
             }
+        }
+
+        private void btnReplaceAll_Click(object sender, EventArgs e)
+        {
+            ReplaceAll();
+        }
+
+        private void ReplaceAll()
+        {
+            string textToFind = cmbTextToFind.Text;
+
+            if (string.IsNullOrWhiteSpace(textToFind))
+            {
+                return;
+            }
+
+            string textForReplace = cmbTextForReplace.Text;
+
+            bool matchCase = chkMatchCase.Checked;
+            bool matchWholeWord = chkWholeWord.Checked;
+
+            SearchMode searchmode = SearchMode.Normal;
+
+            if (rbtnNormal.Checked)
+            {
+                searchmode = SearchMode.Normal;
+                if (matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
+            }
+            else if (rbtnExtended.Checked)
+            {
+                searchmode = SearchMode.Extended;
+                textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
+                if (matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
+            }
+            else if (rbtnRegularExpression.Checked)
+            {
+                searchmode = SearchMode.RegularExpression;
+            }
+
+            // If we have RegularExpression search mode, create the Regular Expression
+            Regex regex = null;
+            if (searchmode == SearchMode.RegularExpression)
+            {
+                RegexOptions regexOptions = RegexOptions.Compiled;
+                string regexTextToFind = textToFind;
+
+                // Check if we have match case
+                if (!matchCase)
+                {
+                    regexOptions |= RegexOptions.IgnoreCase;
+                }
+
+                // Check if we have match whole word
+                if (matchWholeWord)
+                {
+                    regexTextToFind = $@"\b{textToFind}\b";
+                }
+
+                regex = new Regex(regexTextToFind, regexOptions);
+            }
+
+            // Set the current row index
+            int currentRowIndex = 0;
+
+            // Set the counter of matches
+            long totalMatchCount = 0;
+
+            // Start searching the rows
+            while (currentRowIndex < _frmMain.SubtitleGridView.Rows.Count)
+            {
+                // Get the subtitle item to search
+                SubFileSubtitleItem sub = (SubFileSubtitleItem)_frmMain.SubtitleGridView.Rows[currentRowIndex].DataBoundItem;
+
+                // Check if we have regular expression or normal/extended search mode
+                if (searchmode == SearchMode.RegularExpression)
+                {
+                    // Replace the text
+                    sub.Text = regex.Replace(sub.Text, textForReplace);
+
+                    // Update the matches counter
+                    totalMatchCount += regex.Matches(sub.Text).Count;
+                }
+                else
+                {
+                    string subText = sub.Text;
+                    if (!matchCase)
+                    {
+                        subText = sub.Text.ToLower();
+                    }
+                    int startIndex = 0;
+
+                    while ((startIndex = subText.IndexOf(textToFind, startIndex)) > -1)
+                    {
+                        if (
+                            (
+                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
+                                matchWholeWord &&
+                                (
+                                    (
+                                        startIndex == 0
+                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                    )
+                                    &&
+                                    (
+                                        startIndex + textToFind.Length == sub.Text.Length
+                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                    )
+                                )
+                            )
+                            || !matchWholeWord
+                        )
+                        {
+                            // Replace the text
+                            sub.Text = sub.Text.Remove(startIndex, textToFind.Length).Insert(startIndex, textForReplace);
+
+                            // Update the matches counter
+                            totalMatchCount++;
+                        }
+
+                        // Move the start index to avoid searching the same text again
+                        startIndex += textToFind.Length;
+                    }
+                }
+
+                currentRowIndex++;
+            }
+
+            // Update the grid to reflect the text changes
+            _frmMain.SubtitleGridView.Refresh();
+
+            // Update the text box
+            if (_frmMain.SubtitleGridView.SelectedIndex == -1)
+            {
+                _frmMain.SubtitleItemTextBox.Clear();
+            }
+            else
+            {
+                var sub = _frmMain.SubtitleGridView.SelectedItem as SubFileSubtitleItem;
+                _frmMain.SubtitleItemTextBox.Text = sub.Text;
+            }
+
+            ShowInformationMessage($"Replaced {totalMatchCount} matches for '{textToFind}' to '{textForReplace}'");
         }
     }
 }
