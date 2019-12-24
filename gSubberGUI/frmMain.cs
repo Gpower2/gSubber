@@ -115,7 +115,8 @@ namespace gSubberGUI
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "LineNumber",
-                HeaderText = "#"
+                HeaderText = "#",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 45;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -123,7 +124,8 @@ namespace gSubberGUI
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Zindex",
-                HeaderText = "Z"
+                HeaderText = "Z",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 25;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -131,7 +133,8 @@ namespace gSubberGUI
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "StartTime",
-                HeaderText = "Start Time"
+                HeaderText = "Start Time",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 85;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -139,7 +142,8 @@ namespace gSubberGUI
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "EndTime",
-                HeaderText = "End Time"
+                HeaderText = "End Time",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 85;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -148,6 +152,7 @@ namespace gSubberGUI
             {
                 DataPropertyName = "Duration",
                 HeaderText = "Duration",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 55;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
@@ -156,7 +161,8 @@ namespace gSubberGUI
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "DisplayText",
-                HeaderText = "Text"
+                HeaderText = "Text",
+                SortMode = DataGridViewColumnSortMode.NotSortable
             });
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
