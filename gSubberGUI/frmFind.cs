@@ -56,7 +56,7 @@ namespace gSubberGUI
 
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 
-            this.TopMost = true;
+            this.Owner = argFrmMain;
 
             _frmMain = argFrmMain;
 
