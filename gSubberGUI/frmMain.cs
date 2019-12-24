@@ -108,6 +108,8 @@ namespace gSubberGUI
         {
             grdSubtitles.SuspendLayout();
 
+            grdSubtitles.MultiSelect = true;
+
             grdSubtitles.AutoGenerateColumns = false;
             grdSubtitles.Columns.Clear();
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
@@ -394,6 +396,130 @@ namespace gSubberGUI
                     _frmReplace = new frmFind(this, true);
                 }
                 _frmReplace.Show();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void beforeCurrentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_results == null || _results.SubFile == null || grdSubtitles.SelectedItem == null)
+                {
+                    return;
+                }
+
+                // Get the selected subtitle item
+                var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
+
+                // Get the index of the subtitle item
+                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                // Insert a new subtitle item with the same times
+                _results.SubFile.Subtitles.Insert(idx, 
+                    new SubFileSubtitleItem() {
+                        StartTime = subItem.StartTime 
+                        , EndTime = subItem.EndTime
+                    }
+                );
+
+                grdSubtitles.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void afterCurrentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_results == null || _results.SubFile == null || grdSubtitles.SelectedItem == null)
+                {
+                    return;
+                }
+
+                // Get the selected subtitle item
+                var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
+
+                // Get the index of the subtitle item
+                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                // Insert a new subtitle item after the selected one with the same times
+                _results.SubFile.Subtitles.Insert(idx + 1,
+                    new SubFileSubtitleItem()
+                    {
+                        StartTime = subItem.StartTime
+                        ,
+                        EndTime = subItem.EndTime
+                    }
+                );
+
+                grdSubtitles.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void duplicateSubtitleLineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_results == null || _results.SubFile == null || grdSubtitles.SelectedItem == null)
+                {
+                    return;
+                }
+
+                // Get the selected subtitle item
+                var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
+
+                // Get the index of the subtitle item
+                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                // Insert a new subtitle item with the same times
+                _results.SubFile.Subtitles.Insert(idx,
+                    subItem.ShallowClone()
+                );
+
+                grdSubtitles.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void deleteSubtitleLinesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_results == null || _results.SubFile == null || grdSubtitles.SelectedRows.Count == 0)
+                {
+                    return;
+                }
+
+                while(grdSubtitles.SelectedRows.Count > 0)
+                {
+                    // Get the selected subtitle item
+                    var subItem = grdSubtitles.SelectedRows[0].DataBoundItem as SubFileSubtitleItem;
+
+                    // Remove selection
+                    grdSubtitles.SelectedRows[0].Selected = false;
+
+                    // Get the index of the subtitle item
+                    var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                    // Insert a new subtitle item with the same times
+                    _results.SubFile.Subtitles.RemoveAt(idx);
+                }
+
+                grdSubtitles.Refresh();
             }
             catch (Exception ex)
             {

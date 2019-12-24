@@ -46,8 +46,16 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.replaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.insertSubtitlesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beforeCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.afterCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateSubtitleLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteSubtitleLinesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adjustDurationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fixIssuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeCasingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpSubtitles = new gSubberGUI.Controls.GGroupBox();
             this.grpInputFile = new gSubberGUI.Controls.GGroupBox();
@@ -222,7 +230,11 @@
             this.redoToolStripMenuItem,
             this.toolStripSeparator1,
             this.findToolStripMenuItem,
-            this.replaceToolStripMenuItem});
+            this.replaceToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.insertSubtitlesToolStripMenuItem,
+            this.duplicateSubtitleLineToolStripMenuItem,
+            this.deleteSubtitleLinesToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -232,7 +244,7 @@
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.undoToolStripMenuItem.Text = "Undo";
             // 
             // redoToolStripMenuItem
@@ -240,19 +252,19 @@
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.redoToolStripMenuItem.Text = "Redo";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(224, 6);
             // 
             // findToolStripMenuItem
             // 
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.findToolStripMenuItem.Text = "&Find...";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
             // 
@@ -260,23 +272,80 @@
             // 
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
             this.replaceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.replaceToolStripMenuItem.Text = "&Replace...";
             this.replaceToolStripMenuItem.Click += new System.EventHandler(this.replaceToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(224, 6);
+            // 
+            // insertSubtitlesToolStripMenuItem
+            // 
+            this.insertSubtitlesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.beforeCurrentToolStripMenuItem,
+            this.afterCurrentToolStripMenuItem});
+            this.insertSubtitlesToolStripMenuItem.Name = "insertSubtitlesToolStripMenuItem";
+            this.insertSubtitlesToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.insertSubtitlesToolStripMenuItem.Text = "Insert subtitle line";
+            // 
+            // beforeCurrentToolStripMenuItem
+            // 
+            this.beforeCurrentToolStripMenuItem.Name = "beforeCurrentToolStripMenuItem";
+            this.beforeCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.beforeCurrentToolStripMenuItem.Text = "Before current";
+            this.beforeCurrentToolStripMenuItem.Click += new System.EventHandler(this.beforeCurrentToolStripMenuItem_Click);
+            // 
+            // afterCurrentToolStripMenuItem
+            // 
+            this.afterCurrentToolStripMenuItem.Name = "afterCurrentToolStripMenuItem";
+            this.afterCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.afterCurrentToolStripMenuItem.Text = "After current";
+            this.afterCurrentToolStripMenuItem.Click += new System.EventHandler(this.afterCurrentToolStripMenuItem_Click);
+            // 
+            // duplicateSubtitleLineToolStripMenuItem
+            // 
+            this.duplicateSubtitleLineToolStripMenuItem.Name = "duplicateSubtitleLineToolStripMenuItem";
+            this.duplicateSubtitleLineToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.duplicateSubtitleLineToolStripMenuItem.Text = "Duplicate subtitle line";
+            this.duplicateSubtitleLineToolStripMenuItem.Click += new System.EventHandler(this.duplicateSubtitleLineToolStripMenuItem_Click);
+            // 
+            // deleteSubtitleLinesToolStripMenuItem
+            // 
+            this.deleteSubtitleLinesToolStripMenuItem.Name = "deleteSubtitleLinesToolStripMenuItem";
+            this.deleteSubtitleLinesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Delete)));
+            this.deleteSubtitleLinesToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.deleteSubtitleLinesToolStripMenuItem.Text = "Delete subtitle lines";
+            this.deleteSubtitleLinesToolStripMenuItem.Click += new System.EventHandler(this.deleteSubtitleLinesToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fixIssuesToolStripMenuItem});
+            this.adjustDurationsToolStripMenuItem,
+            this.fixIssuesToolStripMenuItem,
+            this.changeCasingToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // adjustDurationsToolStripMenuItem
+            // 
+            this.adjustDurationsToolStripMenuItem.Name = "adjustDurationsToolStripMenuItem";
+            this.adjustDurationsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.adjustDurationsToolStripMenuItem.Text = "Adjust times...";
+            // 
             // fixIssuesToolStripMenuItem
             // 
             this.fixIssuesToolStripMenuItem.Name = "fixIssuesToolStripMenuItem";
-            this.fixIssuesToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.fixIssuesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.fixIssuesToolStripMenuItem.Text = "Fix issues...";
+            // 
+            // changeCasingToolStripMenuItem
+            // 
+            this.changeCasingToolStripMenuItem.Name = "changeCasingToolStripMenuItem";
+            this.changeCasingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.changeCasingToolStripMenuItem.Text = "Change Casing...";
             // 
             // exitToolStripMenuItem
             // 
@@ -598,6 +667,14 @@
         private System.Windows.Forms.ToolStripMenuItem replaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixIssuesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem insertSubtitlesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beforeCurrentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem afterCurrentToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem adjustDurationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeCasingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateSubtitleLineToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteSubtitleLinesToolStripMenuItem;
     }
 }
 
