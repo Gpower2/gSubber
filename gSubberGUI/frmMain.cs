@@ -26,6 +26,7 @@ namespace gSubberGUI
 
         private frmFind _frmFind;
         private frmFind _frmReplace;
+        private ContextMenuStrip _contextMenu;
 
         public GDataGridView SubtitleGridView { get { return grdSubtitles; } }
         public GTextBox SubtitleItemTextBox { get { return txtSubtitleItem; } }
@@ -121,6 +122,7 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 45;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Zindex",
@@ -130,6 +132,7 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 25;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "StartTime",
@@ -139,6 +142,7 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 85;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "EndTime",
@@ -148,6 +152,7 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].Width = 85;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "Duration",
@@ -158,6 +163,7 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleRight;
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].DefaultCellStyle.Format = "#,##0.000";
+
             grdSubtitles.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "DisplayText",
@@ -169,6 +175,321 @@ namespace gSubberGUI
             grdSubtitles.Columns[grdSubtitles.Columns.Count - 1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             grdSubtitles.ResumeLayout();
+
+            BuildContextMenu();
+        }
+
+        private void BuildContextMenu()
+        {
+            // Check if the context menu is initialized
+            if (_contextMenu == null)
+            {
+                // Create the context menu
+                _contextMenu = new ContextMenuStrip();
+            }
+
+            // Check if the context menu has any items
+            if (_contextMenu.Items.Count == 0)
+            {
+                // Add the context menu items
+
+                // Insert Before ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Insert subtitle line (before last clicked line)", 
+                        null, 
+                        (object sender, EventArgs e) => 
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Insert a new subtitle item with the same times
+                            _results.SubFile.Subtitles.Insert(idx,
+                                new SubFileSubtitleItem()
+                                {
+                                    StartTime = subItem.StartTime
+                                    ,
+                                    EndTime = subItem.EndTime
+                                }
+                            );
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+                // Insert After ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Insert subtitle line (after last clicked line)",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Insert a new subtitle item after the selected one with the same times
+                            _results.SubFile.Subtitles.Insert(idx + 1,
+                                new SubFileSubtitleItem()
+                                {
+                                    StartTime = subItem.StartTime
+                                    ,
+                                    EndTime = subItem.EndTime
+                                }
+                            );
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+
+                // Separator -------------------------
+                _contextMenu.Items.Add(new ToolStripSeparator());
+
+
+                // Duplicate line ===================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Duplicate last clicked subtitle line",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Insert a new subtitle item with the same times
+                            _results.SubFile.Subtitles.Insert(idx,
+                                subItem.ShallowClone()
+                            );
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+
+                // Delete lst clicked line ===================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Delete last clicked subtitle line",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Delete the subtitle line
+                            _results.SubFile.Subtitles.RemoveAt(idx);
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+                // Delete selected lines ===================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Delete selected subtitle line(s)",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.SelectedRows.Count == 0)
+                            {
+                                return;
+                            }
+
+                            while (grdSubtitles.SelectedRows.Count > 0)
+                            {
+                                // Get the selected subtitle item
+                                var subItem = grdSubtitles.SelectedRows[0].DataBoundItem as SubFileSubtitleItem;
+
+                                // Remove selection
+                                grdSubtitles.SelectedRows[0].Selected = false;
+
+                                // Get the index of the subtitle item
+                                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                                // Delete the subtitle line
+                                _results.SubFile.Subtitles.RemoveAt(idx);
+                            }
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+                // Separator -------------------------
+                _contextMenu.Items.Add(new ToolStripSeparator());
+
+
+                // Copy subtitle text ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Copy last clicked subtitle text",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Copy the subtitle text
+                            Clipboard.SetText(subItem.Text);
+                        }
+                    )
+                );
+
+                // Copy subtitle item ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Copy last clicked subtitle line",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Copy the subtitle text
+                            Clipboard.SetDataObject(subItem);
+                        }
+                    )
+                );
+
+                // Separator -------------------------
+                _contextMenu.Items.Add(new ToolStripSeparator());
+
+
+                // Merge with line before ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Merge last clicked subtitle line with previous line",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex <= 0)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the previous last clicked subtitle item
+                            var subItemPrevious = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex - 1].DataBoundItem as SubFileSubtitleItem;
+
+                            // Check the times
+                            if (subItemPrevious.StartTime > subItem.StartTime)
+                            {
+                                if (ShowQuestion($"The previous line's start time ({subItemPrevious.StartTime}) is after the line's start time ({subItem.StartTime}) to merge! Do you want to continue with the merge?", "Warning!", false) == DialogResult.No)
+                                {
+                                    return;
+                                }
+                            }
+
+                            // Append the text to the previous line
+                            subItemPrevious.Text += subItem.Text;
+                            // Update the end time of the previous line
+                            subItemPrevious.EndTime = subItem.EndTime;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Delete the subtitle line
+                            _results.SubFile.Subtitles.RemoveAt(idx);
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+                // Merge with line after ====================
+                _contextMenu.Items.Add(
+                    new ToolStripMenuItem(
+                        "Merge last clicked subtitle line with next line",
+                        null,
+                        (object sender, EventArgs e) =>
+                        {
+                            if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0 || grdSubtitles.LastClickedRowIndex == grdSubtitles.Rows.Count - 1)
+                            {
+                                return;
+                            }
+
+                            // Get the last clicked subtitle item
+                            var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
+
+                            // Get the next last clicked subtitle item
+                            var subItemNext = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex + 1].DataBoundItem as SubFileSubtitleItem;
+
+                            // Check the times
+                            if (subItemNext.StartTime < subItem.StartTime)
+                            {
+                                if (ShowQuestion($"The next line's start time ({subItemNext.StartTime}) is before the line's start time ({subItem.StartTime}) to merge! Do you want to continue with the merge?", "Warning!", false) == DialogResult.No)
+                                {
+                                    return;
+                                }
+                            }
+
+                            // Insert the text to the next line
+                            subItemNext.Text = subItem.Text + subItemNext.Text;
+                            // Update the start time of the next line
+                            subItemNext.StartTime = subItem.StartTime;
+
+                            // Get the index of the subtitle item
+                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+
+                            // Delete the subtitle line
+                            _results.SubFile.Subtitles.RemoveAt(idx);
+
+                            grdSubtitles.Refresh();
+                        }
+                    )
+                );
+
+            }
+
+            grdSubtitles.ContextMenuStrip = _contextMenu;
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -505,7 +826,7 @@ namespace gSubberGUI
                     return;
                 }
 
-                while(grdSubtitles.SelectedRows.Count > 0)
+                while (grdSubtitles.SelectedRows.Count > 0)
                 {
                     // Get the selected subtitle item
                     var subItem = grdSubtitles.SelectedRows[0].DataBoundItem as SubFileSubtitleItem;
@@ -516,7 +837,7 @@ namespace gSubberGUI
                     // Get the index of the subtitle item
                     var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
 
-                    // Insert a new subtitle item with the same times
+                    // Delete the subtitle line
                     _results.SubFile.Subtitles.RemoveAt(idx);
                 }
 
@@ -527,5 +848,7 @@ namespace gSubberGUI
                 ShowExceptionMessage(ex);
             }
         }
+
+        
     }
 }

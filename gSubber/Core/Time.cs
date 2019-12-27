@@ -281,6 +281,26 @@ namespace gSubber.Core
                 argTime1.Nanoseconds - argTime2.Nanoseconds);
         }
 
+        public static bool operator >(Time argTime1, Time argTime2)
+        {
+            return argTime1?.TotalNanoseconds > argTime2?.TotalNanoseconds;
+        }
+
+        public static bool operator >=(Time argTime1, Time argTime2)
+        {
+            return argTime1?.TotalNanoseconds >= argTime2?.TotalNanoseconds;
+        }
+
+        public static bool operator <(Time argTime1, Time argTime2)
+        {
+            return argTime1?.TotalNanoseconds < argTime2?.TotalNanoseconds;
+        }
+
+        public static bool operator <=(Time argTime1, Time argTime2)
+        {
+            return argTime1?.TotalNanoseconds <= argTime2?.TotalNanoseconds;
+        }
+
         public void Clear()
         {
             Hours = 0;
@@ -314,8 +334,10 @@ namespace gSubber.Core
 
         public override bool Equals(object argTime)
         {
-            if (!(argTime is Time)) return false;
-            return Equals(argTime);
+            if (!(argTime is Time)) 
+                return false;
+            
+            return Equals((Time)argTime);
         }
 
         public bool Equals(Time other)

@@ -293,14 +293,14 @@
             // beforeCurrentToolStripMenuItem
             // 
             this.beforeCurrentToolStripMenuItem.Name = "beforeCurrentToolStripMenuItem";
-            this.beforeCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.beforeCurrentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.beforeCurrentToolStripMenuItem.Text = "Before current";
             this.beforeCurrentToolStripMenuItem.Click += new System.EventHandler(this.beforeCurrentToolStripMenuItem_Click);
             // 
             // afterCurrentToolStripMenuItem
             // 
             this.afterCurrentToolStripMenuItem.Name = "afterCurrentToolStripMenuItem";
-            this.afterCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.afterCurrentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.afterCurrentToolStripMenuItem.Text = "After current";
             this.afterCurrentToolStripMenuItem.Click += new System.EventHandler(this.afterCurrentToolStripMenuItem_Click);
             // 
