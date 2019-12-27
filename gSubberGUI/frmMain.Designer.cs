@@ -130,6 +130,7 @@
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.grdSubtitles.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.grdSubtitles.AutoSelectFirstRowOnDataSourceChange = false;
             this.grdSubtitles.BackgroundColor = System.Drawing.Color.GhostWhite;
             this.grdSubtitles.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.grdSubtitles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -293,14 +294,14 @@
             // beforeCurrentToolStripMenuItem
             // 
             this.beforeCurrentToolStripMenuItem.Name = "beforeCurrentToolStripMenuItem";
-            this.beforeCurrentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.beforeCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.beforeCurrentToolStripMenuItem.Text = "Before current";
             this.beforeCurrentToolStripMenuItem.Click += new System.EventHandler(this.beforeCurrentToolStripMenuItem_Click);
             // 
             // afterCurrentToolStripMenuItem
             // 
             this.afterCurrentToolStripMenuItem.Name = "afterCurrentToolStripMenuItem";
-            this.afterCurrentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.afterCurrentToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.afterCurrentToolStripMenuItem.Text = "After current";
             this.afterCurrentToolStripMenuItem.Click += new System.EventHandler(this.afterCurrentToolStripMenuItem_Click);
             // 

@@ -104,6 +104,67 @@ namespace gSubberGUI
             lstAttachments.Items.Clear();
         }
 
+        private void SetData(object argData)
+        {
+            grdSubtitles.SuspendLayout();
+
+            // Get the first displayed row index
+            int prevDisplayedRowIndex = grdSubtitles.FirstDisplayedScrollingRowIndex;
+            // Get the first displayed column index
+            int prevDisplayedColumnIndex = grdSubtitles.FirstDisplayedScrollingColumnIndex;
+            // Get the selected row index
+            int prevSelectedRowIndex = grdSubtitles.SelectedIndex;
+
+            // Clear the DataSource 
+            grdSubtitles.DataSource = null;
+
+            // Set the new DataSource
+            if (argData != null)
+            {
+                grdSubtitles.DataSource = argData;
+            }
+
+            // Check if we had a valid previous first displayed row index
+            if (prevDisplayedRowIndex > -1)
+            {
+                // Check if the previous first displayed row index is now valid
+                if (prevDisplayedRowIndex > grdSubtitles.Rows.Count - 1)
+                {
+                    prevDisplayedRowIndex = grdSubtitles.Rows.Count - 1;
+                }
+
+                // Set the previous displayed row index
+                grdSubtitles.FirstDisplayedScrollingRowIndex = prevDisplayedRowIndex;
+            }
+
+            // Check if we had a valid previous first displayed column index
+            if (prevDisplayedColumnIndex > -1)
+            {
+                // Check if the previous first displayed column index is now valid
+                if (prevDisplayedColumnIndex > grdSubtitles.Columns.Count - 1)
+                {
+                    prevDisplayedColumnIndex = grdSubtitles.Columns.Count - 1;
+                }
+
+                // Set the previous displayed row index
+                grdSubtitles.FirstDisplayedScrollingColumnIndex = prevDisplayedColumnIndex;
+            }
+
+            // Check if we had a valid previous selected row index
+            if (prevSelectedRowIndex > -1)
+            {
+                // Check if the previous selected row index is now valid
+                if (prevSelectedRowIndex > grdSubtitles.Rows.Count - 1)
+                {
+                    prevSelectedRowIndex = grdSubtitles.Rows.Count - 1;
+                }
+
+                // Set the previous selected row index
+                grdSubtitles.SetSelectedRowByIndex(prevSelectedRowIndex);
+            }
+
+            grdSubtitles.ResumeLayout();
+        }
 
         private void SetUpDataGridView()
         {
@@ -196,9 +257,9 @@ namespace gSubberGUI
                 // Insert Before ====================
                 _contextMenu.Items.Add(
                     new ToolStripMenuItem(
-                        "Insert subtitle line (before last clicked line)", 
-                        null, 
-                        (object sender, EventArgs e) => 
+                        "Insert subtitle line (before last clicked line)",
+                        null,
+                        (object sender, EventArgs e) =>
                         {
                             if (_results == null || _results.SubFile == null || grdSubtitles.LastClickedRowIndex < 0)
                             {
@@ -221,7 +282,7 @@ namespace gSubberGUI
                                 }
                             );
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -254,7 +315,7 @@ namespace gSubberGUI
                                 }
                             );
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -287,7 +348,7 @@ namespace gSubberGUI
                                 subItem.ShallowClone()
                             );
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -314,7 +375,7 @@ namespace gSubberGUI
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -346,7 +407,7 @@ namespace gSubberGUI
                                 _results.SubFile.Subtitles.RemoveAt(idx);
                             }
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -439,7 +500,7 @@ namespace gSubberGUI
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -482,7 +543,7 @@ namespace gSubberGUI
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
 
-                            grdSubtitles.Refresh();
+                            SetData(_results.SubFile.Subtitles);
                         }
                     )
                 );
@@ -580,7 +641,7 @@ namespace gSubberGUI
             }
 
             SetUpDataGridView();
-            grdSubtitles.DataSource = _results.SubFile.Subtitles;
+            SetData(_results.SubFile.Subtitles);
 
             _results.SubFile.Info.ForEach(i => lstInfo.Items.Add(i));
 
@@ -614,7 +675,7 @@ namespace gSubberGUI
                 OpenFileDialog ofd = new OpenFileDialog();
                 ofd.Title = "Select subtitle file...";
                 ofd.Filter = "(*.srt) Subrip files|*.srt|(*.ass) ASS files|*.ass";
-                if(ofd.ShowDialog() == DialogResult.OK)
+                if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     OpenFile(ofd.FileName);
                 }
@@ -741,14 +802,16 @@ namespace gSubberGUI
                 var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
 
                 // Insert a new subtitle item with the same times
-                _results.SubFile.Subtitles.Insert(idx, 
-                    new SubFileSubtitleItem() {
-                        StartTime = subItem.StartTime 
-                        , EndTime = subItem.EndTime
+                _results.SubFile.Subtitles.Insert(idx,
+                    new SubFileSubtitleItem()
+                    {
+                        StartTime = subItem.StartTime
+                        ,
+                        EndTime = subItem.EndTime
                     }
                 );
 
-                grdSubtitles.Refresh();
+                SetData(_results.SubFile.Subtitles);
             }
             catch (Exception ex)
             {
@@ -781,7 +844,7 @@ namespace gSubberGUI
                     }
                 );
 
-                grdSubtitles.Refresh();
+                SetData(_results.SubFile.Subtitles);
             }
             catch (Exception ex)
             {
@@ -809,7 +872,7 @@ namespace gSubberGUI
                     subItem.ShallowClone()
                 );
 
-                grdSubtitles.Refresh();
+                SetData(_results.SubFile.Subtitles);
             }
             catch (Exception ex)
             {
@@ -841,7 +904,7 @@ namespace gSubberGUI
                     _results.SubFile.Subtitles.RemoveAt(idx);
                 }
 
-                grdSubtitles.Refresh();
+                SetData(_results.SubFile.Subtitles);
             }
             catch (Exception ex)
             {
@@ -849,6 +912,6 @@ namespace gSubberGUI
             }
         }
 
-        
+
     }
 }

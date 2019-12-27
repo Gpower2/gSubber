@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,7 +16,69 @@ namespace gSubberGUI.Controls
     [DefaultEvent("SelectionChanged")]
     public class GDataGridView : DataGridView
     {
+        protected FieldInfo GetEventField(Type type, string eventName)
+        {
+            FieldInfo field = null;
+            while (type != null)
+            {
+                /* Find events defined as field */
+                field = type.GetField(eventName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic);
+                if (field != null && (field.FieldType == typeof(MulticastDelegate) || field.FieldType.IsSubclassOf(typeof(MulticastDelegate))))
+                {
+                    break;
+                }
+
+                /* Find events defined as property { add; remove; } */
+                field = type.GetField(String.Format("EVENT_{0}", eventName.ToUpper()), BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic);
+                if (field != null)
+                {
+                    break;
+                }
+                // Search the base type of the control
+                type = type.BaseType;
+            }
+            return field;
+        }
+
+        protected object RemoveEventHandler(string eventName)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                return null;
+            }
+            // Find the event
+            FieldInfo fi = GetEventField(this.GetType(), eventName);
+            if (fi == null)
+            {
+                return null;
+            }
+            // Keep the original event handler
+            Object eventHandler = fi.GetValue(this);
+            // Clear the original event handler 
+            fi.SetValue(this, null);
+            // Return the original event handler
+            return eventHandler;
+        }
+
+        protected void AddEventHandler(string eventName, object eventHandler)
+        {
+            if (string.IsNullOrWhiteSpace(eventName))
+            {
+                return;
+            }
+            // Find the event
+            var fi = GetEventField(this.GetType(), eventName);
+            if (fi == null)
+            {
+                return;
+            }
+            // Set the original event handler
+            fi.SetValue(this, eventHandler);
+        }
+
         #region "Base Properties overrides"
+
+        protected bool _DataSourcePopulating = false;
 
         [Browsable(true)]
         [Category("Data")]
@@ -29,7 +92,7 @@ namespace gSubberGUI.Controls
             {
                 try
                 {
-                    this.Enabled = false;
+                    _DataSourcePopulating = true;
                     this.SuspendLayout();
                     // Check if DataSource is an IList, but not an ISortableBindingList
                     if (value is IList && !(value is ISortableBindingList))
@@ -53,13 +116,22 @@ namespace gSubberGUI.Controls
                 }
                 finally
                 {
-                    this.Enabled = true;
+                    _DataSourcePopulating = false;
                     this.ResumeLayout();
                 }
             }
         }
 
         #endregion
+
+        protected bool _DataSourceSorting = false;
+
+        [Browsable(true)]
+        [Category("Custom Properties")]
+        public bool AutoSelectFirstRowOnDataSourceChange
+        {
+            get; set;
+        } = false;
 
         protected PropertyGridForm _PropertyForm = null;
         protected Object _LastSelectedKey = null;
@@ -852,7 +924,6 @@ namespace gSubberGUI.Controls
         {
             try
             {
-                this.Enabled = false;
                 this.SuspendLayout();
 
                 this.DefaultCellStyle.BackColor = _CustomRowBackgroundColor;
@@ -872,7 +943,6 @@ namespace gSubberGUI.Controls
             {
                 this.ResumeLayout();
                 this.PerformLayout();
-                this.Enabled = true;
             }
         }
 
@@ -985,6 +1055,92 @@ namespace gSubberGUI.Controls
                         // If we are in the same column, then e.X equals to Width
                         c.Column.Width = e.X;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+        }
+
+        public override void Sort(DataGridViewColumn dataGridViewColumn, ListSortDirection direction)
+        {
+            _DataSourceSorting = true;
+            base.Sort(dataGridViewColumn, direction);
+            _DataSourceSorting = false;
+            if (_LastSelectedKey != null)
+            {
+                SetSelectedRowByKey(_LastSelectedKey);
+            }
+            else
+            {
+                ClearSelection();
+            }
+        }
+
+        public override void Sort(IComparer comparer)
+        {
+            // Avoid running the OnSelectionEventChange while sorting
+            _DataSourceSorting = true;
+            base.Sort(comparer);
+            _DataSourceSorting = false;
+
+            // After sorting, restore the previous selection
+            if (_LastSelectedKey != null)
+            {
+                SetSelectedRowByKey(_LastSelectedKey);
+            }
+            else
+            {
+                ClearSelection();
+            }
+        }
+
+        protected override void OnCurrentCellChanged(EventArgs e)
+        {
+            base.OnCurrentCellChanged(e);
+        }
+
+        protected bool _FromInsideSelectionChangedEvent = false;
+
+        protected override void OnSelectionChanged(EventArgs e)
+        {
+            if (_FromInsideSelectionChangedEvent || _DataSourceSorting)
+            {
+                return;
+            }
+
+            // If DataSource is being set, avoid auto selecting the first row
+            if (!AutoSelectFirstRowOnDataSourceChange && _DataSourcePopulating)
+            {
+                if (SelectedCells.Count > 0)
+                {
+                    _FromInsideSelectionChangedEvent = true;
+
+                    // Remove the event handler, in order to avoid events in the containing form
+                    string eventName = "DATAGRIDVIEWSELECTIONCHANGED";
+                    object eventHandler = RemoveEventHandler(eventName);
+
+                    // Clear the DataGridView selection
+                    ClearSelection();
+                    base.OnSelectionChanged(e);
+
+                    // Add the form's event handler
+                    AddEventHandler(eventName, eventHandler);
+
+                    _FromInsideSelectionChangedEvent = false;
+                }
+            }
+            else
+            {
+                base.OnSelectionChanged(e);
+            }
+
+            try
+            {
+                if (SelectedCells.Count == 0)
+                {
+                    _LastSelectedKey = null;
                 }
             }
             catch (Exception ex)
