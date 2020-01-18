@@ -7,20 +7,15 @@ namespace gSubber.Core.SubtitleFile
 {
     public class SubFile
     {
-        private List<SubFileInfoItem> _Info = new List<SubFileInfoItem>();
-        public List<SubFileInfoItem> Info { get { return _Info; } }
+        public List<SubFileInfoItem> Info { get; } = new List<SubFileInfoItem>();
 
-        private List<SubFilePropertyItem> _Properties = new List<SubFilePropertyItem>();
-        public List<SubFilePropertyItem> Properties { get { return _Properties; } }
+        public List<SubFilePropertyItem> Properties { get; } = new List<SubFilePropertyItem>();
 
-        private List<SubFileStyleItem> _Styles = new List<SubFileStyleItem>();
-        public List<SubFileStyleItem> Styles { get { return _Styles; } }
+        public List<SubFileStyleItem> Styles { get; } = new List<SubFileStyleItem>();
 
-        private List<SubFileSubtitleItem> _Subtitles = new List<SubFileSubtitleItem>();
-        public List<SubFileSubtitleItem> Subtitles { get { return _Subtitles; } }
+        public List<SubFileSubtitleItem> Subtitles { get; } = new List<SubFileSubtitleItem>();
 
-        private List<SubFileAttachment> _Attachments = new List<SubFileAttachment>();
-        public List<SubFileAttachment> Attachments { get { return _Attachments; } }
+        public List<SubFileAttachment> Attachments { get; } = new List<SubFileAttachment>();
 
         public string Filename { get; private set; }
 

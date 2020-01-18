@@ -946,11 +946,11 @@ namespace gSubberGUI
                 // Check if we have regular expression or normal/extended search mode
                 if (searchmode == SearchMode.RegularExpression)
                 {
-                    // Replace the text
-                    sub.Text = regex.Replace(sub.Text, textForReplace);
-
                     // Update the matches counter
                     totalMatchCount += regex.Matches(sub.Text).Count;
+
+                    // Replace the text
+                    sub.Text = regex.Replace(sub.Text, textForReplace);
                 }
                 else
                 {
