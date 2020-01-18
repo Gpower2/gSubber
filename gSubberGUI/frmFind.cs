@@ -296,11 +296,19 @@ namespace gSubberGUI
             if (rbtnNormal.Checked)
             {
                 searchmode = SearchMode.Normal;
+                if (!matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
             }
             else if (rbtnExtended.Checked)
             {
                 searchmode = SearchMode.Extended;
                 textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
+                if (!matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
             }
             else if (rbtnRegularExpression.Checked)
             {
@@ -408,20 +416,23 @@ namespace gSubberGUI
                 else
                 {
                     int startIndex;
+                    string subText = sub.Text;
+                    if (!matchCase)
+                    {
+                        subText = subText.ToLower();
+                    }
                     if (
                         // Check if we are in the start row and then search from the startTextIndex
                         currentRowIndex == startRowIndex &&
                             (
                                 // Check if we have match case and if not convert text to lower case to search
-                                matchCase && (startIndex = sub.Text.IndexOf(textToFind, startTextIndex)) > -1
-                                || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower(), startTextIndex)) > -1
+                                (startIndex = subText.IndexOf(textToFind, startTextIndex)) > -1
                             )
                         // Check if we are in the start row and then search from the startTextIndex
                         || currentRowIndex != startRowIndex &&
                             (
                                 // Check if we have match case and if not convert text to lower case to search
-                                matchCase && (startIndex = sub.Text.IndexOf(textToFind)) > -1
-                                || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower())) > -1
+                                (startIndex = subText.IndexOf(textToFind)) > -1
                             )
                         )
                     {
@@ -432,12 +443,12 @@ namespace gSubberGUI
                                 (
                                     (
                                         startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                     )
                                     &&
                                     (
-                                        startIndex + textToFind.Length == sub.Text.Length
-                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                        startIndex + textToFind.Length == subText.Length
+                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
                                     )
                                 )
                             )
@@ -516,7 +527,7 @@ namespace gSubberGUI
             if (rbtnNormal.Checked)
             {
                 searchmode = SearchMode.Normal;
-                if (matchCase)
+                if (!matchCase)
                 {
                     textToFind = textToFind.ToLower();
                 }
@@ -525,7 +536,7 @@ namespace gSubberGUI
             {
                 searchmode = SearchMode.Extended;
                 textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
-                if (matchCase)
+                if (!matchCase)
                 {
                     textToFind = textToFind.ToLower();
                 }
@@ -592,12 +603,12 @@ namespace gSubberGUI
                                 (
                                     (
                                         startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                     )
                                     &&
                                     (
-                                        startIndex + textToFind.Length == sub.Text.Length
-                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                        startIndex + textToFind.Length == subText.Length
+                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
                                     )
                                 )
                             )
@@ -648,17 +659,24 @@ namespace gSubberGUI
             if (rbtnNormal.Checked)
             {
                 searchmode = SearchMode.Normal;
+                if (!matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
             }
             else if (rbtnExtended.Checked)
             {
                 searchmode = SearchMode.Extended;
                 textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
+                if (!matchCase)
+                {
+                    textToFind = textToFind.ToLower();
+                }
             }
             else if (rbtnRegularExpression.Checked)
             {
                 searchmode = SearchMode.RegularExpression;
             }
-
 
             // If we have RegularExpression search mode, create the Regular Expression
             Regex regex = null;
@@ -760,21 +778,24 @@ namespace gSubberGUI
                 }
                 else
                 {
+                    string subText = sub.Text;
+                    if (!matchCase)
+                    {
+                        subText = sub.Text.ToLower();
+                    }
                     int startIndex;
                     if (
                         // Check if we are in the start row and then search from the startTextIndex
                         currentRowIndex == startRowIndex &&
                             (
                                 // Check if we have match case and if not convert text to lower case to search
-                                matchCase && (startIndex = sub.Text.IndexOf(textToFind, startTextIndex)) > -1
-                                || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower(), startTextIndex)) > -1
+                                (startIndex = subText.IndexOf(textToFind, startTextIndex)) > -1
                             )
                         // Check if we are in the start row and then search from the startTextIndex
                         || currentRowIndex != startRowIndex &&
                             (
                                 // Check if we have match case and if not convert text to lower case to search
-                                matchCase && (startIndex = sub.Text.IndexOf(textToFind)) > -1
-                                || !matchCase && (startIndex = sub.Text.ToLower().IndexOf(textToFind.ToLower())) > -1
+                                (startIndex = subText.IndexOf(textToFind)) > -1
                             )
                         )
                     {
@@ -785,12 +806,12 @@ namespace gSubberGUI
                                 (
                                     (
                                         startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                     )
                                     &&
                                     (
-                                        startIndex + textToFind.Length == sub.Text.Length
-                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                        startIndex + textToFind.Length == subText.Length
+                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
                                     )
                                 )
                             )
@@ -890,7 +911,7 @@ namespace gSubberGUI
             if (rbtnNormal.Checked)
             {
                 searchmode = SearchMode.Normal;
-                if (matchCase)
+                if (!matchCase)
                 {
                     textToFind = textToFind.ToLower();
                 }
@@ -899,7 +920,7 @@ namespace gSubberGUI
             {
                 searchmode = SearchMode.Extended;
                 textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
-                if (matchCase)
+                if (!matchCase)
                 {
                     textToFind = textToFind.ToLower();
                 }
@@ -970,12 +991,12 @@ namespace gSubberGUI
                                 (
                                     (
                                         startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(sub.Text[startIndex - 1]))
+                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                     )
                                     &&
                                     (
-                                        startIndex + textToFind.Length == sub.Text.Length
-                                        || (startIndex + textToFind.Length < sub.Text.Length && _WordSeparators.Contains(sub.Text[startIndex + textToFind.Length]))
+                                        startIndex + textToFind.Length == subText.Length
+                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
                                     )
                                 )
                             )
