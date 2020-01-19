@@ -75,7 +75,7 @@
             this.cmbTextToFind.FormattingEnabled = true;
             this.cmbTextToFind.Location = new System.Drawing.Point(66, 21);
             this.cmbTextToFind.Name = "cmbTextToFind";
-            this.cmbTextToFind.Size = new System.Drawing.Size(265, 23);
+            this.cmbTextToFind.Size = new System.Drawing.Size(365, 23);
             this.cmbTextToFind.TabIndex = 0;
             // 
             // chkMatchCase
@@ -210,7 +210,7 @@
             this.grpTransparency.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpTransparency.Location = new System.Drawing.Point(193, 3);
             this.grpTransparency.Name = "grpTransparency";
-            this.grpTransparency.Size = new System.Drawing.Size(288, 104);
+            this.grpTransparency.Size = new System.Drawing.Size(388, 104);
             this.grpTransparency.TabIndex = 12;
             this.grpTransparency.TabStop = false;
             this.grpTransparency.Text = "Transparency";
@@ -224,7 +224,7 @@
             this.trkTransparency.Maximum = 100;
             this.trkTransparency.Minimum = 10;
             this.trkTransparency.Name = "trkTransparency";
-            this.trkTransparency.Size = new System.Drawing.Size(243, 25);
+            this.trkTransparency.Size = new System.Drawing.Size(343, 25);
             this.trkTransparency.TabIndex = 3;
             this.trkTransparency.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trkTransparency.Value = 100;
@@ -275,7 +275,7 @@
             this.grpActions.Controls.Add(this.btnFindPrevious);
             this.grpActions.Controls.Add(this.btnFindNext);
             this.grpActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpActions.Location = new System.Drawing.Point(357, 3);
+            this.grpActions.Location = new System.Drawing.Point(457, 3);
             this.grpActions.Name = "grpActions";
             this.grpActions.Size = new System.Drawing.Size(124, 285);
             this.grpActions.TabIndex = 13;
@@ -323,7 +323,7 @@
             this.grpFindInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpFindInput.Location = new System.Drawing.Point(3, 3);
             this.grpFindInput.Name = "grpFindInput";
-            this.grpFindInput.Size = new System.Drawing.Size(348, 285);
+            this.grpFindInput.Size = new System.Drawing.Size(448, 285);
             this.grpFindInput.TabIndex = 14;
             this.grpFindInput.TabStop = false;
             // 
@@ -353,7 +353,7 @@
             this.cmbTextForReplace.FormattingEnabled = true;
             this.cmbTextForReplace.Location = new System.Drawing.Point(66, 55);
             this.cmbTextForReplace.Name = "cmbTextForReplace";
-            this.cmbTextForReplace.Size = new System.Drawing.Size(265, 23);
+            this.cmbTextForReplace.Size = new System.Drawing.Size(365, 23);
             this.cmbTextForReplace.TabIndex = 11;
             // 
             // tlpMain
@@ -368,7 +368,7 @@
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 110F));
-            this.tlpMain.Size = new System.Drawing.Size(484, 401);
+            this.tlpMain.Size = new System.Drawing.Size(584, 401);
             this.tlpMain.TabIndex = 15;
             // 
             // tlpUp
@@ -384,7 +384,7 @@
             this.tlpUp.Name = "tlpUp";
             this.tlpUp.RowCount = 1;
             this.tlpUp.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpUp.Size = new System.Drawing.Size(484, 291);
+            this.tlpUp.Size = new System.Drawing.Size(584, 291);
             this.tlpUp.TabIndex = 0;
             // 
             // tlpDown
@@ -401,13 +401,13 @@
             this.tlpDown.RowCount = 1;
             this.tlpDown.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpDown.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpDown.Size = new System.Drawing.Size(484, 110);
+            this.tlpDown.Size = new System.Drawing.Size(584, 110);
             this.tlpDown.TabIndex = 1;
             // 
             // frmFind
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.ClientSize = new System.Drawing.Size(484, 401);
+            this.ClientSize = new System.Drawing.Size(584, 401);
             this.Controls.Add(this.tlpMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.MaximumSize = new System.Drawing.Size(1200, 440);
