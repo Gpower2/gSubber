@@ -756,11 +756,10 @@ namespace gSubberGUI
                 // Check if we have regular expression or normal/extended search mode
                 if (searchmode == SearchMode.RegularExpression)
                 {
-                    Match match;
                     if (
                         // Check if we are in the start row and then search from the startTextIndex
-                        currentRowIndex == startRowIndex && (match = regex.Match(sub.Text, startTextIndex)).Success
-                        || currentRowIndex != startRowIndex && (match = regex.Match(sub.Text)).Success
+                        currentRowIndex == startRowIndex && regex.Match(sub.Text, startTextIndex).Success
+                        || currentRowIndex != startRowIndex && regex.Match(sub.Text).Success
                         )
                     {
                         // Found match! Select the row
