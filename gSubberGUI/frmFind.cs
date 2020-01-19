@@ -21,6 +21,7 @@ namespace gSubberGUI
         {
             public Queue<string> LastSearches { get; set; }
 
+            public Queue<string> LastReplaces { get; set; }
 
             public bool MatchCase { get; set; }
 
@@ -145,6 +146,20 @@ namespace gSubberGUI
 
         private void SaveSettings()
         {
+            // Add the text to find in the last searches items
+            string textToFind = cmbTextToFind.Text;
+            if (!cmbTextToFind.Items.Contains(textToFind))
+            {
+                cmbTextToFind.Items.Add(textToFind);
+            }
+
+            // Add the text to replace in the last replacements items
+            string textForReplace = cmbTextForReplace.Text;
+            if (!cmbTextForReplace.Items.Contains(textToFind))
+            {
+                cmbTextForReplace.Items.Add(textForReplace);
+            }
+
             FindSettings settings = new FindSettings()
             {
                 MatchCase = chkMatchCase.Checked,
@@ -158,7 +173,11 @@ namespace gSubberGUI
                 UseTransparency = chkUseTransparency.Checked,
                 UseTransparencyAlways = rbtnTransaparencyAlways.Checked,
                 UseTransparencyOnLostFocus = rbtnTransparencyOnLostFocus.Checked,
-                TransparencyValue = trkTransparency.Value
+                TransparencyValue = trkTransparency.Value,
+
+                LastSearches = new Queue<string>(cmbTextToFind.Items.Cast<string>()),
+
+                LastReplaces = new Queue<string>(cmbTextForReplace.Items.Cast<string>())
             };
 
             using (StreamWriter sw = new StreamWriter("findSettings.json"))
@@ -181,6 +200,10 @@ namespace gSubberGUI
             rbtnTransaparencyAlways.Checked = argSettings.UseTransparencyAlways;
             rbtnTransparencyOnLostFocus.Checked = argSettings.UseTransparencyOnLostFocus;
             trkTransparency.Value = argSettings.TransparencyValue;
+
+            cmbTextToFind.Items.AddRange(argSettings.LastSearches?.ToArray() ?? new Queue<string>().ToArray());
+
+            cmbTextForReplace.Items.AddRange(argSettings.LastReplaces?.ToArray() ?? new Queue<string>().ToArray());
         }
 
         private void chkUseTransparency_CheckedChanged(object sender, EventArgs e)
@@ -251,16 +274,73 @@ namespace gSubberGUI
 
         private void btnFindNext_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
             Find(true);
         }
 
         private void btnFindPrevious_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
             Find(false);
+        }
+
+        private void btnReplaceNext_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
+            Replace(true);
+        }
+
+        private void btnReplacePrevious_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
+            Replace(true);
+        }
+
+        private void btnReplaceAll_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
+            ReplaceAll();
         }
 
         private void btnCount_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(cmbTextToFind.Text))
+            {
+                return;
+            }
+
+            SaveSettings();
+
             CountMatches();
         }
 
@@ -629,16 +709,6 @@ namespace gSubberGUI
             ShowInformationMessage($"Total matches found for '{textToFind}' : {totalMatchCount}");
         }
 
-        private void btnReplaceNext_Click(object sender, EventArgs e)
-        {
-            Replace(true);
-        }
-
-        private void btnReplacePrevious_Click(object sender, EventArgs e)
-        {
-            Replace(true);
-        }
-
         private void Replace(bool argNext)
         {
             string textToFind = cmbTextToFind.Text;
@@ -883,11 +953,6 @@ namespace gSubberGUI
             {
                 ShowWarningMessage($"The text '{textToFind}' was not found!");
             }
-        }
-
-        private void btnReplaceAll_Click(object sender, EventArgs e)
-        {
-            ReplaceAll();
         }
 
         private void ReplaceAll()
