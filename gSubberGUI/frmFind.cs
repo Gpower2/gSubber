@@ -276,7 +276,9 @@ namespace gSubberGUI
             RegularExpression
         }
 
-        private static char[] _WordSeparators = new char[] { '.', ',', ' ', '?', '"', '\'', '\r', '\n', '\t', ':', ';', '<', '>', '/', '\\', '[', ']', '{', '}', '(', ')', '-', '_', '+', '=', '!', '@', '#', '$', '%', '^', '&', '*', '`', '~', '|', '\\' };
+        private static char[] _WordSeparators = new char[] { '.', ',', ' ', '?', '"', '\'', '\r', '\n', '\t', ':', ';', '<', '>', '/', '\\', '[', ']', '{', '}', '(', ')', '-', '_', '+', '=', '!', '@', '#', '$', '%', '^', '&', '*', '`', '~', '|' };
+
+        private static string _RegExWordSeparators = "[., ?\"'\\r\\n\\t:;<>/\\\\\\[\\]{}\\(\\)-_+=!@#$%^&*`~|]";
 
         private void Find(bool argNext)
         {
@@ -331,7 +333,7 @@ namespace gSubberGUI
                 // Check if we have match whole word
                 if (matchWholeWord)
                 {
-                    regexTextToFind = $@"\b{textToFind}\b";
+                    regexTextToFind = $@"(?<={_RegExWordSeparators}|^){textToFind}(?={_RegExWordSeparators}|$)";
                 }
 
                 regex = new Regex(regexTextToFind, regexOptions);
@@ -437,22 +439,21 @@ namespace gSubberGUI
                         )
                     {
                         if (
+                            // Check if we have match whole word
+                            !matchWholeWord
+                            ||
                             (
-                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
-                                matchWholeWord &&
+                                // Check if the previous and next characters are in the word separators array
                                 (
-                                    (
-                                        startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
-                                    )
-                                    &&
-                                    (
-                                        startIndex + textToFind.Length == subText.Length
-                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
-                                    )
+                                    startIndex == 0
+                                    || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
+                                )
+                                &&
+                                (
+                                    startIndex + textToFind.Length == subText.Length
+                                    || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
                                 )
                             )
-                            || !matchWholeWord
                         )
                         {
                             // Found match! Select the row
@@ -562,7 +563,7 @@ namespace gSubberGUI
                 // Check if we have match whole word
                 if (matchWholeWord)
                 {
-                    regexTextToFind = $@"\b{textToFind}\b";
+                    regexTextToFind = $@"(?<={_RegExWordSeparators}|^){textToFind}(?={_RegExWordSeparators}|$)";
                 }
 
                 regex = new Regex(regexTextToFind, regexOptions);
@@ -597,22 +598,21 @@ namespace gSubberGUI
                     while ((startIndex = subText.IndexOf(textToFind, startIndex)) > -1)
                     {
                         if (
+                            // Check if we have match whole word
+                            !matchWholeWord
+                            ||
                             (
-                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
-                                matchWholeWord &&
+                                // Check if the previous and next characters are in the word separators array
                                 (
-                                    (
-                                        startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
-                                    )
-                                    &&
-                                    (
-                                        startIndex + textToFind.Length == subText.Length
-                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
-                                    )
+                                    startIndex == 0
+                                    || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                 )
-                            )
-                            || !matchWholeWord
+                                &&
+                                (
+                                    startIndex + textToFind.Length == subText.Length
+                                    || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
+                                )
+                            ) 
                         )
                         {
                             totalMatchCount++;
@@ -694,7 +694,7 @@ namespace gSubberGUI
                 // Check if we have match whole word
                 if (matchWholeWord)
                 {
-                    regexTextToFind = $@"\b{textToFind}\b";
+                    regexTextToFind = $@"(?<={_RegExWordSeparators}|^){textToFind}(?={_RegExWordSeparators}|$)";
                 }
 
                 regex = new Regex(regexTextToFind, regexOptions);
@@ -799,22 +799,21 @@ namespace gSubberGUI
                         )
                     {
                         if (
+                            // Check if we have match whole word
+                            !matchWholeWord
+                            ||
                             (
-                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
-                                matchWholeWord &&
+                                // Check if the previous and next characters are in the word separators array
                                 (
-                                    (
-                                        startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
-                                    )
-                                    &&
-                                    (
-                                        startIndex + textToFind.Length == subText.Length
-                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
-                                    )
+                                    startIndex == 0
+                                    || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                 )
-                            )
-                            || !matchWholeWord
+                                &&
+                                (
+                                    startIndex + textToFind.Length == subText.Length
+                                    || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
+                                )
+                            ) 
                         )
                         {
                             // Found match! Select the row
@@ -945,7 +944,7 @@ namespace gSubberGUI
                 // Check if we have match whole word
                 if (matchWholeWord)
                 {
-                    regexTextToFind = $@"\b{textToFind}\b";
+                    regexTextToFind = $@"(?<={_RegExWordSeparators}|^){textToFind}(?={_RegExWordSeparators}|$)";
                 }
 
                 regex = new Regex(regexTextToFind, regexOptions);
@@ -983,23 +982,22 @@ namespace gSubberGUI
 
                     while ((startIndex = subText.IndexOf(textToFind, startIndex)) > -1)
                     {
+                        // Check if we have match whole word
                         if (
+                            !matchWholeWord
+                            ||
                             (
-                                // Check if we have match whole word and then check if the previous and next characters are in the word separators array
-                                matchWholeWord &&
+                                // Check if the previous and next characters are in the word separators array
                                 (
-                                    (
-                                        startIndex == 0
-                                        || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
-                                    )
-                                    &&
-                                    (
-                                        startIndex + textToFind.Length == subText.Length
-                                        || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
-                                    )
+                                    startIndex == 0
+                                    || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
                                 )
-                            )
-                            || !matchWholeWord
+                                &&
+                                (
+                                    startIndex + textToFind.Length == subText.Length
+                                    || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
+                                )                                
+                            ) 
                         )
                         {
                             // Replace the text
