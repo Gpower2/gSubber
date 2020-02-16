@@ -3,6 +3,7 @@ using gSubber.Core.SubtitleFile;
 using gSubber.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -272,7 +273,7 @@ namespace gSubber.Formats
             {
                 return false;
             }
-            if(StringHelper.NumberOfOccurences(timeElements[0], ":") != 2)
+            if(StringExtensions.NumberOfOccurences(timeElements[0], ":") != 2)
             {
                 return false;
             }
@@ -313,7 +314,7 @@ namespace gSubber.Formats
                 return false;
             }
 
-            if (StringHelper.NumberOfOccurences(timeElements[1], ":") != 2)
+            if (StringExtensions.NumberOfOccurences(timeElements[1], ":") != 2)
             {
                 return false;
             }
@@ -356,15 +357,15 @@ namespace gSubber.Formats
             return true;
         }
 
-        public Time GetTimeFromFormatString(string argTime)
+        public Time GetTimeFromFormatString(string argTimeFormatString)
         {
-            if (String.IsNullOrWhiteSpace(argTime))
+            if (String.IsNullOrWhiteSpace(argTimeFormatString))
             {
                 throw new Exception("Empty SRT time!");
             }
-            argTime = argTime.Trim();
+            argTimeFormatString = argTimeFormatString.Trim();
             //00:00:01,742
-            string[] timeElements = argTime.Split(new string[] { ":" }, StringSplitOptions.None);
+            string[] timeElements = argTimeFormatString.Split(new string[] { ":" }, StringSplitOptions.None);
             if (timeElements.Length != 3)
             {
                 throw new Exception("Malformed SRT time!");
@@ -425,6 +426,16 @@ namespace gSubber.Formats
                 argTime.Seconds.ToString("00"),
                 argTime.Milliseconds.ToString("000")
             );
+        }
+
+        public Color GetColorFromFormatString(string argColorFormatString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ConvertColorToFormatString(Color argColor)
+        {
+            throw new NotImplementedException();
         }
     }
 }

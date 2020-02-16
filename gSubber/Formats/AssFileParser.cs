@@ -7,6 +7,7 @@ using System.Globalization;
 using gSubber.Helpers;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
+using System.Drawing;
 
 namespace gSubber.Formats
 {
@@ -183,10 +184,10 @@ namespace gSubber.Formats
                             style.Fontname = styleElements[1];
                             style.Fontsize = float.Parse(styleElements[2], NumberStyles.Any, CultureInfo.InvariantCulture);
 
-                            style.PrimaryColor = ColorHelper.FromASS(styleElements[3]);
-                            style.SecondaryColor = ColorHelper.FromASS(styleElements[4]);
-                            style.OutlineColor = ColorHelper.FromASS(styleElements[5]);
-                            style.BackColor = ColorHelper.FromASS(styleElements[6]);
+                            style.PrimaryColor = GetColorFromFormatString(styleElements[3]);
+                            style.SecondaryColor = GetColorFromFormatString(styleElements[4]);
+                            style.OutlineColor = GetColorFromFormatString(styleElements[5]);
+                            style.BackColor = GetColorFromFormatString(styleElements[6]);
 
                             style.Bold = (Int16.Parse(styleElements[7]) == 0 ? false : true);
                             style.Italic = (Int16.Parse(styleElements[8]) == 0 ? false : true);
@@ -337,10 +338,10 @@ namespace gSubber.Formats
                     style.Name.Trim(),
                      style.Fontname.Trim(),
                      style.Fontsize.ToString(CultureInfo.InvariantCulture),
-                     ColorHelper.ToASS(style.PrimaryColor),
-                     ColorHelper.ToASS(style.SecondaryColor),
-                     ColorHelper.ToASS(style.OutlineColor),
-                     ColorHelper.ToASS(style.BackColor),
+                     ConvertColorToFormatString(style.PrimaryColor),
+                     ConvertColorToFormatString(style.SecondaryColor),
+                     ConvertColorToFormatString(style.OutlineColor),
+                     ConvertColorToFormatString(style.BackColor),
                      style.Bold ? "-1" : "0",
                      style.Italic ? "-1" : "0",
                      style.Underline ? "-1" : "0",
@@ -402,15 +403,15 @@ namespace gSubber.Formats
             //throw new NotImplementedException();
         }
 
-        public Time GetTimeFromFormatString(string argTime)
+        public Time GetTimeFromFormatString(string argTimeFormatString)
         {
-            if (String.IsNullOrWhiteSpace(argTime))
+            if (String.IsNullOrWhiteSpace(argTimeFormatString))
             {
                 throw new Exception("Empty ASS time!");
             }
-            argTime = argTime.Trim();
+            argTimeFormatString = argTimeFormatString.Trim();
             //0:04:59.88
-            string[] timeElements = argTime.Split(new string[] { ":" }, StringSplitOptions.None);
+            string[] timeElements = argTimeFormatString.Split(new string[] { ":" }, StringSplitOptions.None);
             if (timeElements.Length != 3)
             {
                 throw new Exception("Malformed ASS time!");
@@ -470,6 +471,76 @@ namespace gSubber.Formats
                 , argTime.Minutes
                 , argTime.Seconds
                 , ((double)argTime.Milliseconds) / 10.0);
+        }
+
+        public Color GetColorFromFormatString(string argColorFormatString)
+        {
+            //&H00693212
+            if (String.IsNullOrWhiteSpace(argColorFormatString))
+            {
+                throw new Exception("Empty ASS color!");
+            }
+            argColorFormatString = argColorFormatString.Trim();
+            if (argColorFormatString.Length != 10 && argColorFormatString.Length != 8)
+            {
+                throw new Exception("The ASS color is malformed!");
+            }
+            string assColorToParse = argColorFormatString;
+            if (argColorFormatString.Length == 10)
+            {
+                assColorToParse = argColorFormatString.Substring(2);
+            }
+            byte dummyByte, red, green, blue, alpha;
+            if (byte.TryParse(assColorToParse.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out dummyByte))
+            {
+                red = dummyByte;
+            }
+            else
+            {
+                throw new Exception("The ASS color is malformed! (red)");
+            }
+            if (byte.TryParse(assColorToParse.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out dummyByte))
+            {
+                green = dummyByte;
+            }
+            else
+            {
+                throw new Exception("The ASS color is malformed! (green)");
+            }
+            if (byte.TryParse(assColorToParse.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out dummyByte))
+            {
+                blue = dummyByte;
+            }
+            else
+            {
+                throw new Exception("The ASS color is malformed! (blue)");
+            }
+            if (byte.TryParse(assColorToParse.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out dummyByte))
+            {
+                alpha = dummyByte;
+            }
+            else
+            {
+                throw new Exception("The ASS color is malformed! (Alpha)");
+            }
+
+            return Color.FromArgb(alpha, red, green, blue);
+        }
+
+        public string ConvertColorToFormatString(Color argColor)
+        {
+            if (argColor == null)
+            {
+                throw new Exception("Color is null!");
+            }
+            //&H00693212
+            //&H 00 69 32 12
+            return String.Format("&H{0}{1}{2}{3}",
+                argColor.R.ToString("X2")
+                , argColor.G.ToString("X2")
+                , argColor.B.ToString("X2")
+                , argColor.A.ToString("X2")
+            );
         }
 
         //private Byte[] UUDecode(String argFourChars)

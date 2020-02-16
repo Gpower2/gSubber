@@ -333,20 +333,20 @@
             // adjustDurationsToolStripMenuItem
             // 
             this.adjustDurationsToolStripMenuItem.Name = "adjustDurationsToolStripMenuItem";
-            this.adjustDurationsToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.adjustDurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.adjustDurationsToolStripMenuItem.Text = "Adjust times...";
             // 
             // fixIssuesToolStripMenuItem
             // 
             this.fixIssuesToolStripMenuItem.Name = "fixIssuesToolStripMenuItem";
-            this.fixIssuesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.fixIssuesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fixIssuesToolStripMenuItem.Text = "Fix issues...";
             // 
             // changeCasingToolStripMenuItem
             // 
             this.changeCasingToolStripMenuItem.Name = "changeCasingToolStripMenuItem";
-            this.changeCasingToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-            this.changeCasingToolStripMenuItem.Text = "Change Casing...";
+            this.changeCasingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeCasingToolStripMenuItem.Text = "Change casing...";
             // 
             // exitToolStripMenuItem
             // 

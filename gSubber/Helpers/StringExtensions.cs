@@ -5,7 +5,7 @@ using System.Text;
 
 namespace gSubber.Helpers
 {
-    public static class StringHelper
+    public static class StringExtensions
     {
         public static Int32 NumberOfOccurences(string argSource, string argSearch)
         {
