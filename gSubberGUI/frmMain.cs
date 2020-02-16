@@ -12,7 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
-using gSubber.Helpers;
+using gSubber.Extensions;
 using gSubberGUI.Controls;
 using System.Reflection;
 

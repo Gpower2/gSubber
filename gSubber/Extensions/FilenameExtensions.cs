@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace gSubber.Helpers
+namespace gSubber.Extensions
 {
     public static class FilenameExtensions
     {

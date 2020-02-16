@@ -1,6 +1,6 @@
 ﻿using gSubber.Core;
 using gSubber.Core.SubtitleFile;
-using gSubber.Helpers;
+using gSubber.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

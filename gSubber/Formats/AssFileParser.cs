@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Globalization;
-using gSubber.Helpers;
+using gSubber.Extensions;
 using gSubber.Core;
 using gSubber.Core.SubtitleFile;
 using System.Drawing;
