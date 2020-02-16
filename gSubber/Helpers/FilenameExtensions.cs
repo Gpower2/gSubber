@@ -6,18 +6,18 @@ using System.Text;
 
 namespace gSubber.Helpers
 {
-    public static class FileHelper
+    public static class FilenameExtensions
     {
         /// <summary>
         /// Returns the encoding from a text file
         /// </summary>
-        /// <param name="filename">The text file's full filename</param>
+        /// <param name="argFilename">The text file's full filename</param>
         /// <returns>The file's encoding (If it's not UTF-8 then it's ALWAYS ASCII)</returns>
-        public static Encoding GetEncoding(string filename)
+        public static Encoding GetEncoding(this string argFilename)
         {
             // Read the first 4 bytes to check for a valid BOM
             var bom = new byte[4];
-            using (var file = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var file = new FileStream(argFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 file.Read(bom, 0, 4);
             }
@@ -47,7 +47,7 @@ namespace gSubber.Helpers
             // No BOM was found, so we check for UTF-8 characters (multibyte)
 
             // Read the file contents into a byte array, since ReadByte() from FileStream takes too long
-            byte[] fileContents = File.ReadAllBytes(filename);
+            byte[] fileContents = File.ReadAllBytes(argFilename);
 
             for (Int64 i = 0; i < fileContents.LongLength; i++)
             {

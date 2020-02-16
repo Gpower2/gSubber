@@ -600,7 +600,7 @@ namespace gSubberGUI
 
             _parser = SubFileParserFactory.GetSubFileParser(argFilename);
 
-            Encoding enc = FileHelper.GetEncoding(argFilename);
+            Encoding enc = argFilename.GetEncoding();
             if (enc == Encoding.ASCII) enc = System.Text.Encoding.Default;
 
             _results = _parser.Load(argFilename, enc);
