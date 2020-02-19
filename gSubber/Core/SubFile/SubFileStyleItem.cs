@@ -50,9 +50,9 @@ namespace gSubber.Core.SubtitleFile
 
     public class SubFileStyleItem
     {
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Fontname { get; set; }
+        public string Fontname { get; set; }
 
         public float Fontsize { get; set; }
 

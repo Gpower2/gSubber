@@ -312,23 +312,23 @@ namespace gSubber.Core
 
         public override string ToString()
         {
-            return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
+            return string.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
         }
 
-        public String ToString(TimeFormat argTimeFormat)
+        public string ToString(TimeFormat argTimeFormat)
         {
             switch (argTimeFormat)
             {
                 case TimeFormat.WithSeconds:
-                    return String.Format("{0:#00}:{1:00}:{2:00}", Hours, Minutes, Seconds);
+                    return string.Format("{0:#00}:{1:00}:{2:00}", Hours, Minutes, Seconds);
                 case TimeFormat.WithMilliseconds:
-                    return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
+                    return string.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
                 case TimeFormat.WithMicroseconds:
-                    return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}{4:000}", Hours, Minutes, Seconds, Milliseconds, Microseconds);
+                    return string.Format("{0:#00}:{1:00}:{2:00}.{3:000}{4:000}", Hours, Minutes, Seconds, Milliseconds, Microseconds);
                 case TimeFormat.WithNanoseconds:
-                    return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}{4:000}{5:000}", Hours, Minutes, Seconds, Milliseconds, Microseconds, Nanoseconds);
+                    return string.Format("{0:#00}:{1:00}:{2:00}.{3:000}{4:000}{5:000}", Hours, Minutes, Seconds, Milliseconds, Microseconds, Nanoseconds);
                 default:
-                    return String.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
+                    return string.Format("{0:#00}:{1:00}:{2:00}.{3:000}", Hours, Minutes, Seconds, Milliseconds);
             } 
         }
 

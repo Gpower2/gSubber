@@ -11,7 +11,7 @@ namespace gSubber.Core
     {
         public static ISubFileParser GetSubFileParser(string argSubTitleFilename)
         {
-            String inputFileExtension = Path.GetExtension(argSubTitleFilename);
+            string inputFileExtension = Path.GetExtension(argSubTitleFilename);
             if (inputFileExtension.Length > 1)
             {
                 inputFileExtension = inputFileExtension.Substring(1);

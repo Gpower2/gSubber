@@ -11,9 +11,9 @@ namespace gSubber.Core
     {
         SubFileParserResults Load(string argFilename, Encoding argFileEncoding);
 
-        void Save(SubFile argSubFile);
+        void Save(ISubFile argSubFile);
 
-        void SaveAs(SubFile argSubFile, string argFilename, Encoding argFileEncoding);
+        void SaveAs(ISubFile argSubFile, string argFilename, Encoding argFileEncoding);
 
         Time GetTimeFromFormatString(string argTimeFormatString);
 

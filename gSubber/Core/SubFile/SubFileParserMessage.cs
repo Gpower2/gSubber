@@ -15,7 +15,7 @@ namespace gSubber.Core.SubtitleFile
 
         public override string ToString()
         {
-            return String.Format("Line {0}: {1}", Line, Message);
+            return $"Line {Line}: {Message ?? ""}";
         }
     }
 }

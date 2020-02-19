@@ -270,7 +270,7 @@ namespace gSubberGUI
                             var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Insert a new subtitle item with the same times
                             _results.SubFile.Subtitles.Insert(idx,
@@ -303,7 +303,7 @@ namespace gSubberGUI
                             var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Insert a new subtitle item after the selected one with the same times
                             _results.SubFile.Subtitles.Insert(idx + 1,
@@ -341,7 +341,7 @@ namespace gSubberGUI
                             var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Insert a new subtitle item with the same times
                             _results.SubFile.Subtitles.Insert(idx,
@@ -370,7 +370,7 @@ namespace gSubberGUI
                             var subItem = grdSubtitles.Rows[grdSubtitles.LastClickedRowIndex].DataBoundItem as SubFileSubtitleItem;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
@@ -401,7 +401,7 @@ namespace gSubberGUI
                                 grdSubtitles.SelectedRows[0].Selected = false;
 
                                 // Get the index of the subtitle item
-                                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                                var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                                 // Delete the subtitle line
                                 _results.SubFile.Subtitles.RemoveAt(idx);
@@ -495,7 +495,7 @@ namespace gSubberGUI
                             subItemPrevious.EndTime = subItem.EndTime;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
@@ -538,7 +538,7 @@ namespace gSubberGUI
                             subItemNext.StartTime = subItem.StartTime;
 
                             // Get the index of the subtitle item
-                            var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                            var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                             // Delete the subtitle line
                             _results.SubFile.Subtitles.RemoveAt(idx);
@@ -618,7 +618,12 @@ namespace gSubberGUI
                             _results.SubFile.Subtitles[i].Text = "";
                         }
                     }
-                    _results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
+
+                    while(_results.SubFile.Subtitles.Any(x => string.IsNullOrWhiteSpace(x.Text)))
+                    {
+                        _results.SubFile.Subtitles.Remove(_results.SubFile.Subtitles.FirstOrDefault(x => string.IsNullOrWhiteSpace(x.Text)));
+                    }
+                    //_results.SubFile.Subtitles.RemoveAll(x => String.IsNullOrWhiteSpace(x.Text));
                 }
             }
 
@@ -643,13 +648,26 @@ namespace gSubberGUI
             SetUpDataGridView();
             SetData(_results.SubFile.Subtitles);
 
-            _results.SubFile.Info.ForEach(i => lstInfo.Items.Add(i));
+            foreach (var item in _results.SubFile.Info)
+            {
+                lstInfo.Items.Add(item);
+            }
+            //_results.SubFile.Info.ForEach(i => lstInfo.Items.Add(i));
 
-            _results.SubFile.Properties.ForEach(i => lstProperties.Items.Add(i));
+            foreach (var item in _results.SubFile.Properties)
+            {
+                lstProperties.Items.Add(item);
+            }
 
-            _results.SubFile.Styles.ForEach(i => lstStyles.Items.Add(i));
+            foreach (var item in _results.SubFile.Styles)
+            {
+                lstStyles.Items.Add(item);
+            }
 
-            _results.SubFile.Attachments.ForEach(i => lstAttachments.Items.Add(i));
+            foreach (var item in _results.SubFile.Attachments)
+            {
+                lstAttachments.Items.Add(item);
+            }
 
 
             ShowSuccessMessage(String.Format("Success!{0}Subtitle lines:{1}", Environment.NewLine, _results.SubFile.Subtitles.Count));
@@ -799,7 +817,7 @@ namespace gSubberGUI
                 var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
 
                 // Get the index of the subtitle item
-                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                 // Insert a new subtitle item with the same times
                 _results.SubFile.Subtitles.Insert(idx,
@@ -832,7 +850,7 @@ namespace gSubberGUI
                 var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
 
                 // Get the index of the subtitle item
-                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                 // Insert a new subtitle item after the selected one with the same times
                 _results.SubFile.Subtitles.Insert(idx + 1,
@@ -865,7 +883,7 @@ namespace gSubberGUI
                 var subItem = grdSubtitles.SelectedItem as SubFileSubtitleItem;
 
                 // Get the index of the subtitle item
-                var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                 // Insert a new subtitle item with the same times
                 _results.SubFile.Subtitles.Insert(idx,
@@ -898,7 +916,7 @@ namespace gSubberGUI
                     grdSubtitles.SelectedRows[0].Selected = false;
 
                     // Get the index of the subtitle item
-                    var idx = _results.SubFile.Subtitles.FindIndex(s => s == subItem);
+                    var idx = _results.SubFile.Subtitles.IndexOf(subItem);
 
                     // Delete the subtitle line
                     _results.SubFile.Subtitles.RemoveAt(idx);

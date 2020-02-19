@@ -275,12 +275,12 @@ namespace gSubber.Formats
             return results;
         }
 
-        public void Save(SubFile argSubFile)
+        public void Save(ISubFile argSubFile)
         {
             SaveAs(argSubFile, argSubFile.Filename, argSubFile.FileEncoding);
         }
 
-        public void SaveAs(SubFile argSubFile, string argFilename, Encoding argFileEncoding)
+        public void SaveAs(ISubFile argSubFile, string argFilename, Encoding argFileEncoding)
         {
             if (String.IsNullOrWhiteSpace(argFilename))
             {

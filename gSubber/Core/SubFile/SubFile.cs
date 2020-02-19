@@ -5,17 +5,17 @@ using System.Text;
 
 namespace gSubber.Core.SubtitleFile
 {
-    public class SubFile
+    public class SubFile : ISubFile
     {
-        public List<SubFileInfoItem> Info { get; } = new List<SubFileInfoItem>();
+        public IList<SubFileInfoItem> Info { get; } = new List<SubFileInfoItem>();
 
-        public List<SubFilePropertyItem> Properties { get; } = new List<SubFilePropertyItem>();
+        public IList<SubFilePropertyItem> Properties { get; } = new List<SubFilePropertyItem>();
 
-        public List<SubFileStyleItem> Styles { get; } = new List<SubFileStyleItem>();
+        public IList<SubFileStyleItem> Styles { get; } = new List<SubFileStyleItem>();
 
-        public List<SubFileSubtitleItem> Subtitles { get; } = new List<SubFileSubtitleItem>();
+        public IList<SubFileSubtitleItem> Subtitles { get; } = new List<SubFileSubtitleItem>();
 
-        public List<SubFileAttachment> Attachments { get; } = new List<SubFileAttachment>();
+        public IList<SubFileAttachment> Attachments { get; } = new List<SubFileAttachment>();
 
         public string Filename { get; private set; }
 

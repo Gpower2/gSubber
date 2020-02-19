@@ -7,7 +7,7 @@ namespace gSubber.Core.SubtitleFile
 {
     public class SubFileSubtitleItem
     {
-        public static String NEW_LINE_CHARACTER = "¶";
+        public static string NEW_LINE_CHARACTER = "¶";
 
         public Int64 LineNumber { get; set; }
 
@@ -15,9 +15,9 @@ namespace gSubber.Core.SubtitleFile
 
         public SubFileStyleItem Style { get; set; }
 
-        public String ActorName { get; set; }
+        public string ActorName { get; set; }
 
-        public String Effect { get; set; }
+        public string Effect { get; set; }
 
 
         public int Zindex { get; set; }
@@ -33,9 +33,9 @@ namespace gSubber.Core.SubtitleFile
 
         public Time EndTime { get; set; }
 
-        public String Text { get; set; }
+        public string Text { get; set; }
 
-        public String DisplayText
+        public string DisplayText
         {
             get
             {
@@ -50,18 +50,16 @@ namespace gSubber.Core.SubtitleFile
             }
         }
 
-        public string[] TextLines
+        public IEnumerable<string> TextLines
         {
             get
             {
-                if (!String.IsNullOrWhiteSpace(Text))
+                if (string.IsNullOrWhiteSpace(Text))
                 {
-                    return Text.Replace("\r\n", "\n").Trim().Split(new string[] { "\n" }, StringSplitOptions.None);
+                    return new string[] { "" };                    
                 }
-                else
-                {
-                    return new string[] { "" };
-                }
+
+                return Text.Replace("\r\n", "\n").Trim().Split(new string[] { "\n" }, StringSplitOptions.None);
             }
         }
 
@@ -69,14 +67,12 @@ namespace gSubber.Core.SubtitleFile
         {
             get
             {
-                if(StartTime != null && EndTime != null)
-                {
-                    return (EndTime - StartTime).TotalSeconds;
-                }
-                else
+                if (StartTime == null || EndTime == null)
                 {
                     return 0.0;
                 }
+
+                return (EndTime - StartTime).TotalSeconds;
             }
         }
 
@@ -84,14 +80,12 @@ namespace gSubber.Core.SubtitleFile
         {
             get
             {
-                if (Duration > 0.0 && !String.IsNullOrWhiteSpace(Text))
-                {
-                    return Convert.ToDouble(Text.Trim().Length) / Duration;
-                }
-                else
+                if (Duration <= 0.0 || string.IsNullOrWhiteSpace(Text))
                 {
                     return 0.0;
                 }
+
+                return Convert.ToDouble(Text.Trim().Length) / Duration;
             }
         }
 

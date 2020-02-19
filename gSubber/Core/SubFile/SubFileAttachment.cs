@@ -15,9 +15,8 @@ namespace gSubber.Core.SubtitleFile
 
         public AttachmentType DataType { get; set; }
 
-        public String Name { get; set; }
+        public string Name { get; set; }
 
-        public String Data { get; set; }
-
+        public string Data { get; set; }
     }
 }
