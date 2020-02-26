@@ -20,7 +20,7 @@ namespace gSubberGUI
 {
     public partial class frmMain : BaseForm
     {
-        private SubFileParserResults _results = null;
+        private ISubFileParserResults _results = null;
         private ISubFileParser _parser = null;
         private List<string> _cmdArguments = new List<string>();
 

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Core\SubFileParserFactory.cs" />
     <Compile Include="Core\SubFile\ISubFile.cs" />
+    <Compile Include="Core\SubFile\ISubFileParserResults.cs" />
     <Compile Include="Formats\AssFileParser.cs" />
     <Compile Include="Formats\SrtFileParser.cs" />
     <Compile Include="Core\ISubFileParser.cs" />

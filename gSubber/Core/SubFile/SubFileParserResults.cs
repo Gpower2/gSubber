@@ -6,22 +6,22 @@ using System.Text;
 
 namespace gSubber.Core.SubtitleFile
 {
-    public class SubFileParserResults
+    public class SubFileParserResults : ISubFileParserResults
     {
         public ISubFile SubFile { get; set; }
-        
-        public IEnumerable<SubFileParserMessage> Warnings { get; } = new List<SubFileParserMessage>();
-        
-        public IEnumerable<SubFileParserMessage> Errors { get; } = new List<SubFileParserMessage>();
+
+        public IList<SubFileParserMessage> Warnings { get; } = new List<SubFileParserMessage>();
+
+        public IList<SubFileParserMessage> Errors { get; } = new List<SubFileParserMessage>();
 
         public void AddWarning(SubFileParserMessage argWarning)
         {
-            (Warnings as IList).Add(argWarning);
+            Warnings.Add(argWarning);
         }
 
         public void AddError(SubFileParserMessage argError)
         {
-            (Errors as IList).Add(argError);
+            Errors.Add(argError);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace gSubber.Formats
             SubtitleText,
         }
 
-        public SubFileParserResults Load(string argFilename, Encoding argFileEncoding)
+        public ISubFileParserResults Load(string argFilename, Encoding argFileEncoding)
         {
             if (String.IsNullOrWhiteSpace(argFilename))
             {

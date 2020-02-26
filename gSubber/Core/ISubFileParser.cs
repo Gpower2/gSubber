@@ -9,7 +9,7 @@ namespace gSubber.Core
 {
     public interface ISubFileParser
     {
-        SubFileParserResults Load(string argFilename, Encoding argFileEncoding);
+        ISubFileParserResults Load(string argFilename, Encoding argFileEncoding);
 
         void Save(ISubFile argSubFile);
 
