@@ -58,6 +58,7 @@
     <Compile Include="Core\SubFile\SubFileStyleItem.cs" />
     <Compile Include="Core\SubFile\SubFileSubtitleItem.cs" />
     <Compile Include="Core\Time.cs" />
+    <Compile Include="Utilities\TextFinder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,6 +12,8 @@ using System.Diagnostics;
 using gSubber.Core.SubtitleFile;
 using System.Text.RegularExpressions;
 using System.Linq;
+using gSubber.Utilities;
+using static gSubber.Utilities.TextFinder;
 
 namespace gSubberGUI
 {
@@ -155,7 +157,7 @@ namespace gSubberGUI
 
             // Add the text to replace in the last replacements items
             string textForReplace = cmbTextForReplace.Text;
-            if (!cmbTextForReplace.Items.Contains(textToFind))
+            if (!cmbTextForReplace.Items.Contains(textForReplace))
             {
                 cmbTextForReplace.Items.Add(textForReplace);
             }
@@ -175,9 +177,9 @@ namespace gSubberGUI
                 UseTransparencyOnLostFocus = rbtnTransparencyOnLostFocus.Checked,
                 TransparencyValue = trkTransparency.Value,
 
-                LastSearches = new Queue<string>(cmbTextToFind.Items.Cast<string>()),
+                LastSearches = new Queue<string>(cmbTextToFind.Items.Cast<string>().Distinct()),
 
-                LastReplaces = new Queue<string>(cmbTextForReplace.Items.Cast<string>())
+                LastReplaces = new Queue<string>(cmbTextForReplace.Items.Cast<string>().Distinct())
             };
 
             using (StreamWriter sw = new StreamWriter("findSettings.json"))
@@ -349,74 +351,25 @@ namespace gSubberGUI
             this.Close();
         }
 
-        private enum SearchMode
-        {
-            Normal,
-            Extended,
-            RegularExpression
-        }
-
         private static char[] _WordSeparators = new char[] { '.', ',', ' ', '?', '"', '\'', '\r', '\n', '\t', ':', ';', '<', '>', '/', '\\', '[', ']', '{', '}', '(', ')', '-', '_', '+', '=', '!', '@', '#', '$', '%', '^', '&', '*', '`', '~', '|' };
 
         private static string _RegExWordSeparators = "[., ?\"'\\r\\n\\t:;<>/\\\\\\[\\]{}\\(\\)-_+=!@#$%^&*`~|]";
 
         private void Find(bool argNext)
         {
-            string textToFind = cmbTextToFind.Text;
-
-            if (string.IsNullOrWhiteSpace(textToFind))
-            {
-                return;
-            }
-
-            bool matchCase = chkMatchCase.Checked;
-            bool matchWholeWord = chkWholeWord.Checked;
-            bool wrapAround = chkWrapAround.Checked;
-
             SearchMode searchmode = SearchMode.Normal;
 
             if (rbtnNormal.Checked)
             {
                 searchmode = SearchMode.Normal;
-                if (!matchCase)
-                {
-                    textToFind = textToFind.ToLower();
-                }
             }
             else if (rbtnExtended.Checked)
             {
                 searchmode = SearchMode.Extended;
-                textToFind = textToFind.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
-                if (!matchCase)
-                {
-                    textToFind = textToFind.ToLower();
-                }
             }
             else if (rbtnRegularExpression.Checked)
             {
                 searchmode = SearchMode.RegularExpression;
-            }
-
-            // If we have RegularExpression search mode, create the Regular Expression
-            Regex regex = null;
-            if (searchmode == SearchMode.RegularExpression)
-            {
-                RegexOptions regexOptions = RegexOptions.Compiled;
-                string regexTextToFind = textToFind;
-
-                // Check if we have match case
-                if (!matchCase)
-                {
-                    regexOptions |= RegexOptions.IgnoreCase;
-                }
-
-                // Check if we have match whole word
-                if (matchWholeWord)
-                {
-                    regexTextToFind = $@"(?<={_RegExWordSeparators}|^){textToFind}(?={_RegExWordSeparators}|$)";
-                }
-
-                regex = new Regex(regexTextToFind, regexOptions);
             }
 
             // Find the starting point (row)
@@ -438,156 +391,19 @@ namespace gSubberGUI
                 }
             }
 
-            // Set the current row index
-            int currentRowIndex = startRowIndex;
+            TextFinder textFinder = new TextFinder();
 
-            // Set a flag to know if the find operation succeeded
-            bool textWasFound = false;
-
-            // Set a flag to know if we have wrapped around
-            bool wrappedAround = false;
-
-            // Start searching the rows according to the search direction
-            // argNext == true => Search down
-            // argNext == false => Search up
-            while (
-                (argNext && currentRowIndex < _frmMain.SubtitleGridView.Rows.Count)
-                || (!argNext && currentRowIndex >= 0)
-                )
-            {
-                // Check if we wrapped around and surpassed the start row
-                if (wrappedAround)
-                {
-                    if (
-                        (argNext && currentRowIndex >= startRowIndex)
-                        || (!argNext && currentRowIndex <= startRowIndex)
-                        )
-                    {
-                        // We wrapped around and surpassed tha starting row!
-                        // Break the search loop!
-                        break;
-                    }
-                }
-
-                // Get the subtitle item to search
-                SubFileSubtitleItem sub = (SubFileSubtitleItem)_frmMain.SubtitleGridView.Rows[currentRowIndex].DataBoundItem;
-
-                // Check if we have regular expression or normal/extended search mode
-                if (searchmode == SearchMode.RegularExpression)
-                {
-                    Match match;
-                    if (
-                        // Check if we are in the start row and then search from the startTextIndex
-                        currentRowIndex == startRowIndex && (match = regex.Match(sub.Text, startTextIndex)).Success
-                        || currentRowIndex != startRowIndex && (match = regex.Match(sub.Text)).Success
-                        )
-                    {
-                        // Found match! Select the row
-                        _frmMain.SubtitleGridView.SetSelectedRowByIndex(currentRowIndex);
-
-                        // Select the text
-                        _frmMain.SubtitleItemTextBox.Select(match.Index, match.Length);
-
-                        // Set the flag that the find operation was successfull
-                        textWasFound = true;
-
-                        // Exit the search loop
-                        break;
-                    }
-                }
-                else
-                {
-                    int startIndex;
-                    string subText = sub.Text;
-                    if (!matchCase)
-                    {
-                        subText = subText.ToLower();
-                    }
-                    if (
-                        // Check if we are in the start row and then search from the startTextIndex
-                        currentRowIndex == startRowIndex &&
-                            (
-                                // Check if we have match case and if not convert text to lower case to search
-                                (startIndex = subText.IndexOf(textToFind, startTextIndex)) > -1
-                            )
-                        // Check if we are in the start row and then search from the startTextIndex
-                        || currentRowIndex != startRowIndex &&
-                            (
-                                // Check if we have match case and if not convert text to lower case to search
-                                (startIndex = subText.IndexOf(textToFind)) > -1
-                            )
-                        )
-                    {
-                        if (
-                            // Check if we have match whole word
-                            !matchWholeWord
-                            ||
-                            (
-                                // Check if the previous and next characters are in the word separators array
-                                (
-                                    startIndex == 0
-                                    || (startIndex > 0 && _WordSeparators.Contains(subText[startIndex - 1]))
-                                )
-                                &&
-                                (
-                                    startIndex + textToFind.Length == subText.Length
-                                    || (startIndex + textToFind.Length < subText.Length && _WordSeparators.Contains(subText[startIndex + textToFind.Length]))
-                                )
-                            )
-                        )
-                        {
-                            // Found match! Select the row
-                            _frmMain.SubtitleGridView.SetSelectedRowByIndex(currentRowIndex);
-
-                            // Select the text
-                            _frmMain.SubtitleItemTextBox.Select(startIndex, textToFind.Length);
-
-                            // Set the flag that the find operation was successfull
-                            textWasFound = true;
-
-                            // Exit the search loop
-                            break;
-                        }
-                    }
-                }
-
-                // Go the next row according to search direction
-                if (argNext)
-                {
-                    currentRowIndex++;
-                    // We check if we have wrap around AND we haven't already wrapped around
-                    if (wrapAround && !wrappedAround)
-                    {
-                        if (currentRowIndex >= _frmMain.SubtitleGridView.Rows.Count)
-                        {
-                            // We wrap around and start from the first row
-                            currentRowIndex = 0;
-                            // We set the flag to know that we wrapped around
-                            wrappedAround = true;
-                        }
-                    }
-                }
-                else
-                {
-                    currentRowIndex--;
-                    // We check if we have wrap around AND we haven't already wrapped around
-                    if (wrapAround && !wrappedAround)
-                    {
-                        if (currentRowIndex < 0)
-                        {
-                            // We wrap around and start from the last row
-                            currentRowIndex = _frmMain.SubtitleGridView.Rows.Count - 1;
-                            // We set the flag to know that we wrapped around
-                            wrappedAround = true;
-                        }
-                    }
-                }
-            }
+            var textWasFound = textFinder.Find(cmbTextToFind.Text, argNext, chkMatchCase.Checked, chkWholeWord.Checked, chkWrapAround.Checked,
+                searchmode, startRowIndex, startTextIndex, 
+                _frmMain.SubtitleGridView.Rows.Cast<DataGridViewRow>().Select(r => (r.DataBoundItem as SubFileSubtitleItem).Text).ToList(), 
+                (index) => { _frmMain.SubtitleGridView.SetSelectedRowByIndex(index); }, 
+                (index, length) => { _frmMain.SubtitleItemTextBox.Select(index, length); }
+            );
 
             // Check if find operation was successfull
             if (!textWasFound)
             {
-                ShowWarningMessage($"The text '{textToFind}' was not found!");
+                ShowWarningMessage($"The text '{cmbTextToFind.Text}' was not found!");
             }
         }
 
