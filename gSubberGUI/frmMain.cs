@@ -733,12 +733,12 @@ namespace gSubberGUI
                 if (_parser is SrtFileParser)
                 {
                     sfd.DefaultExt = ".srt";
-                    sfd.Filter = "SRT Files (*.srt)|*.srt";
+                    sfd.Filter = "SRT Files (*.srt)|*.srt|ASS Files (*.ass)|*.ass";
                 }
                 else if (_parser is AssFileParser)
                 {
                     sfd.DefaultExt = ".ass";
-                    sfd.Filter = "ASS Files (*.ass)|*.ass";
+                    sfd.Filter = "ASS Files (*.ass)|*.ass|SRT Files (*.srt)|*.srt";
                 }
                 sfd.AddExtension = true;
 
@@ -747,7 +747,23 @@ namespace gSubberGUI
 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    _parser.SaveAs(_results.SubFile, sfd.FileName, Encoding.UTF8);
+                    ISubFileParser saveParser = _parser;
+                    if (Path.GetExtension(sfd.FileName).Substring(1).ToLower().Equals("srt"))
+                    {
+                        if (!(_parser is SrtFileParser))
+                        {
+                            saveParser = new SrtFileParser();
+                        }
+                    }
+                    else if (Path.GetExtension(sfd.FileName).Substring(1).ToLower().Equals("ass"))
+                    {
+                        if (!(_parser is AssFileParser))
+                        {
+                            saveParser = new AssFileParser();
+                        }
+                    }
+
+                    saveParser.SaveAs(_results.SubFile, sfd.FileName, Encoding.UTF8);
 
                     ShowSuccessMessage(String.Format("The file '{0}' was saved!", sfd.FileName));
                 }
@@ -930,6 +946,45 @@ namespace gSubberGUI
             }
         }
 
+        private void adjustDurationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_results == null || _results.SubFile == null)
+                {
+                    return;
+                }
 
+                Time oldMinStartTime = _results.SubFile.Subtitles.Min(s => s.StartTime);
+                Time oldMaxStartTime = _results.SubFile.Subtitles.Max(s => s.StartTime);
+
+                Time newMinStartTime = new Time(0, 0, 7, 541);
+                Time newMaxStartTime = new Time(0, 56, 57, 596);
+
+                double newDiff = (newMaxStartTime - newMinStartTime).TotalNanoseconds;
+                double oldDiff = (oldMaxStartTime - oldMinStartTime).TotalNanoseconds;
+                double newMaxNanoseconds = newMaxStartTime.TotalNanoseconds;
+                double oldMaxNanoseconds = oldMaxStartTime.TotalNanoseconds;
+
+                for (int i = 0; i < _results.SubFile.Subtitles.Count; i++)
+                {
+                    // X = scores_new_max - ((scores_new_max - scores_new_min) * (scores_old_max - X) / (scores_old_max - scores_old_min))   
+                    // X = newMaxStartTime - (( (newMaxStartTime - newMinStartTime) * (oldMaxStartTime - X)) / (oldMaxStartTime - oldMinStartTime))   
+                    // X = newMaxStartTime - (( (newMaxStartTime - newMinStartTime) * (oldMaxStartTime - _results.SubFile.Subtitles[i].StartTime)) / (oldMaxStartTime - oldMinStartTime))   
+                    double newNanoseconds = newMaxNanoseconds - (((newDiff) * (oldMaxNanoseconds - _results.SubFile.Subtitles[i].StartTime.TotalNanoseconds)) / (oldDiff));
+
+                    Time durationInTime = _results.SubFile.Subtitles[i].EndTime - _results.SubFile.Subtitles[i].StartTime;
+
+                    _results.SubFile.Subtitles[i].StartTime = new Time(0, 0, 0, 0, 0, (long)newNanoseconds);
+                    _results.SubFile.Subtitles[i].EndTime = _results.SubFile.Subtitles[i].StartTime + durationInTime;
+                }
+
+                SetData(_results.SubFile.Subtitles);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
     }
 }

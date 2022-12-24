@@ -335,6 +335,7 @@
             this.adjustDurationsToolStripMenuItem.Name = "adjustDurationsToolStripMenuItem";
             this.adjustDurationsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.adjustDurationsToolStripMenuItem.Text = "Adjust times...";
+            this.adjustDurationsToolStripMenuItem.Click += new System.EventHandler(this.adjustDurationsToolStripMenuItem_Click);
             // 
             // fixIssuesToolStripMenuItem
             // 
