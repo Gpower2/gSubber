@@ -46,9 +46,9 @@ namespace gSubber.Core
                 if (value > 60)
                 {
                     // Assign the true minutes to the value
-                    _Minutes = value - ((value / 60) * 60);
+                    _Minutes = value % 60;
                     // Add the full hours to the existing hours
-                    Hours += ((value / 60) * 60);
+                    Hours += value / 60;
                 }
                 else
                 {
@@ -80,9 +80,9 @@ namespace gSubber.Core
                 if (value > 60)
                 {
                     // Assign the true seconds to the value
-                    _Seconds = value - ((value / 60) * 60);
+                    _Seconds = value % 60;
                     // Add the full minutes to the existing minutes
-                    Minutes += ((value / 60) * 60);
+                    Minutes += (value / 60);
                 }
                 else
                 {
@@ -103,9 +103,9 @@ namespace gSubber.Core
             }
         }
 
-        private int _Milliseconds;
+        private long _Milliseconds;
 
-        public int Milliseconds
+        public long Milliseconds
         {
             get { return _Milliseconds; }
             set
@@ -114,9 +114,9 @@ namespace gSubber.Core
                 if (value > 1000)
                 {
                     // Assign the true milliseconds to the value
-                    _Milliseconds = value - ((value / 1000) * 1000);
+                    _Milliseconds = value % 1000;
                     // Add the full seconds to the existing seconds
-                    Seconds += ((value / 1000) * 1000);
+                    Seconds += (int)(value / 1000);
                 }
                 else
                 {
@@ -138,9 +138,9 @@ namespace gSubber.Core
             }
         }
 
-        private int _Microseconds;
+        private long _Microseconds;
 
-        public int Microseconds
+        public long Microseconds
         {
             get { return _Microseconds; }
             set
@@ -149,9 +149,9 @@ namespace gSubber.Core
                 if (value > 1000)
                 {
                     // Assign the true microseconds to the value
-                    _Microseconds = value - ((value / 1000) * 1000);
+                    _Microseconds = value % 1000;
                     // Add the full milliseconds to the existing milliseconds
-                    Milliseconds += ((value / 1000) * 1000);
+                    Milliseconds += value / 1000;
                 }
                 else
                 {
@@ -173,9 +173,9 @@ namespace gSubber.Core
             }
         }
 
-        private int _Nanoseconds;
+        private long _Nanoseconds;
 
-        public int Nanoseconds
+        public long Nanoseconds
         {
             get { return _Nanoseconds; }
             set
@@ -184,9 +184,9 @@ namespace gSubber.Core
                 if (value > 1000)
                 {
                     // Assign the true nanoseconds to the value
-                    _Nanoseconds = value - ((value / 1000) * 1000);
+                    _Nanoseconds = value % 1000;
                     // Add the full microseconds to the existing microseconds
-                    Microseconds += ((value / 1000) * 1000);
+                    Microseconds += value / 1000;
                 }
                 else
                 {
@@ -232,7 +232,7 @@ namespace gSubber.Core
             Seconds = argSeconds;
         }
 
-        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds)
+        public Time(int argHours, int argMinutes, int argSeconds, long argMilliseconds)
         {
             Hours = argHours;
             Minutes = argMinutes;
@@ -240,7 +240,7 @@ namespace gSubber.Core
             Milliseconds = argMilliseconds;
         }
 
-        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds, int argMicroseconds)
+        public Time(int argHours, int argMinutes, int argSeconds, long argMilliseconds, int argMicroseconds)
         {
             Hours = argHours;
             Minutes = argMinutes;
@@ -249,7 +249,7 @@ namespace gSubber.Core
             Microseconds = argMicroseconds;
         }
 
-        public Time(int argHours, int argMinutes, int argSeconds, int argMilliseconds, int argMicroseconds, int argNanoseconds)
+        public Time(int argHours, int argMinutes, int argSeconds, long argMilliseconds, long argMicroseconds, long argNanoseconds)
         {
             Hours = argHours;
             Minutes = argMinutes;
@@ -279,6 +279,28 @@ namespace gSubber.Core
                 argTime1.Milliseconds - argTime2.Milliseconds,
                 argTime1.Microseconds - argTime2.Microseconds,
                 argTime1.Nanoseconds - argTime2.Nanoseconds);
+        }
+
+        public static Time operator *(Time argTime1, Time argTime2)
+        {
+            return new Time(
+                argTime1.Hours * argTime2.Hours,
+                argTime1.Minutes * argTime2.Minutes,
+                argTime1.Seconds * argTime2.Seconds,
+                argTime1.Milliseconds * argTime2.Milliseconds,
+                argTime1.Microseconds * argTime2.Microseconds,
+                argTime1.Nanoseconds * argTime2.Nanoseconds);
+        }
+
+        public static Time operator /(Time argTime1, Time argTime2)
+        {
+            return new Time(
+                0,
+                0,
+                0,
+                0,
+                0,
+                (int)(argTime1.TotalNanoseconds / argTime2.TotalNanoseconds));
         }
 
         public static bool operator >(Time argTime1, Time argTime2)
