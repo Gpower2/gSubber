@@ -28,6 +28,8 @@ namespace gSubberGUI
         private frmFind _frmReplace;
         private ContextMenuStrip _contextMenu;
 
+        private bool _ignoreSelectionChangedEvent = false;
+
         public GDataGridView SubtitleGridView { get { return grdSubtitles; } }
         public GTextBox SubtitleItemTextBox { get { return txtSubtitleItem; } }
 
@@ -41,6 +43,9 @@ namespace gSubberGUI
 
             // Get the command line arguments
             GetCommandLineArguments();
+
+            // Ignore DataErrors from DataGridView
+            grdSubtitles.DataError += (object s, DataGridViewDataErrorEventArgs dataGridViewDataErrorEventArgs) => { return; };
 
             SetUpDataGridView();
         }
@@ -354,7 +359,7 @@ namespace gSubberGUI
                 );
 
 
-                // Delete lst clicked line ===================
+                // Delete last clicked line ===================
                 _contextMenu.Items.Add(
                     new ToolStripMenuItem(
                         "Delete last clicked subtitle line",
@@ -392,21 +397,31 @@ namespace gSubberGUI
                                 return;
                             }
 
-                            while (grdSubtitles.SelectedRows.Count > 0)
+                            grdSubtitles.SuspendLayout();
+                            _ignoreSelectionChangedEvent = true;
+
+                            // Create a copy of the selected rows
+                            var items = grdSubtitles.SelectedRows.Cast<DataGridViewRow>()
+                                .OrderBy(r => r.Index)
+                                .Select(r => r.DataBoundItem).ToList();
+
+                            // Remove the lines from the data file
+                            foreach (var item in items)
                             {
-                                // Get the selected subtitle item
-                                var subItem = grdSubtitles.SelectedRows[0].DataBoundItem as SubFileSubtitleItem;
-
-                                // Remove selection
-                                grdSubtitles.SelectedRows[0].Selected = false;
-
                                 // Get the index of the subtitle item
-                                var idx = _results.SubFile.Subtitles.IndexOf(subItem);
+                                var idx = _results.SubFile.Subtitles.IndexOf(item as SubFileSubtitleItem);
 
                                 // Delete the subtitle line
                                 _results.SubFile.Subtitles.RemoveAt(idx);
                             }
+                            
+                            // Clear DataGridView selection
+                            grdSubtitles.ClearSelection();
 
+                            _ignoreSelectionChangedEvent = false;
+                            grdSubtitles.ResumeLayout();
+
+                            // Reload the data to the DataGridView
                             SetData(_results.SubFile.Subtitles);
                         }
                     )
@@ -706,6 +721,11 @@ namespace gSubberGUI
 
         private void grdSubtitles_SelectionChanged(object sender, EventArgs e)
         {
+            if (_ignoreSelectionChangedEvent)
+            {
+                return;
+            }
+
             try
             {
                 if (grdSubtitles.SelectedIndex == -1)
